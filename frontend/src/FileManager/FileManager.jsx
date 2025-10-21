@@ -20,8 +20,10 @@ import { formatDate as defaultFormatDate } from "../utils/formatDate";
 import "./FileManager.scss";
 
 const FileManager = ({
+  actions,
   files,
   fileUploadConfig,
+  icons,
   isLoading,
   onCreateFolder,
   onFileUploading = () => {},
@@ -109,7 +111,7 @@ const FileManager = ({
                         width: colSizes.col1 + "%",
                       }}
                     >
-                      <NavigationPane onFileOpen={onFileOpen} />
+                      <NavigationPane onFileOpen={onFileOpen} icons={icons}/>
                       <div
                         className={`sidebar-resize ${isDragging ? "sidebar-dragging" : ""}`}
                         onMouseDown={handleMouseDown}
@@ -126,6 +128,7 @@ const FileManager = ({
                         setNavigationPaneOpen={setNavigationPaneOpen}
                       />
                       <FileList
+                        actions={actions}
                         onCreateFolder={onCreateFolder}
                         onRename={onRename}
                         onFileOpen={onFileOpen}
@@ -171,6 +174,7 @@ FileManager.propTypes = {
       path: PropTypes.string.isRequired,
       updatedAt: dateStringValidator,
       size: PropTypes.number,
+      class: PropTypes.string
     })
   ).isRequired,
   fileUploadConfig: PropTypes.shape({

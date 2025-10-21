@@ -10,6 +10,7 @@ import { useTranslation } from "../../contexts/TranslationProvider";
 import "./FileList.scss";
 
 const FileList = ({
+  actions,
   onCreateFolder,
   onRename,
   onFileOpen,
@@ -46,6 +47,37 @@ const FileList = ({
     }
     setSortConfig({ key, direction });
   };
+
+  const customActionClick = (src)=> {
+    setVisible(false)
+    for (let actionKey of actions.keys()) {
+      let allSameClass = (selectedFileIndexes.length>0) && selectedFileIndexes.every(i => currentPathFiles[i].class===actionKey)
+      if (allSameClass) {
+        for (let customAction of actions.get(actionKey)) {
+          if (customAction.title === src.target.innerText) {
+            let selectedFiles=currentPathFiles.filter ( (f,i) => selectedFileIndexes.includes(i))
+            customAction.onClick(selectedFiles)
+          }
+        }
+      }
+    }
+  }
+
+  let contextItems = selecCtxItems
+  for (let actionKey of actions.keys()) {
+    let allSameClass = (selectedFileIndexes.length>0) && selectedFileIndexes.every(i => currentPathFiles[i].class===actionKey)
+    if (allSameClass) {
+      contextItems[contextItems.length-1].divider=true
+      for (let customAction of actions.get(actionKey)) {
+        contextItems.push({
+          title:customAction.title,
+          icon:customAction.icon,
+          divider:customAction.divider,
+          onClick:customActionClick
+        })
+      }
+    }
+  }
 
   return (
     <div
@@ -87,7 +119,7 @@ const FileList = ({
       <ContextMenu
         filesViewRef={filesViewRef}
         contextMenuRef={contextMenuRef.ref}
-        menuItems={isSelectionCtx ? selecCtxItems : emptySelecCtxItems}
+        menuItems={isSelectionCtx ? contextItems : emptySelecCtxItems}
         visible={visible}
         setVisible={setVisible}
         clickPosition={clickPosition}

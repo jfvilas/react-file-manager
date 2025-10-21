@@ -4,7 +4,7 @@ import { FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { useFileNavigation } from "../../contexts/FileNavigationContext";
 
-const FolderTree = ({ folder, onFileOpen }) => {
+const FolderTree = ({ folder, onFileOpen, icons }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const { currentPath, setCurrentPath, onFolderChange } = useFileNavigation();
@@ -50,10 +50,16 @@ const FolderTree = ({ folder, onFileOpen }) => {
             />
           </span>
           <div className="sb-folder-details">
-            {isOpen || isActive ? (
-              <FaRegFolderOpen size={20} className="folder-open-icon" />
+            {isOpen ? ( //{isOpen || isActive ? (
+              folder.class && icons && icons.get(folder.class)?
+                icons.get(folder.class)[1]
+              :
+                <FaRegFolderOpen size={20} className="folder-open-icon" />
             ) : (
-              <FaRegFolder size={17} className="folder-close-icon" />
+              folder.class && icons && icons.get(folder.class)?
+                icons.get(folder.class)[0]
+              :
+                <FaRegFolder size={17} className="folder-close-icon" />
             )}
             <span className="sb-folder-name" title={folder.name}>
               {folder.name}
@@ -63,7 +69,7 @@ const FolderTree = ({ folder, onFileOpen }) => {
         <Collapse open={isOpen}>
           <div className="folder-collapsible">
             {folder.subDirectories.map((item, index) => (
-              <FolderTree key={index} folder={item} onFileOpen={onFileOpen} />
+              <FolderTree key={index} folder={item} onFileOpen={onFileOpen} icons={icons}/>
             ))}
           </div>
         </Collapse>
@@ -78,9 +84,15 @@ const FolderTree = ({ folder, onFileOpen }) => {
         <span className="non-expanable"></span>
         <div className="sb-folder-details">
           {isActive ? (
-            <FaRegFolderOpen size={20} className="folder-open-icon" />
+              folder.class && icons && icons.get(folder.class)?
+                icons.get(folder.class)[1]
+              :
+                <FaRegFolderOpen size={20} className="folder-open-icon" />
           ) : (
-            <FaRegFolder size={17} className="folder-close-icon" />
+              folder.class && icons && icons.get(folder.class)?
+                icons.get(folder.class)[0]
+              :
+                <FaRegFolder size={17} className="folder-close-icon" />
           )}
           <span className="sb-folder-name" title={folder.name}>
             {folder.name}

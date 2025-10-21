@@ -5,7 +5,7 @@ import { useFiles } from "../../contexts/FilesContext";
 import { useTranslation } from "../../contexts/TranslationProvider";
 import "./NavigationPane.scss";
 
-const NavigationPane = ({ onFileOpen }) => {
+const NavigationPane = ({ onFileOpen, icons }) => {
   const [foldersTree, setFoldersTree] = useState([]);
   const { files } = useFiles();
   const t = useTranslation();
@@ -38,7 +38,7 @@ const NavigationPane = ({ onFileOpen }) => {
       {foldersTree?.length > 0 ? (
         <>
           {foldersTree?.map((folder, index) => {
-            return <FolderTree key={index} folder={folder} onFileOpen={onFileOpen} />;
+            return <FolderTree key={index} folder={folder} onFileOpen={onFileOpen} icons={icons}/>;
           })}
         </>
       ) : (
