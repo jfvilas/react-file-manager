@@ -1,15 +1,8 @@
-![React File Manager](https://github.com/user-attachments/assets/cad4d71d-a2fd-4064-9fce-c0c3a7cb4613)
-
-<div align="center">
-
-![NPM Downloads](https://img.shields.io/npm/d18m/%40cubone%2Freact-file-manager?style=for-the-badge)
-![npm bundle size](https://img.shields.io/bundlephobia/minzip/%40cubone%2Freact-file-manager?style=for-the-badge)
-![NPM Version](https://img.shields.io/npm/v/%40cubone%2Freact-file-manager?style=for-the-badge&color=%23c87d32)
-
-</div>
-
+# React File Manager
 <p>
-An open-source React.js package for easy integration of a file manager into applications. It provides a user-friendly interface for managing files and folders, including viewing, uploading, and deleting, with full UI and backend integration.
+An open-source React package for easy integration of a file manager into applications. It provides a user-friendly interface for managing files and folders, including viewing, uploading, and deleting, with full UI and backend integration.
+
+This project is forked from [this fantastic project](https://github.com/Saifullah-dev/react-file-manager).
 </p>
 
 ## ✨ Features
@@ -27,8 +20,6 @@ An open-source React.js package for easy integration of a file manager into appl
   intuitive keyboard shortcuts.
 - **Drag-and-Drop**: Move selected files and folders by dragging them to the desired directory,
   making file organization effortless.
-
-![React File Manager](https://github.com/user-attachments/assets/e68f750b-86bf-450d-b27e-fd3dedebf1bd)
 
 ## 🚀 Installation
 
@@ -334,7 +325,3 @@ function App() {
 - After that, folder changes are driven by `onFolderChange`.
 - If you want to keep the path in sync with user navigation, use a controlled state (as shown
   above).
-
-## ©️ License
-
-React File Manager is [MIT Licensed](LICENSE).
