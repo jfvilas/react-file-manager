@@ -72,10 +72,34 @@ export default App;
 ```
 
 ## Typescript Usage
-If you plan to user react-file-manager in a Typescript project, you can add type management by adding a `.d.ts` file. What follows is a sample file, but you can donwload a full module declaaration file (here)[https://raw.github.com].
+If you plan to user react-file-manager in a Typescript project, you can add type management by adding a `.d.ts` file. What follows is a sample file, but you can donwload a full module declaaration file **[here](https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/jfvilas-react-file-manager.d.ts)**. Inside that file you will find a module declaration and a bunch of type and interface declarations. What follows is just a excerpt.
+
+```typescript
+declare module '@jfvilas/react-file-manager' {
+    export interface IFileData {
+        name: string;
+        isDirectory: boolean;
+        path: string;
+        updatedAt?: string;
+        size?: number;
+        class?: string;
+    }
+
+    export interface IError {
+        type: string,
+        message: string,
+        response: {
+            status: number,
+            statusText: string,
+            data: any,
+        }
+    }
+...
+```
+
+In order to use this 'types' declaration file, just donwload and add it to your project inside your source folder (or any other folder and change your `package.json` accordingly).
 
 ## 📂 File Structure
-
 The `files` prop accepts an array of objects, where each object represents a file or folder. You can
 customize the structure to meet your application needs. Each file or folder object follows the
 structure detailed below:
@@ -92,37 +116,37 @@ type File = {
 ```
 
 ## 🎬 Icons & Actions
-By adding your own icons and specific actions for your items, you can think of react-file-manager as just a hierarchical object manager, that is, this package is no longer just a file manager, you can, for example, create a hierarchy of books and implement particular actions.
+By adding your own icons and specific actions for your items, you can think of react-file-manager as just a hierarchical object manager, that is, this package is no longer just a file manager, you can, for example, create a hierarchy of books and implement particular actions. For example...:
 
- - For example, you can have a top level category that consist of types of books: novel, essay, history...
+ - You can have a top level category that consist of types of books: novel, essay, history...
  - On a second level you can add the topic: science-fiction, love, thriller...
  - On a third level you can just store the book title.
 
-You can add specific icons for each object (category, topic, book))
+You can also add specific icons for each object (category, topic, book).
 
-Moreover, you can add specific actions:
+Moreover, you can add specific actions for each type of object:
 
-  - For the top level, a sample action could be to send the list of books that belong to that category.
-  - For the third level, the book in itself, you can have some actions like: read, view details, share link...
+  - For the top level, a sample action could be to show the list of books that belong to that category.
+  - For the third level, the book in itself, you could add some actions like: read, view details, share link...
 
-For achieving these purposes you need to add to each entry in the `files` object an optional property called `class`. So, for the top level, the class property could be `category`. For the second level, the value of `class` could be something like `topic`, and for the third level it could be something like `book`.
+For achieving these objectives you need to add to each entry in the `files` object an **optional** property called `class`. So, for the top level, the class property could be `category`. For the second level, the value of `class` could be something like `topic`, and for the third level it could be something like `book`.
 
-The next step is to add the icons for these objects. You must create a Map like this:
+The next step is to add the icons for these objects. You must create a Map like this one:
 
 ```javascript
   let icons = new Map();
-  icons.set('category', { open: <JSX.Element />, closed: <JSX.Element /> })
-  icons.set('topic', { open: <JSX.Element />, closed: <JSX.Element /> })
+  icons.set('category', { open: <JSX.Element />, closed: <JSX.Element />, list: <JSX.Element />, grid: <JSX.Element /> })
+  icons.set('topic', { default: <JSX.Element /> })
   icons.set('book', { open: <JSX.Element />, closed: <JSX.Element /> })
 ```
 
-This way, when rendering an object with the `class` `category`, react-file-manager will show the proper icon.
+This way, when rendering an object with the `class` `category`, react-file-manager will show the proper icon, in the folder tree and also in the file list, wherever it be a grid or a list.
 
 If you want to add specific actions for each `class`, you can, for example, create an `actions` map like this:
 
 ```javascript
   let actions = new Map();
-  actions.set('namespace', [
+  actions.set('book', [
     {
       title: 'Read book',
       icon: <FaRead />,
@@ -142,15 +166,15 @@ If you want to add specific actions for each `class`, you can, for example, crea
 
 This previous piece of code adds two actions to objects of `class` `book`:
 
-  - One for reading the book (the `onClick` method should open an ebook reader on screen) 
+  - One for reading the book (the `onClick` method should open an ebook reader on screen).
   - Another one for viewing book details.
 
-A typical action contains these properties:
-  - `title`: the text to appear in the context menu.
-  - `icon`: the icon to show next to the text
-  - `onClick`: a function to process the action (on only parameter will be send: an array contianing the files that which the action must be executed on).
+A typical action contains these properties (review the `.d.td` file):
+  - `title`: the text to appear in context menus.
+  - `icon`: the icon to show next to the text.
+  - `onClick`: a function to process the action (one only parameter will be send: an array contianing the files which the action must be executed on).
 
-Once you have defined your `icons` and your `actions`, you just need to add tehm to your FileManager object like this:
+Once you have defined your `icons` and your `actions`, you just need to add them to your FileManager object like this:
 
 ```xml
   <FileManager files={files} icons={icons} actions={actions} />
@@ -159,16 +183,16 @@ Once you have defined your `icons` and your `actions`, you just need to add tehm
 ...And you'll see the magic 🪄!!
 
 ## 🎨 UI Customization
-react-file-manager can be easily customized from your React application.
+`react-file-manager` can be easily customized to mmet your React application UI srtyles.
 
-The simplest way for customizing is as follows:
+The simplest way for customizing this component is as follows:
 
-  1. Create a css file in your project directory (`fm-custom.css`, for example).
+  1. Create a `.css` file in your project directory (`custom-fm.css`, for example).
   2. Import it in the JSX or TSX file that contains your FileManager object: 
   ```javascript
   import './custom-fm.css'
   ```
-  3. Customize your fileManager by adding classes to the `fm-custom.css` file. For example:
+  3. Customize your FileManager by adding classes to the `custom-fm.css` file. For example (please note we add our class name `custom-fm` on each style):
   ```css
   .custom-fm .toolbar {
     background-color: #e0e0e0;
@@ -180,7 +204,7 @@ The simplest way for customizing is as follows:
     background-color: #f0f0f0;
   }
   ```
-  4. Add your class name to your `FileManager` object:
+  4. Add your class name to your `FileManager` object this way:
   ```xml
   <FileManager ... className='custom-fm'>
   ```
