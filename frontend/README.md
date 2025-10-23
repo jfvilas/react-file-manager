@@ -1,9 +1,9 @@
 # React File Manager
-<p>
 An open-source React package for easy integration of a file manager into applications. It provides a user-friendly interface for managing files and folders, including viewing, uploading, and deleting, with full UI and backend integration.
 
 This project is forked from [this fantastic project](https://github.com/Saifullah-dev/react-file-manager).
-</p>
+
+And our source code project is [here](https://github.com/jfvilas/react-file-manager).
 
 ## ✨ Features
 
@@ -20,6 +20,7 @@ This project is forked from [this fantastic project](https://github.com/Saifulla
   intuitive keyboard shortcuts.
 - **Drag-and-Drop**: Move selected files and folders by dragging them to the desired directory,
   making file organization effortless.
+- **Context cutomization**: Add your specifcia use-case icons and actions for your unique object types.
 
 ## 🚀 Installation
 
@@ -129,6 +130,8 @@ Moreover, you can add specific actions for each type of object:
   - For the top level, a sample action could be to show the list of books that belong to that category.
   - For the third level, the book in itself, you could add some actions like: read, view details, share link...
 
+You can build interfaces like this: ![https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/fileman.png]
+
 For achieving these objectives you need to add to each entry in the `files` object an **optional** property called `class`. So, for the top level, the class property could be `category`. For the second level, the value of `class` could be something like `topic`, and for the third level it could be something like `book`.
 
 The next step is to add the icons for these objects. You must create a Map like this one:
@@ -181,6 +184,10 @@ Once you have defined your `icons` and your `actions`, you just need to add them
 ```
 
 ...And you'll see the magic 🪄!!
+
+What follows is an example with Kubernetes objects, icons and actions that we have implemented in (Kwirth)[https://www.github.com/jfvilas/kwirth] project.
+
+![https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/fileman-2.png]
 
 ## 🎨 UI Customization
 `react-file-manager` can be easily customized to mmet your React application UI srtyles.
