@@ -71,6 +71,9 @@ function App() {
 export default App;
 ```
 
+## Typescript Usage
+If you plan to user react-file-manager in a Typescript project, you can add type management by adding a `.d.ts` file. What follows is a sample file, but you can donwload a full module declaaration file (here)[https://raw.github.com].
+
 ## 📂 File Structure
 
 The `files` prop accepts an array of objects, where each object represents a file or folder. You can
