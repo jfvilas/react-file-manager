@@ -185,8 +185,6 @@ const FileItem = ({
     setCheckboxClassName(selectedFileIndexes.includes(index) ? "visible" : "hidden");
   }, [selectedFileIndexes]);
 
-  console.log('show ', file.path, file.isDirectory, file.class, icons)
-  
   return (
     <div
       className={`file-item-container ${dropZoneClass} ${
