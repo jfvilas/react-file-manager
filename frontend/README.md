@@ -130,7 +130,8 @@ Moreover, you can add specific actions for each type of object:
   - For the top level, a sample action could be to show the list of books that belong to that category.
   - For the third level, the book in itself, you could add some actions like: read, view details, share link...
 
-You can build interfaces like this: ![https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/fileman.png]
+You can build interfaces like this: 
+![fileman](https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/fileman.png)
 
 For achieving these objectives you need to add to each entry in the `files` object an **optional** property called `class`. So, for the top level, the class property could be `category`. For the second level, the value of `class` could be something like `topic`, and for the third level it could be something like `book`.
 
@@ -185,9 +186,9 @@ Once you have defined your `icons` and your `actions`, you just need to add them
 
 ...And you'll see the magic 🪄!!
 
-What follows is an example with Kubernetes objects, icons and actions that we have implemented in (Kwirth)[https://www.github.com/jfvilas/kwirth] project.
+What follows is an example with Kubernetes objects, icons and actions that we have implemented in [Kwirth](https://www.github.com/jfvilas/kwirth) project.
 
-![https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/fileman-2.png]
+![fileman-2](https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/fileman-2.png)
 
 ## 🎨 UI Customization
 `react-file-manager` can be easily customized to mmet your React application UI srtyles.
