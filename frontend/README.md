@@ -1,9 +1,11 @@
 # React File Manager
+<p>
 An open-source React package for easy integration of a file manager into applications. It provides a user-friendly interface for managing files and folders, including viewing, uploading, and deleting, with full UI and backend integration.
 
 This project is forked from [this fantastic project](https://github.com/Saifullah-dev/react-file-manager).
 
 And our source code project is [here](https://github.com/jfvilas/react-file-manager).
+</p>
 
 ## ✨ Features
 
@@ -190,6 +192,7 @@ What follows is an example with Kubernetes objects, icons and actions that we ha
 
 ![fileman-2](https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/fileman-2.png)
 
+
 ## 🎨 UI Customization
 `react-file-manager` can be easily customized to mmet your React application UI srtyles.
 
@@ -218,6 +221,7 @@ The simplest way for customizing this component is as follows:
   ```
 
 Et voilà !
+
 
 ## ⚙️ Props
 
@@ -263,6 +267,7 @@ Et voilà !
 | `style`                  | object | Inline styles applied to the FileManager root element. |
 | `width`                  | string \| number | The width of the component `default: 100%`. Can be a string (e.g., `'100%'`, `'10rem'`) or a number (in pixels). |
 
+
 ## ⌨️ Keyboard Shortcuts
 
 | **Action**                     | **Shortcut**       |
@@ -284,6 +289,7 @@ Et voilà !
 | Jump to Last File in the List  | `End`              |
 | Refresh File List              | `F5`               |
 | Clear Selection                | `Esc`              |
+
 
 ## 🛡️ Permissions
 
@@ -310,6 +316,7 @@ if not specified.
 The `FileManager` component allows you to provide a custom file preview by passing the
 `filePreviewComponent` prop. This is an optional callback function that receives the selected file
 as an argument and must return a valid React node, JSX element, or HTML.
+
 
 ### Usage Example
 
