@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { FaRegFile, FaRegFolderOpen } from "react-icons/fa6";
+import React, { useEffect, useRef, useState } from "react";
+import { FaFolder, FaRegFile, FaRegFolderOpen } from "react-icons/fa6";
 import { useFileIcons } from "../../hooks/useFileIcons";
 import CreateFolderAction from "../Actions/CreateFolder/CreateFolder.action";
 import RenameAction from "../Actions/Rename/Rename.action";
@@ -13,6 +13,7 @@ import Checkbox from "../../components/Checkbox/Checkbox";
 const dragIconSize = 50;
 
 const FileItem = ({
+  icons,
   index,
   file,
   onCreateFolder,
@@ -184,6 +185,8 @@ const FileItem = ({
     setCheckboxClassName(selectedFileIndexes.includes(index) ? "visible" : "hidden");
   }, [selectedFileIndexes]);
 
+  console.log('show ', file.path, file.isDirectory, file.class, icons)
+  
   return (
     <div
       className={`file-item-container ${dropZoneClass} ${
@@ -216,11 +219,15 @@ const FileItem = ({
           />
         )}
         {file.isDirectory ? (
-          <FaRegFolderOpen size={iconSize} />
+          file.class && icons && icons.get(file.class)?
+            (activeLayout === "grid"? icons.get(file.class).grid : icons.get(file.class).list) || <FaFolder size={iconSize}/>
+            :
+            <FaRegFolderOpen size={iconSize} />
         ) : (
-          <>
-            {fileIcons[file.name?.split(".").pop()?.toLowerCase()] ?? <FaRegFile size={iconSize} />}
-          </>
+          file.class && icons && icons.get(file.class)?
+            React.cloneElement(icons.get(file.class).open || icons.get(file.class).default, {height:40})
+            :          
+            <> {fileIcons[file.name?.split(".").pop()?.toLowerCase()] ?? <FaRegFile size={iconSize} />} </>
         )}
 
         {file.isEditing ? (

@@ -221,9 +221,9 @@ function App() {
 
   let icons = new Map()
   // class, icon closed, icon open
-  icons.set('namespace', [<FaRegSquare style={{size:18, marginRight:'2px'}}/>, <FaSquare style={{size:18, marginRight:'2px'}}/>])
-  icons.set('pod', [<FaBox style={{size:18, marginRight:'2px'}}/>, <FaBoxOpen style={{size:18, marginRight:'2px'}}/>])
-  icons.set('container', [<FaDocker style={{size:18, marginRight:'2px'}}/>, <FaDocker style={{size:18, marginRight:'2px'}}/>])
+  icons.set('namespace', { default: <FaLinux/>, grid: <FaLinux size={50} />, list: <FaLinux size={20} /> } )
+  icons.set('pod', { default: <FaBox style={{size:18, marginRight:'2px'}}/> } )
+  icons.set('container', { default: <FaDocker style={{size:18, marginRight:'2px'}}/> })
 
   const actions = new Map()
 

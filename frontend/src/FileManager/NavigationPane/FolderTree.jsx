@@ -52,12 +52,12 @@ const FolderTree = ({ folder, onFileOpen, icons }) => {
           <div className="sb-folder-details">
             {isOpen ? ( //{isOpen || isActive ? (
               folder.class && icons && icons.get(folder.class)?
-                icons.get(folder.class)[1]
+                icons.get(folder.class).open || icons.get(folder.class).default
               :
                 <FaRegFolderOpen size={20} className="folder-open-icon" />
             ) : (
               folder.class && icons && icons.get(folder.class)?
-                icons.get(folder.class)[0]
+                icons.get(folder.class).closed || icons.get(folder.class).default
               :
                 <FaRegFolder size={17} className="folder-close-icon" />
             )}
@@ -85,12 +85,12 @@ const FolderTree = ({ folder, onFileOpen, icons }) => {
         <div className="sb-folder-details">
           {isActive ? (
               folder.class && icons && icons.get(folder.class)?
-                icons.get(folder.class)[1]
+                icons.get(folder.class).open || icons.get(folder.class).default
               :
                 <FaRegFolderOpen size={20} className="folder-open-icon" />
           ) : (
               folder.class && icons && icons.get(folder.class)?
-                icons.get(folder.class)[0]
+                icons.get(folder.class).closed || icons.get(folder.class).default
               :
                 <FaRegFolder size={17} className="folder-close-icon" />
           )}

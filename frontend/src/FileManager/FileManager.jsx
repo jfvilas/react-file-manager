@@ -129,6 +129,7 @@ const FileManager = ({
                       />
                       <FileList
                         actions={actions}
+                        icons={icons}
                         onCreateFolder={onCreateFolder}
                         onRename={onRename}
                         onFileOpen={onFileOpen}

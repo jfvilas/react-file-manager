@@ -11,6 +11,7 @@ import "./FileList.scss";
 
 const FileList = ({
   actions,
+  icons,
   onCreateFolder,
   onRename,
   onFileOpen,
@@ -95,6 +96,7 @@ const FileList = ({
           {currentPathFiles.map((file, index) => (
             <FileItem
               key={index}
+              icons={icons}
               index={index}
               file={file}
               onCreateFolder={onCreateFolder}
