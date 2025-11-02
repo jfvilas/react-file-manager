@@ -8,7 +8,6 @@ And our source code project is [here](https://github.com/jfvilas/react-file-mana
 </p>
 
 ## ✨ Features
-
 - **File & Folder Management**: View, upload, download, delete, copy, move, create, and rename files
   or folders seamlessly.
 - **Grid & List View**: Switch between grid and list views to browse files in your preferred layout.
@@ -22,18 +21,18 @@ And our source code project is [here](https://github.com/jfvilas/react-file-mana
   intuitive keyboard shortcuts.
 - **Drag-and-Drop**: Move selected files and folders by dragging them to the desired directory,
   making file organization effortless.
-- **Context cutomization**: Add your specifcia use-case icons and actions for your unique object types.
+- **Context cutomization**: Add your specific use-case icons and actions for your unique object types.
+
 
 ## 🚀 Installation
-
 To install `React File Manager`, use the following command:
 
 ```bash
 npm i @jfvilas/react-file-manager
 ```
 
-## 💻 Usage
 
+## 💻 Usage
 Here’s a basic example of how to use the File Manager Component in your React application:
 
 ```jsx
@@ -61,6 +60,7 @@ function App() {
       path: "/Pictures/Pic.png", // Located inside the "Pictures" folder
       updatedAt: "2024-09-08T16:45:00Z",
       size: 2048, // File size in bytes (example: 2 KB)
+      class: 'image' // optional property for customization
     },
   ]);
 
@@ -73,6 +73,7 @@ function App() {
 
 export default App;
 ```
+
 
 ## Typescript Usage
 If you plan to user react-file-manager in a Typescript project, you can add type management by adding a `.d.ts` file. What follows is a sample file, but you can donwload a full module declaaration file **[here](https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/jfvilas-react-file-manager.d.ts)**. Inside that file you will find a module declaration and a bunch of type and interface declarations. What follows is just a excerpt.
