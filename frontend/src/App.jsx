@@ -293,7 +293,7 @@ function App() {
           acceptedFileTypes=".txt, .png, .jpg, .jpeg, .pdf, .doc, .docx, .exe"
           height="100%"
           width="100%"
-          initialPath={currentPath}
+          initialPath={'/default/loki/logger/bin'}
           onFolderChange={setCurrentPath}
         />
       </div>

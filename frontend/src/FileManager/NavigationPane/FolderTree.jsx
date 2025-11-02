@@ -5,21 +5,21 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { useFileNavigation } from "../../contexts/FileNavigationContext";
 
 const FolderTree = ({ folder, onFileOpen, icons }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isActive, setIsActive] = useState(false);
-  const { currentPath, setCurrentPath, onFolderChange } = useFileNavigation();
+  const [isOpen, setIsOpen] = useState(false)
+  const [isActive, setIsActive] = useState(false)
+  const { currentPath, setCurrentPath, onFolderChange } = useFileNavigation()
 
   const handleFolderSwitch = () => {
-    setIsActive(true);
-    onFileOpen(folder);
-    setCurrentPath(folder.path);
-    onFolderChange?.(folder.path);
-  };
+    setIsActive(true)
+    onFileOpen(folder)
+    setCurrentPath(folder.path)
+    onFolderChange?.(folder.path)
+  }
 
   const handleCollapseChange = (e) => {
-    e.stopPropagation();
-    setIsOpen((prev) => !prev);
-  };
+    e.stopPropagation()
+    setIsOpen((prev) => !prev)
+  }
 
   useEffect(() => {
     setIsActive(currentPath === folder.path); //Setting isActive to a folder if its path matches currentPath
@@ -27,40 +27,34 @@ const FolderTree = ({ folder, onFileOpen, icons }) => {
     // Auto expand parent folder if its child is accessed via file navigation
     // Explanation: Checks if the current folder's parent path matches with any folder path i.e. Folder's parent
     // then expand that parent.
-    const currentPathArray = currentPath.split("/");
+    const currentPathArray = currentPath.split("/")
     currentPathArray.pop(); //splits with '/' and pops to remove last element to get current folder's parent path
-    const currentFolderParentPath = currentPathArray.join("/");
-    if (currentFolderParentPath === folder.path) {
-      setIsOpen(true);
-    }
-    //
-  }, [currentPath]);
+    //const currentFolderParentPath = currentPathArray.join("/")
+    if (currentPath.startsWith(folder.path)) setIsOpen(true)
+  }, [currentPath])
 
   if (folder.subDirectories.length > 0) {
     return (
       <>
-        <div
-          className={`sb-folders-list-item ${isActive ? "active-list-item" : ""}`}
-          onClick={handleFolderSwitch}
-        >
+        <div onClick={handleFolderSwitch} className={`sb-folders-list-item ${isActive ? "active-list-item" : ""}`}>
           <span onClick={handleCollapseChange}>
-            <MdKeyboardArrowRight
-              size={20}
-              className={`folder-icon-default ${isOpen ? "folder-rotate-down" : ""}`}
-            />
+            <MdKeyboardArrowRight size={20} className={`folder-icon-default ${isOpen ? "folder-rotate-down" : ""}`} />
           </span>
           <div className="sb-folder-details">
-            {isOpen ? ( //{isOpen || isActive ? (
-              folder.class && icons && icons.get(folder.class)?
-                icons.get(folder.class).open || icons.get(folder.class).default
+            {isOpen ? (
+                folder.class && icons && icons.get(folder.class) ?
+                  icons.get(folder.class).open || icons.get(folder.class).default
+                  :
+                  <FaRegFolderOpen size={20} className="folder-open-icon" />
+              )
               :
-                <FaRegFolderOpen size={20} className="folder-open-icon" />
-            ) : (
-              folder.class && icons && icons.get(folder.class)?
-                icons.get(folder.class).closed || icons.get(folder.class).default
-              :
-                <FaRegFolder size={17} className="folder-close-icon" />
-            )}
+              (
+                folder.class && icons && icons.get(folder.class)?
+                  icons.get(folder.class).closed || icons.get(folder.class).default
+                  :
+                  <FaRegFolder size={17} className="folder-close-icon" />
+              )
+            }
             <span className="sb-folder-name" title={folder.name}>
               {folder.name}
             </span>
@@ -74,24 +68,24 @@ const FolderTree = ({ folder, onFileOpen, icons }) => {
           </div>
         </Collapse>
       </>
-    );
-  } else {
+    )
+  } 
+  else {
     return (
-      <div
-        className={`sb-folders-list-item ${isActive ? "active-list-item" : ""}`}
-        onClick={handleFolderSwitch}
-      >
+      <div onClick={handleFolderSwitch} className={`sb-folders-list-item ${isActive ? "active-list-item" : ""}`} >
         <span className="non-expanable"></span>
         <div className="sb-folder-details">
           {isActive ? (
               folder.class && icons && icons.get(folder.class)?
                 icons.get(folder.class).open || icons.get(folder.class).default
-              :
+                :
                 <FaRegFolderOpen size={20} className="folder-open-icon" />
-          ) : (
+          )
+          :
+          (
               folder.class && icons && icons.get(folder.class)?
                 icons.get(folder.class).closed || icons.get(folder.class).default
-              :
+                :
                 <FaRegFolder size={17} className="folder-close-icon" />
           )}
           <span className="sb-folder-name" title={folder.name}>
@@ -99,7 +93,7 @@ const FolderTree = ({ folder, onFileOpen, icons }) => {
           </span>
         </div>
       </div>
-    );
+    )
   }
 };
 
