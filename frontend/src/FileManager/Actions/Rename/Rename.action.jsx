@@ -11,7 +11,7 @@ import { useLayout } from "../../../contexts/LayoutContext";
 import { validateApiCallback } from "../../../utils/validateApiCallback";
 import { useTranslation } from "../../../contexts/TranslationProvider";
 
-const maxNameLength = 220;
+const maxNameLength = 220
 
 const RenameAction = ({ filesViewRef, file, onRename, triggerAction }) => {
   const [renameFile, setRenameFile] = useState(file?.name);
@@ -35,23 +35,21 @@ const RenameAction = ({ filesViewRef, file, onRename, triggerAction }) => {
   const handleValidateFolderRename = (e) => {
     e.stopPropagation();
     if (e.key === "Enter") {
-      e.preventDefault();
-      outsideClick.setIsClicked(true);
+      e.preventDefault()
+      outsideClick.setIsClicked(true)
       return;
     }
 
     if (e.key === "Escape") {
-      e.preventDefault();
+      e.preventDefault()
       setCurrentPathFiles((prev) =>
         prev.map((f) => {
-          if (f.key === file.key) {
-            f.isEditing = false;
-          }
-          return f;
+          if (f.key === file.key) f.isEditing = false
+          return f
         })
-      );
-      triggerAction.close();
-      return;
+      )
+      triggerAction.close()
+      return
     }
 
     const invalidCharsRegex = /[\\/:*?"<>|]/;
@@ -87,14 +85,16 @@ const RenameAction = ({ filesViewRef, file, onRename, triggerAction }) => {
           return f;
         })
       );
-      triggerAction.close();
-      return;
-    } else if (currentPathFiles.some((file) => file.name === renameFile)) {
+      triggerAction.close()
+      return
+    }
+    else if (currentPathFiles.some((file) => file.name === renameFile)) {
       setFileRenameError(true);
       setRenameErrorMessage(t("folderExists", { renameFile }));
       outsideClick.setIsClicked(false);
       return;
-    } else if (!file.isDirectory && !isConfirmed) {
+    }
+    else if (!file.isDirectory && !isConfirmed) {
       const fileExtension = getFileExtension(file.name);
       const renameFileExtension = getFileExtension(renameFile);
       if (fileExtension !== renameFileExtension) {
@@ -105,23 +105,24 @@ const RenameAction = ({ filesViewRef, file, onRename, triggerAction }) => {
     setFileRenameError(false);
     validateApiCallback(onRename, "onRename", file, renameFile);
     setCurrentPathFiles((prev) => prev.filter((f) => f.key !== file.key)); // Todo: Should only filter on success API call
-    triggerAction.close();
+    triggerAction.close()
   }
 
   const focusName = () => {
     outsideClick.ref?.current?.focus();
 
     if (file.isDirectory) {
-      outsideClick.ref?.current?.select();
-    } else {
-      const fileExtension = getFileExtension(file.name);
-      const fileNameLength = file.name.length - fileExtension.length - 1;
-      outsideClick.ref?.current?.setSelectionRange(0, fileNameLength);
+      outsideClick.ref?.current?.select()
     }
-  };
+    else {
+      const fileExtension = getFileExtension(file.name)
+      const fileNameLength = file.name.length - fileExtension.length - 1
+      outsideClick.ref?.current?.setSelectionRange(0, fileNameLength)
+    }
+  }
 
   useEffect(() => {
-    focusName();
+    focusName()
 
     // Dynamic Error Message Placement based on available space
     if (outsideClick.ref?.current) {
@@ -148,10 +149,10 @@ const RenameAction = ({ filesViewRef, file, onRename, triggerAction }) => {
 
   useEffect(() => {
     if (outsideClick.isClicked) {
-      handleFileRenaming(false);
+      handleFileRenaming(false)
     }
     focusName();
-  }, [outsideClick.isClicked]);
+  }, [outsideClick.isClicked])
 
   return (
     <>
@@ -196,14 +197,12 @@ const RenameAction = ({ filesViewRef, file, onRename, triggerAction }) => {
               onClick={() => {
                 setCurrentPathFiles((prev) =>
                   prev.map((f) => {
-                    if (f.key === file.key) {
-                      f.isEditing = false;
-                    }
-                    return f;
+                    if (f.key === file.key) f.isEditing = false
+                    return f
                   })
                 );
-                setRenameFileWarning(false);
-                triggerAction.close();
+                setRenameFileWarning(false)
+                triggerAction.close()
               }}
             >
               {t("no")}
@@ -211,8 +210,8 @@ const RenameAction = ({ filesViewRef, file, onRename, triggerAction }) => {
             <Button
               type="danger"
               onClick={() => {
-                setRenameFileWarning(false);
-                handleFileRenaming(true);
+                setRenameFileWarning(false)
+                handleFileRenaming(true)
               }}
             >
               {t("yes")}
@@ -221,7 +220,7 @@ const RenameAction = ({ filesViewRef, file, onRename, triggerAction }) => {
         </div>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default RenameAction;
+export default RenameAction

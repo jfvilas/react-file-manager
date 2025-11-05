@@ -12,6 +12,7 @@ import "./FileList.scss";
 const FileList = ({
   actions,
   icons,
+  filter,
   onCreateFolder,
   onRename,
   onFileOpen,
@@ -47,7 +48,7 @@ const FileList = ({
       direction = "desc";
     }
     setSortConfig({ key, direction });
-  };
+  }
 
   const customActionClick = (src)=> {
     setVisible(false)
@@ -93,7 +94,7 @@ const FileList = ({
 
       {currentPathFiles?.length > 0 ? (
         <>
-          {currentPathFiles.map((file, index) => (
+          {currentPathFiles.filter(f => f.name.toLowerCase().includes(filter)).map((file, index) => (
             <FileItem
               key={index}
               icons={icons}
@@ -114,10 +115,12 @@ const FileList = ({
             />
           ))}
         </>
-      ) : (
+
+      )
+      :
+      (
         <div className="empty-folder">{t("folderEmpty")}</div>
       )}
-
       <ContextMenu
         filesViewRef={filesViewRef}
         contextMenuRef={contextMenuRef.ref}

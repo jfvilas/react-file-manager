@@ -15,13 +15,18 @@ And our source code project is [here](https://github.com/jfvilas/react-file-mana
   traversal.
 - **Toolbar & Context Menu**: Access all common actions (upload, download, delete, copy, move,
   rename, etc.) via the toolbar or right-click for the same options in the context menu.
+- **Context cutomization**: Add your specific *icons* and *actions* for your unique object types. They
+  will be shown when needed and added to context menus.
 - **Multi-Selection**: Select multiple files and folders at once to perform bulk actions like
   delete, copy, move, or download.
 - **Keyboard Shortcuts**: Quickly perform file operations like copy, paste, delete, and more using
   intuitive keyboard shortcuts.
 - **Drag-and-Drop**: Move selected files and folders by dragging them to the desired directory,
   making file organization effortless.
-- **Context cutomization**: Add your specific use-case icons and actions for your unique object types.
+- **Search**: the navigation pane includes a search feature for filtering files on current
+  directory.
+- **Status bar**: the navigation pane includes a status bar where info about curren folder
+  and info abour current selection is shown.
 
 
 ## 🚀 Installation

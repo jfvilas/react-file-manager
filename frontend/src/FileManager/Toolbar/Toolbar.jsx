@@ -62,7 +62,7 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions }) => {
         setClipBoard(null);
       },
     },
-  ];
+  ]
 
   function handleFilePasting() {
     handlePasting(currentFolder);

@@ -18,14 +18,14 @@ const Actions = ({
   filePreviewComponent,
   acceptedFileTypes,
   triggerAction,
-  permissions,
+  permissions
 }) => {
-  const [activeAction, setActiveAction] = useState(null);
-  const { selectedFiles } = useSelection();
-  const t = useTranslation();
+  const [activeAction, setActiveAction] = useState(null)
+  const { selectedFiles } = useSelection()
+  const t = useTranslation()
 
   // Triggers all the keyboard shortcuts based actions
-  useShortcutHandler(triggerAction, onRefresh, permissions);
+  useShortcutHandler(triggerAction, onRefresh, permissions)
 
   const actionTypes = {
     uploadFile: {
@@ -56,19 +56,20 @@ const Actions = ({
       ),
       width: "50%",
     },
-  };
+  }
 
   useEffect(() => {
     if (triggerAction.isActive) {
-      const actionType = triggerAction.actionType;
+      const actionType = triggerAction.actionType
       if (actionType === "previewFile") {
-        actionTypes[actionType].title = selectedFiles?.name ?? t("preview");
+        actionTypes[actionType].title = selectedFiles?.name ?? t("preview")
       }
-      setActiveAction(actionTypes[actionType]);
-    } else {
-      setActiveAction(null);
+      setActiveAction(actionTypes[actionType])
     }
-  }, [triggerAction.isActive]);
+    else {
+      setActiveAction(null)
+    }
+  }, [triggerAction.isActive])
 
   if (activeAction) {
     return (
@@ -80,8 +81,8 @@ const Actions = ({
       >
         {activeAction?.component}
       </Modal>
-    );
+    )
   }
-};
+}
 
-export default Actions;
+export default Actions

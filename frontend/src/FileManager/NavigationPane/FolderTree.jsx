@@ -29,7 +29,6 @@ const FolderTree = ({ folder, onFileOpen, icons }) => {
     // then expand that parent.
     const currentPathArray = currentPath.split("/")
     currentPathArray.pop(); //splits with '/' and pops to remove last element to get current folder's parent path
-    //const currentFolderParentPath = currentPathArray.join("/")
     if (currentPath.startsWith(folder.path)) setIsOpen(true)
   }, [currentPath])
 
@@ -55,7 +54,7 @@ const FolderTree = ({ folder, onFileOpen, icons }) => {
                   <FaRegFolder size={17} className="folder-close-icon" />
               )
             }
-            <span className="sb-folder-name" title={folder.name}>
+            <span className="sb-folder-name" title={folder.name} style={{marginLeft:'2px'}}>
               {folder.name}
             </span>
           </div>
@@ -88,7 +87,7 @@ const FolderTree = ({ folder, onFileOpen, icons }) => {
                 :
                 <FaRegFolder size={17} className="folder-close-icon" />
           )}
-          <span className="sb-folder-name" title={folder.name}>
+          <span className="sb-folder-name" title={folder.name} style={{marginLeft:'2px'}}>
             {folder.name}
           </span>
         </div>

@@ -53,8 +53,8 @@ const useFileList = (onRefresh, enableFilePreview, triggerAction, permissions, o
 
   const handleRenaming = () => {
     setVisible(false);
-    triggerAction.show("rename");
-  };
+    triggerAction.show("rename")
+  }
 
   const handleDownloadItems = () => {
     handleDownload();
@@ -207,11 +207,11 @@ const useFileList = (onRefresh, enableFilePreview, triggerAction, permissions, o
 
   const handleItemRenaming = () => {
     setCurrentPathFiles((prev) => {
-      const lastFileIndex = selectedFileIndexes.at(-1);
+      const lastFileIndex = selectedFileIndexes.at(-1)
 
       if (!prev[lastFileIndex]) {
-        triggerAction.close();
-        return prev;
+        triggerAction.close()
+        return prev
       }
 
       return prev.map((file, index) => {
@@ -219,16 +219,16 @@ const useFileList = (onRefresh, enableFilePreview, triggerAction, permissions, o
           return {
             ...file,
             isEditing: true,
-          };
+          }
         }
 
-        return file;
-      });
-    });
+        return file
+      })
+    })
 
-    setSelectedFileIndexes([]);
-    setSelectedFiles([]);
-  };
+    setSelectedFileIndexes([])
+    setSelectedFiles([])
+  }
 
   const unselectFiles = () => {
     setSelectedFileIndexes([]);

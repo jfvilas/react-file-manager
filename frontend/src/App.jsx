@@ -7,8 +7,7 @@ import { getAllFilesAPI } from "./api/getAllFilesAPI";
 import { renameAPI } from "./api/renameAPI";
 import "./App.scss";
 import FileManager from "./FileManager/FileManager";
-import { FaBox, FaBoxOpen, FaDocker, FaLinux, FaRebel, FaRegFaceRollingEyes, FaRegSquare, FaSquare } from "react-icons/fa6";
-import { FaJs, FaTshirt } from "react-icons/fa";
+import { FaTrash, FaBox, FaDocker, FaInfo, FaLinux, FaRebel, FaPowerOff } from "react-icons/fa6";
 
 function App() {
   const fileUploadConfig = {
@@ -222,23 +221,23 @@ function App() {
   let icons = new Map()
   // class, icon closed, icon open
   icons.set('namespace', { default: <FaLinux/>, grid: <FaLinux size={50} />, list: <FaLinux size={20} /> } )
-  icons.set('pod', { default: <FaBox style={{size:18, marginRight:'2px'}}/> } )
-  icons.set('container', { default: <FaDocker style={{size:18, marginRight:'2px'}}/> })
+  icons.set('pod', { default: <FaBox style={{size:18, marginRight:'2px'}}/>, grid: <FaBox size={50}/> } )
+  icons.set('container', { default: <FaDocker style={{size:18, marginRight:'2px'}}/>, grid:<FaDocker size={50}/> })
 
   const actions = new Map()
 
   actions.set('namespace', [
     {
-      title: 'view namespace',
-      icon: <FaJs />,
+      title: 'View namespace',
+      icon: <FaInfo />,
       onClick: (files) => {
         console.log('onclick view')
         console.log(files)
       }
     },
     {
-      title: 'delete namespace',
-      icon: <FaTshirt />,
+      title: 'Delete namespace',
+      icon: <FaTrash />,
       onClick: (files) => {
         console.log('onclick delete')
         console.log(files)
@@ -248,12 +247,17 @@ function App() {
   ])
   actions.set('pod', [{
     title: 'restart',
-    icon: <FaRebel/>,
+    icon: <FaPowerOff/>,
     onClick: (files) => {
       console.log('onclick pods')
       console.log(files)
     }
-  }])
+  },
+{
+    title: 'Pod info',
+    icon: <FaInfo/>,
+  }  
+  ])
   actions.set('container', [{
     title: 'shell',
     icon: <FaLinux/>,

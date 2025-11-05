@@ -1,4 +1,4 @@
-import "./NameInput.scss";
+import './NameInput.scss'
 
 const NameInput = ({ nameInputRef, id, maxLength, value, onChange, onKeyDown, onClick, rows }) => {
   return (
@@ -13,7 +13,7 @@ const NameInput = ({ nameInputRef, id, maxLength, value, onChange, onKeyDown, on
       onClick={onClick}
       rows={rows}
     />
-  );
-};
+  )
+}
 
-export default NameInput;
+export default NameInput

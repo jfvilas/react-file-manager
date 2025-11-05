@@ -48,15 +48,16 @@ const FileItem = ({
     clipBoard.files.find((f) => f.name === file.name && f.path === file.path);
 
   const handleFileAccess = () => {
-    onFileOpen(file);
+    onFileOpen(file)
     if (file.isDirectory) {
-      setCurrentPath(file.path);
-      onFolderChange?.(file.path);
-      setSelectedFiles([]);
-    } else {
-      enableFilePreview && triggerAction.show("previewFile");
+      setCurrentPath(file.path)
+      onFolderChange?.(file.path)
+      setSelectedFiles([])
+    } 
+    else {
+      enableFilePreview && triggerAction.show("previewFile")
     }
-  };
+  }
 
   const handleFileRangeSelection = (shiftKey, ctrlKey) => {
     if (selectedFileIndexes.length > 0 && shiftKey) {
@@ -89,12 +90,12 @@ const FileItem = ({
   };
 
   const handleFileSelection = (e) => {
-    e.stopPropagation();
-    if (file.isEditing) return;
+    e.stopPropagation()
+    if (file.isEditing) return
 
-    handleFileRangeSelection(e.shiftKey, e.ctrlKey);
+    handleFileRangeSelection(e.shiftKey, e.ctrlKey)
 
-    const currentTime = new Date().getTime();
+    const currentTime = new Date().getTime()
     if (currentTime - lastClickTime < 300) {
       handleFileAccess();
       return;
@@ -104,86 +105,86 @@ const FileItem = ({
 
   const handleOnKeyDown = (e) => {
     if (e.key === "Enter") {
-      e.stopPropagation();
-      setSelectedFiles([file]);
-      handleFileAccess();
+      e.stopPropagation()
+      setSelectedFiles([file])
+      handleFileAccess()
     }
-  };
+  }
 
   const handleItemContextMenu = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
+    e.stopPropagation()
+    e.preventDefault()
 
-    if (file.isEditing) return;
+    if (file.isEditing) return
 
     if (!fileSelected) {
-      setSelectedFiles([file]);
+      setSelectedFiles([file])
     }
 
-    setLastSelectedFile(file);
-    handleContextMenu(e, true);
+    setLastSelectedFile(file)
+    handleContextMenu(e, true)
   };
 
   // Selection Checkbox Functions
   const handleMouseOver = () => {
-    setCheckboxClassName("visible");
-  };
+    setCheckboxClassName("visible")
+  }
 
   const handleMouseLeave = () => {
-    !fileSelected && setCheckboxClassName("hidden");
-  };
+    !fileSelected && setCheckboxClassName("hidden")
+  }
 
   const handleCheckboxChange = (e) => {
     if (e.target.checked) {
-      setSelectedFiles((prev) => [...prev, file]);
+      setSelectedFiles((prev) => [...prev, file])
     } else {
-      setSelectedFiles((prev) => prev.filter((f) => f.name !== file.name && f.path !== file.path));
+      setSelectedFiles((prev) => prev.filter((f) => f.name !== file.name && f.path !== file.path))
     }
 
-    setFileSelected(e.target.checked);
-  };
-  //
+    setFileSelected(e.target.checked)
+  }
 
   const handleDragStart = (e) => {
-    e.dataTransfer.setDragImage(dragIconRef.current, 30, 50);
-    e.dataTransfer.effectAllowed = "copy";
-    handleCutCopy(true);
-  };
+    e.dataTransfer.setDragImage(dragIconRef.current, 30, 50)
+    e.dataTransfer.effectAllowed = "copy"
+    handleCutCopy(true)
+  }
 
-  const handleDragEnd = () => setClipBoard(null);
+  const handleDragEnd = () => setClipBoard(null)
 
   const handleDragEnterOver = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (fileSelected || !file.isDirectory) {
-      e.dataTransfer.dropEffect = "none";
-    } else {
-      setTooltipPosition({ x: e.clientX, y: e.clientY + 12 });
-      e.dataTransfer.dropEffect = "copy";
-      setDropZoneClass("file-drop-zone");
+      e.dataTransfer.dropEffect = "none"
+    } 
+    else {
+      setTooltipPosition({ x: e.clientX, y: e.clientY + 12 })
+      e.dataTransfer.dropEffect = "copy"
+      setDropZoneClass("file-drop-zone")
     }
-  };
+  }
 
   const handleDragLeave = (e) => {
     // To stay in dragging state for the child elements of the target drop-zone
     if (!e.currentTarget.contains(e.relatedTarget)) {
-      setDropZoneClass((prev) => (prev ? "" : prev));
-      setTooltipPosition(null);
+      setDropZoneClass((prev) => (prev ? "" : prev))
+      setTooltipPosition(null)
     }
   };
 
   const handleDrop = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (fileSelected || !file.isDirectory) return;
 
-    handlePasting(file);
-    setDropZoneClass((prev) => (prev ? "" : prev));
-    setTooltipPosition(null);
-  };
+    handlePasting(file)
+    setDropZoneClass((prev) => (prev ? "" : prev))
+    setTooltipPosition(null)
+  }
 
   useEffect(() => {
-    setFileSelected(selectedFileIndexes.includes(index));
-    setCheckboxClassName(selectedFileIndexes.includes(index) ? "visible" : "hidden");
-  }, [selectedFileIndexes]);
+    setFileSelected(selectedFileIndexes.includes(index))
+    setCheckboxClassName(selectedFileIndexes.includes(index) ? "visible" : "hidden")
+  }, [selectedFileIndexes])
 
   return (
     <div
@@ -237,7 +238,9 @@ const FileItem = ({
                 onCreateFolder={onCreateFolder}
                 triggerAction={triggerAction}
               />
-            ) : (
+            )
+            :
+            (
               <RenameAction
                 filesViewRef={filesViewRef}
                 file={file}

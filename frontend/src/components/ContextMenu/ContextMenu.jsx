@@ -4,12 +4,12 @@ import SubMenu from "./SubMenu";
 import "./ContextMenu.scss";
 
 const ContextMenu = ({ filesViewRef, contextMenuRef, menuItems, visible, clickPosition }) => {
-  const [left, setLeft] = useState(0);
-  const [top, setTop] = useState(0);
-  const [activeSubMenuIndex, setActiveSubMenuIndex] = useState(null);
-  const [subMenuPosition, setSubMenuPosition] = useState("right");
+  const [left, setLeft] = useState(0)
+  const [top, setTop] = useState(0)
+  const [activeSubMenuIndex, setActiveSubMenuIndex] = useState(null)
+  const [subMenuPosition, setSubMenuPosition] = useState("right")
 
-  const subMenuRef = useRef(null);
+  const subMenuRef = useRef(null)
 
   const contextMenuPosition = () => {
     const { clickX, clickY } = clickPosition;
@@ -54,8 +54,8 @@ const ContextMenu = ({ filesViewRef, contextMenuRef, menuItems, visible, clickPo
   };
 
   const handleMouseOver = (index) => {
-    setActiveSubMenuIndex(index);
-  };
+    setActiveSubMenuIndex(index)
+  }
 
   useEffect(() => {
     if (visible && contextMenuRef.current) {
@@ -65,7 +65,7 @@ const ContextMenu = ({ filesViewRef, contextMenuRef, menuItems, visible, clickPo
       setLeft(0);
       setActiveSubMenuIndex(null);
     }
-  }, [visible]);
+  }, [visible])
 
   if (visible) {
     return (
@@ -84,8 +84,8 @@ const ContextMenu = ({ filesViewRef, contextMenuRef, menuItems, visible, clickPo
             {menuItems
               .filter((item) => !item.hidden)
               .map((item, index) => {
-                const hasChildren = item.hasOwnProperty("children");
-                const activeSubMenu = activeSubMenuIndex === index && hasChildren;
+                const hasChildren = item.hasOwnProperty("children")
+                const activeSubMenu = activeSubMenuIndex === index && hasChildren
                 return (
                   <div key={item.title}>
                     <li

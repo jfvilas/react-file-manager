@@ -6,8 +6,9 @@ import { useFileNavigation } from "../../contexts/FileNavigationContext";
 import { useDetectOutsideClick } from "../../hooks/useDetectOutsideClick";
 import { useTranslation } from "../../contexts/TranslationProvider";
 import "./BreadCrumb.scss";
+import SearchInput from "../../components/SearchInput/SearchInput"
 
-const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, setNavigationPaneOpen }) => {
+const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, setNavigationPaneOpen, onSearchUpdated }) => {
   const [folders, setFolders] = useState([]);
   const [hiddenFolders, setHiddenFolders] = useState([]);
   const [hiddenFoldersWidth, setHiddenFoldersWidth] = useState([]);
@@ -18,10 +19,10 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, setNavigationPaneOpe
   const foldersRef = useRef([]);
   const moreBtnRef = useRef(null);
   const popoverRef = useDetectOutsideClick(() => {
-    setShowHiddenFolders(false);
-  });
-  const t = useTranslation();
-  const navTogglerRef = useRef(null);
+    setShowHiddenFolders(false)
+  })
+  const t = useTranslation()
+  const navTogglerRef = useRef(null)
 
   useEffect(() => {
     setFolders(() => {
@@ -57,18 +58,18 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, setNavigationPaneOpe
   };
 
   const checkAvailableSpace = () => {
-    const availableSpace = getBreadCrumbWidth();
+    const availableSpace = getBreadCrumbWidth() - 200    // witdh of search input
     const remainingFoldersWidth = foldersRef.current.reduce((prev, curr) => {
-      if (!curr) return prev;
-      return prev + curr.clientWidth;
-    }, 0);
-    const moreBtnWidth = moreBtnRef.current?.clientWidth || 0;
-    return availableSpace - (remainingFoldersWidth + moreBtnWidth);
-  };
+      if (!curr) return prev
+      return prev + curr.clientWidth
+    }, 0)
+    const moreBtnWidth = moreBtnRef.current?.clientWidth || 0
+    return availableSpace - (remainingFoldersWidth + moreBtnWidth)
+  }
 
   const isBreadCrumbOverflowing = () => {
-    return breadCrumbRef.current.scrollWidth > breadCrumbRef.current.clientWidth;
-  };
+    return breadCrumbRef.current.scrollWidth > breadCrumbRef.current.clientWidth
+  }
 
   useEffect(() => {
     if (isBreadCrumbOverflowing()) {
@@ -77,9 +78,10 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, setNavigationPaneOpe
       setHiddenFoldersWidth((prev) => [...prev, hiddenFolderWidth]);
       setHiddenFolders((prev) => [...prev, hiddenFolder]);
       setFolders((prev) => prev.filter((_, index) => index !== 1));
-    } else if (hiddenFolders.length > 0 && checkAvailableSpace() > hiddenFoldersWidth.at(-1)) {
-      const newFolders = [folders[0], hiddenFolders.at(-1), ...folders.slice(1)];
-      setFolders(newFolders);
+    }
+    else if (hiddenFolders.length > 0 && checkAvailableSpace() > hiddenFoldersWidth.at(-1)) {
+      const newFolders = [folders[0], hiddenFolders.at(-1), ...folders.slice(1)]
+      setFolders(newFolders)
       setHiddenFolders((prev) => prev.slice(0, -1));
       setHiddenFoldersWidth((prev) => prev.slice(0, -1));
     }
@@ -133,6 +135,8 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, setNavigationPaneOpe
             )}
           </div>
         ))}
+        <span style={{flexGrow: 1, flexShrink: 1, minWidth: 0}}></span>
+        <SearchInput onFilterChange={onSearchUpdated} />
       </div>
 
       {showHiddenFolders && (

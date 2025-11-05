@@ -60,16 +60,16 @@ const FileManager = ({
   style = {},
   formatDate = defaultFormatDate,
 }) => {
-  const [isNavigationPaneOpen, setNavigationPaneOpen] = useState(defaultNavExpanded);
-  const triggerAction = useTriggerAction();
-  const { containerRef, colSizes, isDragging, handleMouseMove, handleMouseUp, handleMouseDown } =
-    useColumnResize(20, 80);
+  const [filter, setFilter] = useState('')
+  const [isNavigationPaneOpen, setNavigationPaneOpen] = useState(defaultNavExpanded)
+  const triggerAction = useTriggerAction()
+  const { containerRef, colSizes, isDragging, handleMouseMove, handleMouseUp, handleMouseDown } = useColumnResize(20, 80)
   const customStyles = {
     "--file-manager-font-family": fontFamily,
     "--file-manager-primary-color": primaryColor,
     height,
     width,
-  };
+  }
 
   const permissions = useMemo(
     () => ({ ...defaultPermissions, ...userPermissions }),
@@ -126,6 +126,8 @@ const FileManager = ({
                         collapsibleNav={collapsibleNav}
                         isNavigationPaneOpen={isNavigationPaneOpen}
                         setNavigationPaneOpen={setNavigationPaneOpen}
+                        tirggerAction={triggerAction}
+                        onSearchUpdated={(f) => setFilter(f)}
                       />
                       <FileList
                         actions={actions}
@@ -138,6 +140,7 @@ const FileManager = ({
                         triggerAction={triggerAction}
                         permissions={permissions}
                         formatDate={formatDate}
+                        filter={filter}
                       />
                     </div>
                   </section>

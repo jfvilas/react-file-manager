@@ -17,9 +17,9 @@ const Modal = ({
 
   const handleKeyDown = (e) => {
     if (e.key === "Escape") {
-      setShow(false);
+      setShow(false)
     }
-  };
+  }
 
   useEffect(() => {
     if (show) {
