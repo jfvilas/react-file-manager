@@ -17,9 +17,9 @@ const NavigationPane = ({ onFileOpen, icons }) => {
       return {
         ...folder,
         subDirectories: createChildRecursive(folder.path, foldersStruct),
-      };
-    });
-  };
+      }
+    })
+  }
 
   useEffect(() => {
     if (Array.isArray(files)) {
@@ -29,9 +29,9 @@ const NavigationPane = ({ onFileOpen, icons }) => {
       setFoldersTree(() => {
         const rootPath = "";
         return createChildRecursive(rootPath, foldersStruct);
-      });
+      })
     }
-  }, [files]);
+  }, [files])
 
   return (
     <div className="sb-folders-list">
@@ -45,8 +45,8 @@ const NavigationPane = ({ onFileOpen, icons }) => {
         <div className="empty-nav-pane">{t("nothingHereYet")}</div>
       )}
     </div>
-  );
-};
+  )
+}
 
 NavigationPane.displayName = "NavigationPane";
 

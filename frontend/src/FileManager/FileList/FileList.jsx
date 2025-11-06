@@ -40,14 +40,12 @@ const FileList = ({
     isSelectionCtx,
   } = useFileList(onRefresh, enableFilePreview, triggerAction, permissions, onFileOpen);
 
-  const contextMenuRef = useDetectOutsideClick(() => setVisible(false));
+  const contextMenuRef = useDetectOutsideClick(() => setVisible(false))
 
   const handleSort = (key) => {
-    let direction = "asc";
-    if (sortConfig.key === key && sortConfig.direction === "asc") {
-      direction = "desc";
-    }
-    setSortConfig({ key, direction });
+    let direction = "asc"
+    if (sortConfig.key === key && sortConfig.direction === "asc") direction = "desc"
+    setSortConfig({ key, direction })
   }
 
   const customActionClick = (src)=> {
@@ -114,8 +112,20 @@ const FileList = ({
               formatDate={formatDate}
             />
           ))}
+          {/* <span
+            style={{ position:'absolute', bottom:0, borderTop:1, borderStyle:"solid", borderColor: '#cfcfcf', borderLeft:0,  borderRight:0, borderBottom:0, width:'100%', fontSize:12}}
+          >
+            <span style={{paddingLeft:4}}>
+              {currentPathFiles.length} Items &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {selectedFileIndexes.length>0 ? 
+                selectedFileIndexes.length +' items selected (' + 27*selectedFileIndexes.length*27+' bytes)'
+                : 
+                ''
+              }
+            </span>
+          </span> */}
+          
         </>
-
+        
       )
       :
       (
