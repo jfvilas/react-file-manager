@@ -8,7 +8,7 @@ import { useTranslation } from "../../contexts/TranslationProvider";
 import "./BreadCrumb.scss";
 import SearchInput from "../../components/SearchInput/SearchInput"
 
-const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, setNavigationPaneOpen, onSearchUpdated }) => {
+const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChange, onSearchUpdated }) => {
   const [folders, setFolders] = useState([]);
   const [hiddenFolders, setHiddenFolders] = useState([]);
   const [hiddenFoldersWidth, setHiddenFoldersWidth] = useState([]);
@@ -101,7 +101,7 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, setNavigationPaneOpe
             >
               <span
                 className="folder-name folder-name-btn"
-                onClick={() => setNavigationPaneOpen((prev) => !prev)}
+                onClick={() => onNavigationPaneChange((prev) => !prev)}
               >
                 {isNavigationPaneOpen ? (
                   <TbLayoutSidebarLeftCollapseFilled />
@@ -155,14 +155,15 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, setNavigationPaneOpe
         </ul>
       )}
     </div>
-  );
-};
+  )
+}
 
-BreadCrumb.displayName = "BreadCrumb";
+BreadCrumb.displayName = "BreadCrumb"
 
 BreadCrumb.propTypes = {
   isNavigationPaneOpen: PropTypes.bool.isRequired,
-  setNavigationPaneOpen: PropTypes.func.isRequired,
-};
+  onNavigationPaneChange: PropTypes.func.isRequired,
+  onSearchUpdated: PropTypes.func.isRequired,
+}
 
-export default BreadCrumb;
+export default BreadCrumb

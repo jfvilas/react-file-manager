@@ -1,13 +1,15 @@
-import { useMemo, useState } from "react";
-import Checkbox from "../../components/Checkbox/Checkbox";
-import { useFileNavigation } from "../../contexts/FileNavigationContext";
-import { useSelection } from "../../contexts/SelectionContext";
-import { useTranslation } from "../../contexts/TranslationProvider";
+import { useMemo, useState } from "react"
+import Checkbox from "../../components/Checkbox/Checkbox"
+import { useFileNavigation } from "../../contexts/FileNavigationContext"
+import { useSelection } from "../../contexts/SelectionContext"
+import { useTranslation } from "../../contexts/TranslationProvider"
+import { useOptions } from "../../contexts/OptionsContext"
 
 const FilesHeader = ({ unselectFiles, onSort, sortConfig }) => {
-  const t = useTranslation();
+  const t = useTranslation()
 
   const [showSelectAll, setShowSelectAll] = useState(false);
+  const { options } = useOptions()
 
   const { selectedFiles, setSelectedFiles } = useSelection();
   const { currentPathFiles } = useFileNavigation();
@@ -18,18 +20,17 @@ const FilesHeader = ({ unselectFiles, onSort, sortConfig }) => {
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
-      setSelectedFiles(currentPathFiles);
-      setShowSelectAll(true);
-    } else {
-      unselectFiles();
+      setSelectedFiles(currentPathFiles)
+      setShowSelectAll(true)
     }
-  };
+    else {
+      unselectFiles()
+    }
+  }
 
   const handleSort = (key) => {
-    if (onSort) {
-      onSort(key);
-    }
-  };
+    if (onSort) onSort(key)
+  }
 
   return (
     <div
@@ -37,7 +38,8 @@ const FilesHeader = ({ unselectFiles, onSort, sortConfig }) => {
       onMouseOver={() => setShowSelectAll(true)}
       onMouseLeave={() => setShowSelectAll(false)}
     >
-      <div className="file-select-all">
+      {
+      options.checkBox && <div className="file-select-all">
         {(showSelectAll || allFilesSelected) && (
           <Checkbox
             id="selectAll"
@@ -48,6 +50,7 @@ const FilesHeader = ({ unselectFiles, onSort, sortConfig }) => {
           />
         )}
       </div>
+      }
       <div
         className={`file-name ${sortConfig?.key === "name" ? "active" : ""}`}
         onClick={() => handleSort("name")}

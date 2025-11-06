@@ -83,7 +83,7 @@ function App() {
       isDirectory: false,
       path: "/default/loki/logger/bin/fich1", // Located inside the "Pictures" folder
       updatedAt: "2024-09-08T16:45:00Z",
-      size: 2048, // File size in bytes (example: 2 KB)
+      size: 900, // File size in bytes (example: 2 KB)
     },
     {
       name: "fich2",
@@ -181,42 +181,39 @@ function App() {
       const response = await moveItemAPI(copiedItemIds, destinationFolder?._id);
     }
     await getFiles();
-  };
-  //
+  }
 
   const handleLayoutChange = (layout) => {
-    console.log(layout);
-  };
+  }
 
   // Refresh Files
   const handleRefresh = () => {
     getFiles();
-  };
-  //
+  }
 
   const handleFileOpen = (file) => {
-    console.log(`Opening file: ${file.name}`);
-  };
+    console.log(`Opening file: ${file.name}`)
+  }
 
   const handleError = (error, file) => {
-    console.error(error);
-  };
+    console.error(error)
+  }
 
   const handleDownload = async (files) => {
-    await downloadFile(files);
-  };
+    await downloadFile(files)
+  }
 
   const handleCut = (files) => {
-    console.log("Moving Files", files);
-  };
+    console.log("Moving Files", files)
+  }
 
   const handleCopy = (files) => {
-    console.log("Copied Files", files);
-  };
+    console.log("Copied Files", files)
+  }
 
   const handleSelectionChange = (files) => {
-    console.log("Selected Files", files);
-  };
+    console.log("Selected Files", files)
+  }
 
   let icons = new Map()
   // class, icon closed, icon open

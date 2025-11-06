@@ -1,29 +1,22 @@
-import { useState } from "react";
-import { BsCopy, BsFolderPlus, BsGridFill, BsScissors } from "react-icons/bs";
-import { FiRefreshCw } from "react-icons/fi";
-import {
-  MdClear,
-  MdOutlineDelete,
-  MdOutlineFileDownload,
-  MdOutlineFileUpload,
-} from "react-icons/md";
-import { BiRename } from "react-icons/bi";
-import { FaListUl, FaRegPaste } from "react-icons/fa6";
-import LayoutToggler from "./LayoutToggler";
-import { useFileNavigation } from "../../contexts/FileNavigationContext";
-import { useSelection } from "../../contexts/SelectionContext";
-import { useClipBoard } from "../../contexts/ClipboardContext";
-import { useLayout } from "../../contexts/LayoutContext";
-import { validateApiCallback } from "../../utils/validateApiCallback";
-import { useTranslation } from "../../contexts/TranslationProvider";
-import "./Toolbar.scss";
+import { useState } from "react"
+import { BsCopy, BsFolderPlus, BsScissors } from "react-icons/bs"
+import { FiRefreshCw } from "react-icons/fi"
+import { MdOutlineDelete, MdOutlineFileDownload, MdOutlineFileUpload } from "react-icons/md"
+import { BiRename } from "react-icons/bi"
+import { FaRegPaste, FaListCheck } from "react-icons/fa6"
+import { useFileNavigation } from "../../contexts/FileNavigationContext"
+import { useSelection } from "../../contexts/SelectionContext"
+import { useClipBoard } from "../../contexts/ClipboardContext"
+import { validateApiCallback } from "../../utils/validateApiCallback"
+import { useTranslation } from "../../contexts/TranslationProvider"
+import { ViewOptions } from "./ViewOptions"
+import "./Toolbar.scss"
 
-const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions }) => {
-  const [showToggleViewMenu, setShowToggleViewMenu] = useState(false);
-  const { currentFolder } = useFileNavigation();
-  const { selectedFiles, setSelectedFiles, handleDownload } = useSelection();
-  const { clipBoard, setClipBoard, handleCutCopy, handlePasting } = useClipBoard();
-  const { activeLayout } = useLayout();
+const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavigationPaneChange }) => {
+  const [showViewOptions, setShowViewOptions] = useState(false)
+  const { currentFolder } = useFileNavigation()
+  const { selectedFiles, setSelectedFiles, handleDownload } = useSelection()
+  const { clipBoard, setClipBoard, handleCutCopy, handlePasting } = useClipBoard()
   const t = useTranslation();
 
   // Toolbar Items
@@ -46,13 +39,13 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions }) => {
       permission: !!clipBoard,
       onClick: handleFilePasting,
     },
-  ];
+  ]
 
   const toolbarRightItems = [
     {
-      icon: activeLayout === "grid" ? <BsGridFill size={16} /> : <FaListUl size={16} />,
+      icon: <FaListCheck size={16} />,
       title: t("changeView"),
-      onClick: () => setShowToggleViewMenu((prev) => !prev),
+      onClick: () => setShowViewOptions((prev) => !prev),
     },
     {
       icon: <FiRefreshCw size={16} />,
@@ -61,7 +54,7 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions }) => {
         validateApiCallback(onRefresh, "onRefresh");
         setClipBoard(null);
       },
-    },
+    }
   ]
 
   function handleFilePasting() {
@@ -69,15 +62,38 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions }) => {
   }
 
   const handleDownloadItems = () => {
-    handleDownload();
-    setSelectedFiles([]);
-  };
+    handleDownload()
+    setSelectedFiles([])
+  }
+
+  const renderRightItems = () => {
+    return <>
+      {toolbarRightItems.map((item, index) => (
+          <div key={index} className="toolbar-left-items">
+            <button className="item-action icon-only file-action" title={item.title} onClick={item.onClick}>
+              {item.icon}
+            </button>
+            {index !== toolbarRightItems.length - 1 && <div className="item-separator"></div>}
+          </div>
+        ))}
+
+        {showViewOptions && (
+          <ViewOptions
+            setShowViewOptionsMenu={setShowViewOptions}
+            onLayoutChange={onLayoutChange}
+            onNavigationPaneChange={onNavigationPaneChange}
+          />
+
+        )}
+    </>
+  }
+  
 
   // Selected File/Folder Actions
   if (selectedFiles.length > 0) {
-    return (
+    return (<>
       <div className="toolbar file-selected">
-        <div className="file-action-container">
+        <div className="file-action-container fm-toolbar">
           <div>
             {permissions.move && (
               <button className="item-action file-action" onClick={() => handleCutCopy(true)}>
@@ -126,22 +142,14 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions }) => {
               </button>
             )}
           </div>
-          <button
-            className="item-action file-action"
-            title={t("clearSelection")}
-            onClick={() => setSelectedFiles([])}
-          >
-            <span>
-              {selectedFiles.length}{" "}
-              {t(selectedFiles.length > 1 ? "itemsSelected" : "itemSelected")}
-            </span>
-            <MdClear size={18} />
-          </button>
+          <div>
+            {renderRightItems()}
+          </div>
         </div>
       </div>
-    );
+      </>
+    )
   }
-  //
 
   return (
     <div className="toolbar">
@@ -157,21 +165,7 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions }) => {
             ))}
         </div>
         <div>
-          {toolbarRightItems.map((item, index) => (
-            <div key={index} className="toolbar-left-items">
-              <button className="item-action icon-only" title={item.title} onClick={item.onClick}>
-                {item.icon}
-              </button>
-              {index !== toolbarRightItems.length - 1 && <div className="item-separator"></div>}
-            </div>
-          ))}
-
-          {showToggleViewMenu && (
-            <LayoutToggler
-              setShowToggleViewMenu={setShowToggleViewMenu}
-              onLayoutChange={onLayoutChange}
-            />
-          )}
+          {renderRightItems()}
         </div>
       </div>
     </div>

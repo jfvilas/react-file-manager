@@ -2,6 +2,7 @@ import { useRef } from "react";
 import FileItem from "./FileItem";
 import { useFileNavigation } from "../../contexts/FileNavigationContext";
 import { useLayout } from "../../contexts/LayoutContext";
+import { useOptions } from "../../contexts/OptionsContext";
 import ContextMenu from "../../components/ContextMenu/ContextMenu";
 import { useDetectOutsideClick } from "../../hooks/useDetectOutsideClick";
 import useFileList from "./useFileList";
@@ -20,12 +21,13 @@ const FileList = ({
   enableFilePreview,
   triggerAction,
   permissions,
-  formatDate,
+  formatDate
 }) => {
   const { currentPathFiles, sortConfig, setSortConfig } = useFileNavigation();
-  const filesViewRef = useRef(null);
-  const { activeLayout } = useLayout();
-  const t = useTranslation();
+  const filesViewRef = useRef(null)
+  const { activeLayout } = useLayout()
+  const t = useTranslation()
+  const { options } = useOptions()
 
   const {
     emptySelecCtxItems,
@@ -38,7 +40,7 @@ const FileList = ({
     selectedFileIndexes,
     clickPosition,
     isSelectionCtx,
-  } = useFileList(onRefresh, enableFilePreview, triggerAction, permissions, onFileOpen);
+  } = useFileList(onRefresh, enableFilePreview, triggerAction, permissions, onFileOpen)
 
   const contextMenuRef = useDetectOutsideClick(() => setVisible(false))
 
@@ -79,6 +81,35 @@ const FileList = ({
     }
   }
 
+  const renderStatusBar = () => {
+    if (!options.statusBar) return <></>
+
+    let result = []
+    result.push(<span key='items' >{currentPathFiles.length + ' Items'}</span>)
+    if (selectedFileIndexes.length>0) {
+      result.push(<span key='slected' style={{marginLeft:12}}>{selectedFileIndexes.length +' items selected'}</span>)
+      let size = currentPathFiles.filter ((f,i) => selectedFileIndexes.includes(i)).reduce((a,c) => {
+        return (c.size||0)+a
+      },0)
+      var units = 'bytes'
+      if (size>1024) {
+        size = (size/1024).toFixed(0)
+        units='KB'
+        if (size >1024) {
+          size = (size/1024).toFixed(0)
+          units='MB'
+        }
+      }
+      result.push (<span key='size' style={{marginLeft:12}}>({size} {units})</span>)
+    }
+    return (
+      <span className='files-status-bar'>
+        <span style={{paddingLeft:4, fontSize:12}}>{result}</span>
+      </span>
+
+    )
+  }
+
   return (
     <div
       ref={filesViewRef}
@@ -112,25 +143,14 @@ const FileList = ({
               formatDate={formatDate}
             />
           ))}
-          {/* <span
-            style={{ position:'absolute', bottom:0, borderTop:1, borderStyle:"solid", borderColor: '#cfcfcf', borderLeft:0,  borderRight:0, borderBottom:0, width:'100%', fontSize:12}}
-          >
-            <span style={{paddingLeft:4}}>
-              {currentPathFiles.length} Items &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {selectedFileIndexes.length>0 ? 
-                selectedFileIndexes.length +' items selected (' + 27*selectedFileIndexes.length*27+' bytes)'
-                : 
-                ''
-              }
-            </span>
-          </span> */}
-          
-        </>
-        
+        </> 
       )
       :
       (
         <div className="empty-folder">{t("folderEmpty")}</div>
       )}
+      {renderStatusBar()}
+
       <ContextMenu
         filesViewRef={filesViewRef}
         contextMenuRef={contextMenuRef.ref}
@@ -140,8 +160,8 @@ const FileList = ({
         clickPosition={clickPosition}
       />
     </div>
-  );
-};
+  )
+}
 
 FileList.displayName = "FileList";
 

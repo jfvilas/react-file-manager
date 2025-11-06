@@ -11,6 +11,11 @@ And our source code project is [here](https://github.com/jfvilas/react-file-mana
 - **File & Folder Management**: View, upload, download, delete, copy, move, create, and rename files
   or folders seamlessly.
 - **Grid & List View**: Switch between grid and list views to browse files in your preferred layout.
+- **Search**: the navigation pane includes a search feature for filtering files on current
+  directory.
+- **Status bar**: The navigation pane includes an optional status bar where info about current folder
+  and info about current selection items is shown.
+- **View options**: The file manager includes view options like classical desktop file managers.
 - **Navigation**: Use the breadcrumb trail and sidebar navigation pane for quick directory
   traversal.
 - **Toolbar & Context Menu**: Access all common actions (upload, download, delete, copy, move,
@@ -23,11 +28,6 @@ And our source code project is [here](https://github.com/jfvilas/react-file-mana
   intuitive keyboard shortcuts.
 - **Drag-and-Drop**: Move selected files and folders by dragging them to the desired directory,
   making file organization effortless.
-- **Search**: the navigation pane includes a search feature for filtering files on current
-  directory.
-- **Status bar**: the navigation pane includes a status bar where info about curren folder
-  and info abour current selection is shown.
-
 
 ## 🚀 Installation
 To install `React File Manager`, use the following command:

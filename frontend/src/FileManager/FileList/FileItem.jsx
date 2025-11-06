@@ -8,9 +8,10 @@ import { useFileNavigation } from "../../contexts/FileNavigationContext";
 import { useSelection } from "../../contexts/SelectionContext";
 import { useClipBoard } from "../../contexts/ClipboardContext";
 import { useLayout } from "../../contexts/LayoutContext";
+import { useOptions } from "../../contexts/OptionsContext";
 import Checkbox from "../../components/Checkbox/Checkbox";
 
-const dragIconSize = 50;
+const dragIconSize = 50
 
 const FileItem = ({
   icons,
@@ -26,7 +27,7 @@ const FileItem = ({
   handleContextMenu,
   setLastSelectedFile,
   draggable,
-  formatDate,
+  formatDate
 }) => {
   const [fileSelected, setFileSelected] = useState(false);
   const [lastClickTime, setLastClickTime] = useState(0);
@@ -42,6 +43,7 @@ const FileItem = ({
   const { clipBoard, handleCutCopy, setClipBoard, handlePasting } = useClipBoard();
   const dragIconRef = useRef(null);
   const dragIcons = useFileIcons(dragIconSize);
+  const { options } = useOptions()
 
   const isFileMoving =
     clipBoard?.isMoving &&
@@ -206,8 +208,8 @@ const FileItem = ({
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className="file-item">
-        {!file.isEditing && (
+      <div className="file-item" style={{ paddingLeft: options.checkBox? '33px':'12px'}}>
+        {!file.isEditing && options.checkBox && (
           <Checkbox
             name={file.name}
             id={file.name}
