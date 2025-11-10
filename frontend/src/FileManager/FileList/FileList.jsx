@@ -107,9 +107,6 @@ const FileList = ({
       result.push (<span key='size' style={{marginLeft:12}}>({size} {units})</span>)
     }
     return (
-      // <span className='files-status-bar'>
-      //   <span style={{paddingLeft:4, fontSize:12}}>{result}</span>
-      // </span>
       <span>
         <span style={{paddingLeft:4, fontSize:12}}>{result}</span>
       </span>
