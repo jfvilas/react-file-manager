@@ -116,7 +116,7 @@ const FileList = ({
       <div
         ref={filesViewRef}
         className={`files ${activeLayout}`}
-        style={{height: (options.statusBar? 'calc(100% - (60px))':'calc(100% - (35px))'), borderBottom: (options.statusBar?1:0)}}
+        style={{height: (options.statusBar? 'calc(100% - (54px))':'calc(100% - (35px))'), borderBottom: (options.statusBar?1:0)}}
         onContextMenu={handleContextMenu}
         onClick={unselectFiles}
       >
