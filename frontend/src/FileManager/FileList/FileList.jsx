@@ -88,10 +88,9 @@ const FileList = ({
   const renderStatusBar = () => {
     if (!options.statusBar) return <></>
 
-    let result = []
-    result.push(<span key='items' >{currentPathFiles.length + ' Items'}</span>)
+    let text=currentPathFiles.length + ' Items'
     if (selectedFileIndexes.length>0) {
-      result.push(<span key='slected' style={{marginLeft:12}}>{selectedFileIndexes.length +' items selected'}</span>)
+      text+= '\u00A0\u00A0\u00A0\u00A0' + selectedFileIndexes.length +'\u00A0items selected'
       let size = currentPathFiles.filter ((f,i) => selectedFileIndexes.includes(i)).reduce((a,c) => {
         return (c.size||0)+a
       },0)
@@ -104,13 +103,11 @@ const FileList = ({
           units='MB'
         }
       }
-      result.push (<span key='size' style={{marginLeft:12}}>({size} {units})</span>)
+      text+= '\u00A0\u00A0\u00A0\u00A0' + size + '\u00A0' + units
     }
-    return (
-      <span>
-        <span style={{paddingLeft:4, fontSize:12}}>{result}</span>
-      </span>
 
+    return (
+      <div className="statusbar">{text}</div>
     )
   }
 
@@ -165,9 +162,7 @@ const FileList = ({
           clickPosition={clickPosition}
         />
       </div>
-      <div>
       {renderStatusBar()}
-      </div>
     </>
 
   )
