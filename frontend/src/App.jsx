@@ -93,6 +93,62 @@ function App() {
       size: 2048, // File size in bytes (example: 2 KB)
     },
     {
+      name: "fich3",
+      isDirectory: false,
+      path: "/default/loki/logger/bin/fich3", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+      size: 2048, // File size in bytes (example: 2 KB)
+    },
+    {
+      name: "fich4",
+      isDirectory: false,
+      path: "/default/loki/logger/bin/fich4", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+      size: 2048, // File size in bytes (example: 2 KB)
+    },
+    {
+      name: "fich5",
+      isDirectory: false,
+      path: "/default/loki/logger/bin/fich5", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+      size: 2048, // File size in bytes (example: 2 KB)
+    },
+    {
+      name: "fich6",
+      isDirectory: false,
+      path: "/default/loki/logger/bin/fich6", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+      size: 2048, // File size in bytes (example: 2 KB)
+    },
+    {
+      name: "fich7",
+      isDirectory: false,
+      path: "/default/loki/logger/bin/fich7", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+      size: 2048, // File size in bytes (example: 2 KB)
+    },
+    {
+      name: "fich8",
+      isDirectory: false,
+      path: "/default/loki/logger/bin/fich8", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+      size: 2048, // File size in bytes (example: 2 KB)
+    },
+    {
+      name: "fich9",
+      isDirectory: false,
+      path: "/default/loki/logger/bin/fich9", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+      size: 2048, // File size in bytes (example: 2 KB)
+    },
+    {
+      name: "fich10",
+      isDirectory: false,
+      path: "/default/loki/logger/bin/fich10", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+      size: 2048, // File size in bytes (example: 2 KB)
+    },
+    {
       name: "dir1",
       isDirectory: true,
       path: "/default/loki/logger/bin/dir1", // Located inside the "Pictures" folder

@@ -52,13 +52,15 @@ const FileList = ({
 
   const customActionClick = (src)=> {
     setVisible(false)
-    for (let actionKey of actions.keys()) {
-      let allSameClass = (selectedFileIndexes.length>0) && selectedFileIndexes.every(i => currentPathFiles[i].class===actionKey)
-      if (allSameClass) {
-        for (let customAction of actions.get(actionKey)) {
-          if (customAction.title === src.target.innerText) {
-            let selectedFiles=currentPathFiles.filter ( (f,i) => selectedFileIndexes.includes(i))
-            customAction.onClick(selectedFiles)
+    if (actions) {
+      for (let actionKey of actions.keys()) {
+        let allSameClass = (selectedFileIndexes.length>0) && selectedFileIndexes.every(i => currentPathFiles[i].class===actionKey)
+        if (allSameClass) {
+          for (let customAction of actions.get(actionKey)) {
+            if (customAction.title === src.target.innerText) {
+              let selectedFiles=currentPathFiles.filter ( (f,i) => selectedFileIndexes.includes(i))
+              customAction.onClick(selectedFiles)
+            }
           }
         }
       }
@@ -66,17 +68,19 @@ const FileList = ({
   }
 
   let contextItems = selecCtxItems
-  for (let actionKey of actions.keys()) {
-    let allSameClass = (selectedFileIndexes.length>0) && selectedFileIndexes.every(i => currentPathFiles[i].class===actionKey)
-    if (allSameClass) {
-      contextItems[contextItems.length-1].divider=true
-      for (let customAction of actions.get(actionKey)) {
-        contextItems.push({
-          title:customAction.title,
-          icon:customAction.icon,
-          divider:customAction.divider,
-          onClick:customActionClick
-        })
+  if (actions) {
+    for (let actionKey of actions.keys()) {
+      let allSameClass = (selectedFileIndexes.length>0) && selectedFileIndexes.every(i => currentPathFiles[i].class===actionKey)
+      if (allSameClass) {
+        contextItems[contextItems.length-1].divider=true
+        for (let customAction of actions.get(actionKey)) {
+          contextItems.push({
+            title:customAction.title,
+            icon:customAction.icon,
+            divider:customAction.divider,
+            onClick:customActionClick
+          })
+        }
       }
     }
   }
@@ -103,7 +107,10 @@ const FileList = ({
       result.push (<span key='size' style={{marginLeft:12}}>({size} {units})</span>)
     }
     return (
-      <span className='files-status-bar'>
+      // <span className='files-status-bar'>
+      //   <span style={{paddingLeft:4, fontSize:12}}>{result}</span>
+      // </span>
+      <span>
         <span style={{paddingLeft:4, fontSize:12}}>{result}</span>
       </span>
 
@@ -111,55 +118,61 @@ const FileList = ({
   }
 
   return (
-    <div
-      ref={filesViewRef}
-      className={`files ${activeLayout}`}
-      onContextMenu={handleContextMenu}
-      onClick={unselectFiles}
-    >
-      {activeLayout === "list" && (
-        <FilesHeader unselectFiles={unselectFiles} onSort={handleSort} sortConfig={sortConfig} />
-      )}
+    <>
+      <div
+        ref={filesViewRef}
+        className={`files ${activeLayout}`}
+        style={{height: (options.statusBar? 'calc(100% - (60px))':'calc(100% - (35px))'), borderBottom: (options.statusBar?1:0)}}
+        onContextMenu={handleContextMenu}
+        onClick={unselectFiles}
+      >
+        {activeLayout === "list" && (
+          <FilesHeader unselectFiles={unselectFiles} onSort={handleSort} sortConfig={sortConfig} />
+        )}
 
-      {currentPathFiles?.length > 0 ? (
-        <>
-          {currentPathFiles.filter(f => f.name.toLowerCase().includes(filter)).map((file, index) => (
-            <FileItem
-              key={index}
-              icons={icons}
-              index={index}
-              file={file}
-              onCreateFolder={onCreateFolder}
-              onRename={onRename}
-              onFileOpen={onFileOpen}
-              enableFilePreview={enableFilePreview}
-              triggerAction={triggerAction}
-              filesViewRef={filesViewRef}
-              selectedFileIndexes={selectedFileIndexes}
-              handleContextMenu={handleContextMenu}
-              setVisible={setVisible}
-              setLastSelectedFile={setLastSelectedFile}
-              draggable={permissions.move}
-              formatDate={formatDate}
-            />
-          ))}
-        </> 
-      )
-      :
-      (
-        <div className="empty-folder">{t("folderEmpty")}</div>
-      )}
+        {currentPathFiles?.length > 0 ? (
+          <>
+            {currentPathFiles.filter(f => f.name.toLowerCase().includes(filter)).map((file, index) => (
+              <FileItem
+                key={index}
+                icons={icons}
+                index={index}
+                file={file}
+                onCreateFolder={onCreateFolder}
+                onRename={onRename}
+                onFileOpen={onFileOpen}
+                enableFilePreview={enableFilePreview}
+                triggerAction={triggerAction}
+                filesViewRef={filesViewRef}
+                selectedFileIndexes={selectedFileIndexes}
+                handleContextMenu={handleContextMenu}
+                setVisible={setVisible}
+                setLastSelectedFile={setLastSelectedFile}
+                draggable={permissions.move}
+                formatDate={formatDate}
+              />
+            ))}
+          </> 
+        )
+        :
+        (
+          <div className="empty-folder">{t("folderEmpty")}</div>
+        )}
+
+        <ContextMenu
+          filesViewRef={filesViewRef}
+          contextMenuRef={contextMenuRef.ref}
+          menuItems={isSelectionCtx ? contextItems : emptySelecCtxItems}
+          visible={visible}
+          setVisible={setVisible}
+          clickPosition={clickPosition}
+        />
+      </div>
+      <div>
       {renderStatusBar()}
+      </div>
+    </>
 
-      <ContextMenu
-        filesViewRef={filesViewRef}
-        contextMenuRef={contextMenuRef.ref}
-        menuItems={isSelectionCtx ? contextItems : emptySelecCtxItems}
-        visible={visible}
-        setVisible={setVisible}
-        clickPosition={clickPosition}
-      />
-    </div>
   )
 }
 

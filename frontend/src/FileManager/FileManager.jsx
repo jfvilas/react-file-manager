@@ -75,7 +75,7 @@ const FileManager = ({
   const permissions = useMemo(
     () => ({ ...defaultPermissions, ...userPermissions }),
     [userPermissions]
-  );
+  )
 
   return (
     <main
