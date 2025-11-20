@@ -40,6 +40,11 @@ declare module '@jfvilas/react-file-manager' {
         headers?: { [key: string]: string }
     }
 
+    export interface IFileDownloadConfig {
+        url: string
+        headers?: { [key: string]: string }
+    }
+
     export interface IPermissions {
         create?: boolean
         upload?: boolean
@@ -54,6 +59,7 @@ declare module '@jfvilas/react-file-manager' {
         actions?: Map<string, IAction[]>,
         files?: IFileData[],
         fileUploadConfig : IFileUploadConfig,
+        fileDownloadConfig : IFileDownloadConfig,
         icons: Map<string, IIcon[]>,
         isLoading?: boolean,
         onCreateFolder : (name: string, parentFolder: IFileData) => void,
@@ -76,7 +82,7 @@ declare module '@jfvilas/react-file-manager' {
         enableFilePreview : boolean,
         maxFileSize? : number,
         filePreviewPath : string,
-        acceptedFileTypes? : string,
+        acceptedFileTypes? : string[],
         height : string,
         width? : string,
         initialPath : string,

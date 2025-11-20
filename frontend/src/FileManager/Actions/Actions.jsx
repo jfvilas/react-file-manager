@@ -11,6 +11,7 @@ const Actions = ({
   fileUploadConfig,
   onFileUploading,
   onFileUploaded,
+  fileDownloadConfig,
   onDelete,
   onRefresh,
   maxFileSize,
@@ -52,6 +53,7 @@ const Actions = ({
         <PreviewFileAction
           filePreviewPath={filePreviewPath}
           filePreviewComponent={filePreviewComponent}
+          fileDownloadConfig={fileDownloadConfig}
         />
       ),
       width: "50%",

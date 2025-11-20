@@ -7,12 +7,25 @@ import { getAllFilesAPI } from "./api/getAllFilesAPI";
 import { renameAPI } from "./api/renameAPI";
 import "./App.scss";
 import FileManager from "./FileManager/FileManager";
-import { FaTrash, FaBox, FaDocker, FaInfo, FaLinux, FaRebel, FaPowerOff } from "react-icons/fa6";
+import { FaTrash, FaBox, FaDocker, FaInfo, FaLinux, FaPowerOff } from "react-icons/fa6";
 
 function App() {
   const fileUploadConfig = {
     url: import.meta.env.VITE_API_BASE_URL + "/upload",
-  };
+  }
+
+  const fileDownloadConfig = {
+    //url: "https://getsamplefiles.com",
+    //url: 'https://raw.githubusercontent.com/jfvilas/plugin-kwirth-log/refs/heads/master',
+    //url: 'https://raw.githubusercontent.com/aa/tensorflow/refs/heads/master',
+    url:'https://raw.githubusercontent.com/jfvilas/plugin-kwirth-log/refs/heads/master',
+    headers : {
+      //Authorization: 'Bearer xxx',
+      //'X-Julio': 'Fernandez'
+    }
+
+  }
+
   const [isLoading, setIsLoading] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
   const isMountRef = useRef(false);
@@ -22,6 +35,27 @@ function App() {
       isDirectory: true, // Folder
       path: "/default", // Located in Root directory
       updatedAt: "2024-09-09T10:30:00Z", // Last updated time
+      class: 'namespace'
+    },
+    // {
+    //   name: "CONTRIBUTING.md",
+    //   isDirectory: false,
+    //   path: "/CONTRIBUTING.md", // Located in Root directory as well
+    //   updatedAt: "2024-09-09T11:00:00Z",
+    //   class: 'namespace'
+    // },
+    // {
+    //   name: "README.md",
+    //   isDirectory: false,
+    //   path: "/README.md", // Located in Root directory as well
+    //   updatedAt: "2024-09-09T11:00:00Z",
+    //   class: 'namespace'
+    // },
+    {
+      name: "package.json",
+      isDirectory: false,
+      path: "/package.json", // Located in Root directory as well
+      updatedAt: "2024-09-09T11:00:00Z",
       class: 'namespace'
     },
     {
@@ -79,6 +113,48 @@ function App() {
       updatedAt: "2024-09-08T16:45:00Z",
     },
     {
+      name: "download",
+      isDirectory: true,
+      path: "/download", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+    },
+    {
+      name: "mp3",
+      isDirectory: true,
+      path: "/download/mp3", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+    },
+    {
+      name: "mp4",
+      isDirectory: true,
+      path: "/download/mp4", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+    },
+    {
+      name: "txt",
+      isDirectory: true,
+      path: "/download/txt", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+    },
+    {
+      name: "md",
+      isDirectory: true,
+      path: "/download/md", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+    },
+    {
+      name: "pdf",
+      isDirectory: true,
+      path: "/download/pdf", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+    },
+    {
+      name: "etc",
+      isDirectory: true,
+      path: "/default/loki/logger/etc", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+    },
+    {
       name: "fich1",
       isDirectory: false,
       path: "/default/loki/logger/bin/fich1", // Located inside the "Pictures" folder
@@ -114,16 +190,46 @@ function App() {
       size: 2048, // File size in bytes (example: 2 KB)
     },
     {
-      name: "fich6",
+      name: "fich6.png",
       isDirectory: false,
-      path: "/default/loki/logger/bin/fich6", // Located inside the "Pictures" folder
+      path: "/default/loki/logger/bin/fich6.png", // Located inside the "Pictures" folder
       updatedAt: "2024-09-08T16:45:00Z",
       size: 2048, // File size in bytes (example: 2 KB)
     },
     {
-      name: "fich7",
+      name: "sample-2.pdf",
       isDirectory: false,
-      path: "/default/loki/logger/bin/fich7", // Located inside the "Pictures" folder
+      path: "/download/pdf/sample-2.pdf", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+      size: 2048, // File size in bytes (example: 2 KB)
+    },
+    {
+      name: "sample-1.mp3",
+      isDirectory: false,
+      path: "/download/mp3/sample-1.mp3", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+      size: 2048, // File size in bytes (example: 2 KB)
+    },
+
+    {
+      name: "sample-2.mp4",
+      isDirectory: false,
+      path: "/download/mp4/sample-2.mp4", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+      size: 2048, // File size in bytes (example: 2 KB)
+    },
+    
+    {
+      name: "sample-5.txt",
+      isDirectory: false,
+      path: "/download/txt/sample-5.txt", // Located inside the "Pictures" folder
+      updatedAt: "2024-09-08T16:45:00Z",
+      size: 2048, // File size in bytes (example: 2 KB)
+    },
+    {
+      name: "sample-4.md",
+      isDirectory: false,
+      path: "/download/md/sample-4.md", // Located inside the "Pictures" folder
       updatedAt: "2024-09-08T16:45:00Z",
       size: 2048, // File size in bytes (example: 2 KB)
     },
@@ -327,6 +433,7 @@ function App() {
           actions={actions}
           files={files}
           fileUploadConfig={fileUploadConfig}
+          fileDownloadConfig={fileDownloadConfig}
           icons={icons}
           isLoading={isLoading}
           onCreateFolder={handleCreateFolder}
@@ -344,10 +451,10 @@ function App() {
           onSelectionChange={handleSelectionChange}
           onError={handleError}
           layout="grid"
-          enableFilePreview
+          enableFilePreview={true}
           maxFileSize={10485760}
-          filePreviewPath={import.meta.env.VITE_API_FILES_BASE_URL}
-          acceptedFileTypes=".txt, .png, .jpg, .jpeg, .pdf, .doc, .docx, .exe"
+          filePreviewPath={'https://getsamplefiles.com'}
+          acceptedFileTypes={["txt", "png", "jpg", "jpeg", "pdf", "doc", "docx", "exe"]}
           height="100%"
           width="100%"
           initialPath={'/default/loki/logger/bin'}
@@ -355,7 +462,7 @@ function App() {
         />
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

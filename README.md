@@ -1,28 +1,33 @@
-<div align="center">
+# React File Manager
+<p>
+An open-source React package for easy integration of a file manager into applications. It provides a user-friendly interface for managing files and folders, including viewing, uploading, and deleting, with full UI and backend integration.
 
-![NPM Downloads](https://img.shields.io/npm/d18m/%40jfvilas%2Freact-file-manager?style=for-the-badge)
-![npm bundle size](https://img.shields.io/bundlephobia/minzip/%40jfvilas%2Freact-file-manager?style=for-the-badge)
-![NPM Version](https://img.shields.io/npm/v/%40jfvilas%2Freact-file-manager?style=for-the-badge&color=%23c87d32)
+This project is forked from [this fantastic project](https://github.com/Saifullah-dev/react-file-manager).
 
-</div>
-
+And our source code project is [here](https://github.com/jfvilas/react-file-manager).
+</p>
 
 ## ✨ Features
 - **File & Folder Management**: View, upload, download, delete, copy, move, create, and rename files
   or folders seamlessly.
 - **Grid & List View**: Switch between grid and list views to browse files in your preferred layout.
+- **Search**: the navigation pane includes a search feature for filtering files on current
+  directory.
+- **Status bar**: The navigation pane includes an optional status bar where info about current folder
+  and info about current selection items is shown.
+- **View options**: The file manager includes view options like classical desktop file managers.
 - **Navigation**: Use the breadcrumb trail and sidebar navigation pane for quick directory
   traversal.
 - **Toolbar & Context Menu**: Access all common actions (upload, download, delete, copy, move,
   rename, etc.) via the toolbar or right-click for the same options in the context menu.
+- **Context cutomization**: Add your specific *icons* and *actions* for your unique object types. They
+  will be shown when needed and added to context menus.
 - **Multi-Selection**: Select multiple files and folders at once to perform bulk actions like
   delete, copy, move, or download.
 - **Keyboard Shortcuts**: Quickly perform file operations like copy, paste, delete, and more using
   intuitive keyboard shortcuts.
 - **Drag-and-Drop**: Move selected files and folders by dragging them to the desired directory,
   making file organization effortless.
-- **Context cutomization**: Add your specific use-case icons and actions for your unique object types.
-
 
 ## 🚀 Installation
 To install `React File Manager`, use the following command:
@@ -234,6 +239,7 @@ Et voilà !
 | `collapsibleNav`         | boolean  | Enables a collapsible navigation pane on the left side. When `true`, a toggle will be shown to expand or collapse the navigation pane. `default: false`.  |
 | `defaultNavExpanded`     | boolean  | Sets the default expanded (`true`) or collapsed (`false`) state of the navigation pane when `collapsibleNav` is enabled. This only affects the initial render. `default: true`. |
 | `enableFilePreview`      | boolean | A boolean flag indicating whether to use the default file previewer in the file manager `default: true`.  |
+| `fileDownloadConfig`       | { url: string; headers?: { [key: string]: string } } | Configuration object for file downloads. It includes the download URL prefix (`url`) and an optional `headers` object for setting custom HTTP headers in the download request (for adding Authrizatopn, for example). The `headers` object can accept any standard or custom headers required by the server. This configuration object **is also used for file preview** |
 | `filePreviewPath`        | string | The base URL for file previews e.g.`https://example.com`, file path will be appended automatically to it i.e. `https://example.com/yourFilePath`. |
 | `filePreviewComponent`   | (file: [File](#-file-structure)) => React.ReactNode | (Optional) A callback function that provides a custom file preview. It receives the selected file as its argument and must return a valid React node, JSX element, or HTML. Use this prop to override the default file preview behavior. Example: [Custom Preview Usage](#custom-file-preview). |
 | `fileUploadConfig`       | { url: string; method?: "POST" \| "PUT"; headers?: { [key: string]: string } } | Configuration object for file uploads. It includes the upload URL (`url`), an optional HTTP method (`method`, default is `"POST"`), and an optional `headers` object for setting custom HTTP headers in the upload request. The `method` property allows only `"POST"` or `"PUT"` values. The `headers` object can accept any standard or custom headers required by the server. Example: `{ url: "https://example.com/fileupload", method: "PUT", headers: { Authorization: "Bearer " + TOKEN, "X-Custom-Header": "value" } }` |

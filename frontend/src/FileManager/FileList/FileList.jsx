@@ -107,7 +107,7 @@ const FileList = ({
     }
 
     return (
-      <div className="statusbar">{text}</div>
+      <div className="statusbar" style={{...(!options.folderTree? {borderBottomLeftRadius: '8px'} : {})}}>{text}</div>
     )
   }
 

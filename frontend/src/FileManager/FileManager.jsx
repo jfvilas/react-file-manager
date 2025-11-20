@@ -24,6 +24,7 @@ const FileManager = ({
   actions,
   files,
   fileUploadConfig,
+  fileDownloadConfig,
   icons,
   isLoading,
   onCreateFolder,
@@ -152,6 +153,7 @@ const FileManager = ({
                       fileUploadConfig={fileUploadConfig}
                       onFileUploading={onFileUploading}
                       onFileUploaded={onFileUploaded}
+                      fileDownloadConfig={fileDownloadConfig}
                       onDelete={onDelete}
                       onRefresh={onRefresh}
                       maxFileSize={maxFileSize}
@@ -211,7 +213,7 @@ FileManager.propTypes = {
   maxFileSize: PropTypes.number,
   enableFilePreview: PropTypes.bool,
   filePreviewPath: urlValidator,
-  acceptedFileTypes: PropTypes.string,
+  acceptedFileTypes: PropTypes.arrayOf(PropTypes.string),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   initialPath: PropTypes.string,
