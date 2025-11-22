@@ -126,8 +126,8 @@ const FileList = ({
 
         {currentPathFiles?.length > 0 ? (
           <>
-            {currentPathFiles.filter(f => f.name.toLowerCase().includes(filter)).map((file, index) => (
-              <FileItem
+            {currentPathFiles.map((file, index) => (
+              file.name.toLowerCase().includes(filter) && <FileItem
                 key={index}
                 icons={icons}
                 index={index}

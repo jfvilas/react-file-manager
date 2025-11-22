@@ -73,6 +73,10 @@ const FileManager = ({
     width,
   }
 
+  const updateFilter = (f) => {
+    setFilter(f)
+  }
+  
   const permissions = useMemo(
     () => ({ ...defaultPermissions, ...userPermissions }),
     [userPermissions]
@@ -131,7 +135,7 @@ const FileManager = ({
                           isNavigationPaneOpen={isNavigationPaneOpen}
                           onNavigationPaneChange={onNavigationPaneChange}
                           tirggerAction={triggerAction}
-                          onSearchUpdated={(f) => setFilter(f)}
+                          onSearchUpdated={updateFilter}
                         />
                         <FileList
                           actions={actions}
