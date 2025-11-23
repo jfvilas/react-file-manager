@@ -13,8 +13,7 @@ And our source code project is [here](https://github.com/jfvilas/react-file-mana
 - **Grid & List View**: Switch between grid and list views to browse files in your preferred layout.
 - **Search**: the navigation pane includes a search feature for filtering files on current
   directory.
-- **Status bar**: The navigation pane includes an optional status bar where info about current folder
-  and info about current selection items is shown.
+- **Status bar**: RFM has an optional status bar where info about current folder and current selection items is shown.
 - **View options**: The file manager includes view options like classical desktop file managers.
 - **Navigation**: Use the breadcrumb trail and sidebar navigation pane for quick directory
   traversal.
@@ -81,7 +80,8 @@ export default App;
 
 
 ## Typescript Usage
-If you plan to user react-file-manager in a Typescript project, you can add type management by adding a `.d.ts` file. What follows is a sample file, but you can donwload a full module declaaration file **[here](https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/jfvilas-react-file-manager.d.ts)**. Inside that file you will find a module declaration and a bunch of type and interface declarations. What follows is just a excerpt.
+If you plan to user react-file-manager in a Typescript project, you can add type management by adding a `.d.ts` file. What follows is a sample file,
+but you can download a full module declaration file **[here](https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/jfvilas-react-file-manager.d.ts)**. Inside that file you will find a module declaration and a bunch of type and interface declarations. What follows is just a excerpt.
 
 ```typescript
 declare module '@jfvilas/react-file-manager' {
@@ -106,7 +106,7 @@ declare module '@jfvilas/react-file-manager' {
 ...
 ```
 
-In order to use this 'types' declaration file, just donwload and add it to your project inside your source folder (or any other folder and change your `package.json` accordingly).
+In order to use this 'types' declaration file, just download and add it to your project inside your source folder (or any other folder and change your `package.json` accordingly).
 
 ## 📂 File Structure
 The `files` prop accepts an array of objects, where each object represents a file or folder. You can
@@ -125,11 +125,13 @@ type File = {
 ```
 
 ## 🎬 Icons & Actions
-By adding your own icons and specific actions for your items, you can think of react-file-manager as just a hierarchical object manager, that is, this package is no longer just a file manager, you can, for example, create a hierarchy of books and implement particular actions. For example...:
+By adding your own icons and specific actions for your items, you can think of react-file-manager as just a hierarchical object manager,
+that is, this package is no longer just a file manager, you can, for example, create a hierarchy of books and implement particular actions.
+For example...:
 
- - You can have a top level category that consist of types of books: novel, essay, history...
+ - You can have a top level category that consists of types of books: novel, essay, history...
  - On a second level you can add the topic: science-fiction, love, thriller...
- - On a third level you can just store the book title.
+ - On a third level you can just store the book title and metadata.
 
 You can also add specific icons for each object (category, topic, book).
 
@@ -138,10 +140,12 @@ Moreover, you can add specific actions for each type of object:
   - For the top level, a sample action could be to show the list of books that belong to that category.
   - For the third level, the book in itself, you could add some actions like: read, view details, share link...
 
-You can build interfaces like this: 
+You can build interfaces like this (this one has been built for a kubernetes file navigator): 
 ![fileman](https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/fileman.png)
 
-For achieving these objectives you need to add to each entry in the `files` object an **optional** property called `class`. So, for the top level, the class property could be `category`. For the second level, the value of `class` could be something like `topic`, and for the third level it could be something like `book`.
+For achieving these objectives you need to add to each entry in the `files` object an **optional** property called `class`. So, for the top level,
+the class property could be `category`. For the second level, the value of `class` could be something like `topic`,
+and for the third level it could be something like `book`.
 
 The next step is to add the icons for these objects. You must create a Map like this one:
 
@@ -152,9 +156,10 @@ The next step is to add the icons for these objects. You must create a Map like 
   icons.set('book', { open: <JSX.Element />, closed: <JSX.Element /> })
 ```
 
-This way, when rendering an object with the `class` `category`, react-file-manager will show the proper icon, in the folder tree and also in the file list, wherever it be a grid or a list.
+This way, when rendering an object with the `class` `category`, react-file-manager will show the proper icon, in the folder tree and also in the file list,
+wherever it be a grid or a list layout.
 
-If you want to add specific actions for each `class`, you can, for example, create an `actions` map like this:
+If you want to add specific actions for each `class`, you must create an `actions` map like this:
 
 ```javascript
   let actions = new Map();
@@ -176,7 +181,7 @@ If you want to add specific actions for each `class`, you can, for example, crea
   ])
 ```
 
-This previous piece of code adds two actions to objects of `class` `book`:
+The previous piece of code adds two actions to objects of class `book`:
 
   - One for reading the book (the `onClick` method should open an ebook reader on screen).
   - Another one for viewing book details.
@@ -200,7 +205,7 @@ What follows is an example with Kubernetes objects, icons and actions that we ha
 
 
 ## 🎨 UI Customization
-`react-file-manager` can be easily customized to mmet your React application UI srtyles.
+`react-file-manager` can be easily customized to meet your React application UI styles.
 
 The simplest way for customizing this component is as follows:
 
@@ -234,12 +239,12 @@ Et voilà !
 | Name | Type  | Description  |
 | -    | -     | -            |
 | `acceptedFileTypes`      | string  | (Optional) A comma-separated list of allowed file extensions for uploading specific file types (e.g., `.txt, .png, .pdf`). If omitted, all file types are accepted.  |
-| `actions`                | Map<string Action[]>    |   (Optional) A map of custom actions that would be added to the proper file class  |
+| `actions`                | Map<string Action[]>    |   (Optional) A map of custom actions that would be added to the proper file classes. |
 | `className`              | string  | CSS class names to apply to the FileManager root element.  |
 | `collapsibleNav`         | boolean  | Enables a collapsible navigation pane on the left side. When `true`, a toggle will be shown to expand or collapse the navigation pane. `default: false`.  |
 | `defaultNavExpanded`     | boolean  | Sets the default expanded (`true`) or collapsed (`false`) state of the navigation pane when `collapsibleNav` is enabled. This only affects the initial render. `default: true`. |
 | `enableFilePreview`      | boolean | A boolean flag indicating whether to use the default file previewer in the file manager `default: true`.  |
-| `fileDownloadConfig`       | { url: string; headers?: { [key: string]: string } } | Configuration object for file downloads. It includes the download URL prefix (`url`) and an optional `headers` object for setting custom HTTP headers in the download request (for adding Authrizatopn, for example). The `headers` object can accept any standard or custom headers required by the server. This configuration object **is also used for file preview** |
+| `fileDownloadConfig`       | { url: string; headers?: { [key: string]: string } } | Configuration object for file downloads. It includes the download URL prefix (`url`) and an optional `headers` object for setting custom HTTP headers in the download request (for adding Authorization, for example). The `headers` object can accept any standard or custom headers required by the server. This configuration object **is also used for file preview** |
 | `filePreviewPath`        | string | The base URL for file previews e.g.`https://example.com`, file path will be appended automatically to it i.e. `https://example.com/yourFilePath`. |
 | `filePreviewComponent`   | (file: [File](#-file-structure)) => React.ReactNode | (Optional) A callback function that provides a custom file preview. It receives the selected file as its argument and must return a valid React node, JSX element, or HTML. Use this prop to override the default file preview behavior. Example: [Custom Preview Usage](#custom-file-preview). |
 | `fileUploadConfig`       | { url: string; method?: "POST" \| "PUT"; headers?: { [key: string]: string } } | Configuration object for file uploads. It includes the upload URL (`url`), an optional HTTP method (`method`, default is `"POST"`), and an optional `headers` object for setting custom HTTP headers in the upload request. The `method` property allows only `"POST"` or `"PUT"` values. The `headers` object can accept any standard or custom headers required by the server. Example: `{ url: "https://example.com/fileupload", method: "PUT", headers: { Authorization: "Bearer " + TOKEN, "X-Custom-Header": "value" } }` |
@@ -247,7 +252,7 @@ Et voilà !
 | `fontFamily`             | string | The font family to be used throughout the component. Accepts any valid CSS font family (e.g., `'Arial, sans-serif'`, `'Roboto'`). You can customize the font styling to match your application's theme. `default: 'Nunito Sans, sans-serif'`. |
 | `formatDate`             | (date: string \| Date) => string | (Optional) A custom function used to format file and folder modification dates. If omitted, the component falls back to its built-in formatter from `utils/formatDate`. Useful for adapting the date display to different locales or formats.
 | `height`                 | string \| number | The height of the component `default: 600px`. Can be a string (e.g., `'100%'`, `'10rem'`) or a number (in pixels). |
-| `icons`                  | Map<string, { open:JSX.Element, closed:JSX.Element }>    |   (Optional) A map of custom icons that would be shown according to file class  |
+| `icons`                  | Map<string, { open:JSX.Element, closed:JSX.Element }>    |   (Optional) A map of custom icons that would be shown according to file classes. |
 | `initialPath`            | string | The path of the directory to be loaded initially e.g. `/Documents`. This should be the path of a folder which is included in `files` array. Default value is `""`  |
 | `isLoading`              | boolean | A boolean state indicating whether the application is currently performing an operation, such as creating, renaming, or deleting a file/folder. Displays a loading state if set `true`. |
 | `language` | string | A language code used for translations (e.g., `"en-US"`, `"fr-FR"`, `"tr-TR"`). Defaults to `"en-US"` for English. Allows the user to set the desired translation language manually. <br><br>**Available languages:** <br> 🇸🇦 `ar-SA` (Arabic, Saudi Arabia) <br> 🇩🇪 `de-DE` (German, Germany) <br> 🇺🇸 `en-US` (English, United States) <br> 🇪🇸 `es-ES` (Spanish, Spain) <br> 🇫🇷 `fr-FR` (French, France) <br> 🇮🇱 `he-IL` (Hebrew, Israel) <br> 🇮🇳 `hi-IN` (Hindi, India) <br> 🇮🇹 `it-IT` (Italian, Italy) <br> 🇯🇵 `ja-JP` (Japanese, Japan) <br> 🇰🇷 `ko-KR` (Korean, South Korea) <br> 🇧🇷 `pt-BR` (Portuguese, Brazil) <br> 🇵🇹 `pt-PT` (Portuguese, Portugal) <br> 🇷🇺 `ru-RU` (Russian, Russia) <br> 🇹🇷 `tr-TR` (Turkish, Turkey) <br> 🇺🇦 `uk-UA` (Ukrainian, Ukraine) <br> 🇵🇰 `ur-UR` (Urdu, Pakistan) <br> 🇻🇳 `vi-VN` (Vietnamese, Vietnam) <br> 🇨🇳 `zh-CN` (Chinese, Simplified) <br> 🇵🇱 `pl-PL` (Polish, Poland) |
@@ -367,10 +372,3 @@ function App() {
   );
 }
 ```
-
-### Important notes
-
-- `initialPath` is applied **only once** when the `files` state is first set.
-- After that, folder changes are driven by `onFolderChange`.
-- If you want to keep the path in sync with user navigation, use a controlled state (as shown
-  above).
