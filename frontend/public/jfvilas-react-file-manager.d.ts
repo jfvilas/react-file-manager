@@ -57,6 +57,7 @@ declare module '@jfvilas/react-file-manager' {
 
     const FileManager : FC<{
         actions?: Map<string, IAction[]>,
+        details?: Map<string, IDetail[]>,
         files?: IFileData[],
         fileUploadConfig : IFileUploadConfig,
         fileDownloadConfig : IFileDownloadConfig,

@@ -1,10 +1,15 @@
-# React File Manager
+# RFM
 <p>
 An open-source React package for easy integration of a file manager into applications. It provides a user-friendly interface for managing files and folders, including viewing, uploading, and deleting, with full UI and backend integration.
 
-This project is forked from [this fantastic project](https://github.com/Saifullah-dev/react-file-manager).
+And our source code project is [here](https://github.com/jfvilas/react-file-manager) ([forked from](https://github.com/Saifullah-dev/react-file-manager)).
 
-And our source code project is [here](https://github.com/jfvilas/react-file-manager).
+Since version 2 this package is no more just a file manager. It has been refactored to convert it into a very flexible **object manager**. This means that:
+
+  - RFM manages a **hierarchy of objects**, wherever they be files or any other thing with properties.
+  - Each object has its own properties nad its own behaviour.
+  - In addition, each one of them can have spscific icons and actions.
+
 </p>
 
 ## ✨ Features
@@ -29,7 +34,7 @@ And our source code project is [here](https://github.com/jfvilas/react-file-mana
   making file organization effortless.
 
 ## 🚀 Installation
-To install `React File Manager`, use the following command:
+To install `RFM`, use the following command:
 
 ```bash
 npm i @jfvilas/react-file-manager
@@ -37,7 +42,7 @@ npm i @jfvilas/react-file-manager
 
 
 ## 💻 Usage
-Here’s a basic example of how to use the File Manager Component in your React application:
+Here’s a basic example of how to use our RFM component in your React application (**using default options means that objects are exactly a hierarchy of files and folders**):
 
 ```jsx
 import { useState } from "react";
@@ -66,7 +71,7 @@ function App() {
       size: 2048, // File size in bytes (example: 2 KB)
       class: 'image' // optional property for customization
     },
-  ]);
+  ])
 
   return (
     <>
@@ -85,13 +90,14 @@ but you can download a full module declaration file **[here](https://raw.githubu
 
 ```typescript
 declare module '@jfvilas/react-file-manager' {
-    export interface IFileData {
+    export interface IFileObject {
         name: string;
         isDirectory: boolean;
         path: string;
-        updatedAt?: string;
-        size?: number;
+        layout?: string;
         class?: string;
+        children?: string|function;
+        data?: any
     }
 
     export interface IError {

@@ -13,7 +13,7 @@ import { duplicateNameHandler } from "../../utils/duplicateNameHandler";
 import { validateApiCallback } from "../../utils/validateApiCallback";
 import { useTranslation } from "../../contexts/TranslationProvider";
 
-const useFileList = (onRefresh, enableFilePreview, triggerAction, permissions, onFileOpen) => {
+const useFileList = (onRefresh, enableFilePreview, triggerAction, permissions, onFileOpen, space, spaces) => {
   const [selectedFileIndexes, setSelectedFileIndexes] = useState([])
   const [visible, setVisible] = useState(false)
   const [isSelectionCtx, setIsSelectionCtx] = useState(false)
@@ -87,7 +87,7 @@ const handleselectAllFiles = () => {
     setVisible(false)
 }
 
-const emptySelecCtxItems = [
+const filedataEmptySelecCtxItems = [
     {
         title: t("view"),
         icon: activeLayout === "grid" ? <BsGrid size={18} /> : <FaListUl size={18} />,
@@ -148,7 +148,7 @@ const emptySelecCtxItems = [
     },
 ]
 
-const selecCtxItems = [
+const filedataSelecCtxItems = [
     {
         title: t("open"),
         icon: lastSelectedFile?.isDirectory ? <PiFolderOpen size={20} /> : <FaRegFile size={16} />,
@@ -280,8 +280,8 @@ const handleItemRenaming = () => {
   }, [selectedFiles, currentPathFiles]);
 
   return {
-    emptySelecCtxItems,
-    selecCtxItems,
+    emptySelecCtxItems: space && spaces && spaces.get(space)?.emptySelectionContextMenu? spaces.get(space).emptySelectionContextMenu : filedataEmptySelecCtxItems,
+    selecCtxItems: space && spaces && spaces.get(space)?.selectionContextMenu? spaces.get(space).selectionContextMenu : filedataSelecCtxItems,
     handleContextMenu,
     unselectFiles,
     visible,

@@ -3,7 +3,6 @@ import { getFileExtension } from "../../../utils/getFileExtension";
 import Loader from "../../../components/Loader/Loader";
 import { useSelection } from "../../../contexts/SelectionContext";
 import Button from "../../../components/Button/Button";
-import { getDataSize } from "../../../utils/getDataSize";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { useFileIcons } from "../../../hooks/useFileIcons";
 import { FaRegFileAlt } from "react-icons/fa";
@@ -12,6 +11,7 @@ import "./PreviewFile.action.scss";
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { JsonViewer } from 'view-json-react';
+import { getObjectSize } from '../../../utils/getObjectSize'
 
 const imageExtensions = ["jpg", "jpeg", "png"]
 const videoExtensions = ["mp4", "mov", "avi"]
@@ -90,7 +90,7 @@ const PreviewFileAction = ({ filePreviewPath, filePreviewComponent, fileDownload
             <div className="file-info">
               <span className="file-name">{selectedFiles[0].name}</span>
               {selectedFiles[0].size && <span>-</span>}
-              <span className="file-size">{getDataSize(selectedFiles[0].size)}</span>
+              <span className="file-size">{getObjectSize(selectedFiles[0].size)}</span>
             </div>
             <Button onClick={handleDownload} padding="0.45rem .9rem">
               <div className="download-btn">

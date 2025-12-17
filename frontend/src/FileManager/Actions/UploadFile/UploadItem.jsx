@@ -4,11 +4,11 @@ import { getFileExtension } from "../../../utils/getFileExtension";
 import { useFileIcons } from "../../../hooks/useFileIcons";
 import { FaRegFile } from "react-icons/fa6";
 import { useEffect, useRef, useState } from "react";
-import { getDataSize } from "../../../utils/getDataSize";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { IoMdRefresh } from "react-icons/io";
 import { useFiles } from "../../../contexts/FilesContext";
 import { useTranslation } from "../../../contexts/TranslationProvider";
+import { getObjectSize } from '../../../utils/getObjectSize'
 
 const UploadItem = ({
   index,
@@ -172,7 +172,7 @@ const UploadItem = ({
             <span className="file-name text-truncate" title={fileData.file?.name}>
               {fileData.file?.name}
             </span>
-            <span className="file-size">{getDataSize(fileData.file?.size)}</span>
+            <span className="file-size">{getObjectSize(fileData.file?.size)}</span>
           </div>
           {isUploaded ? (
             <FaRegCheckCircle title={t("uploaded")} className="upload-success" />

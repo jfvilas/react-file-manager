@@ -6,6 +6,8 @@ export default defineConfig({
   publicDir: false,
   plugins: [react()],
   build: {
+    minify: false,
+    sourcemap: true,
     lib: {
       entry: "./src/index.js",
       name: "ReactFileManager",

@@ -5,10 +5,10 @@ import UploadItem from "./UploadItem";
 import Loader from "../../../components/Loader/Loader";
 import { useFileNavigation } from "../../../contexts/FileNavigationContext";
 import { getFileExtension } from "../../../utils/getFileExtension";
-import { getDataSize } from "../../../utils/getDataSize";
 import { useFiles } from "../../../contexts/FilesContext";
 import { useTranslation } from "../../../contexts/TranslationProvider";
 import "./UploadFile.action.scss";
+import { getObjectSize } from '../../../utils/getObjectSize'
 
 const UploadFileAction = ({
   fileUploadConfig,
@@ -44,7 +44,7 @@ const UploadFileAction = ({
     if (fileExists) return t("fileAlreadyExist");
 
     const sizeError = maxFileSize && file.size > maxFileSize;
-    if (sizeError) return `${t("maxUploadSize")} ${getDataSize(maxFileSize, 0)}.`;
+    if (sizeError) return `${t("maxUploadSize")} ${getObjectSize(maxFileSize, 0)}.`;
   };
 
   const setSelectedFiles = (selectedFiles) => {
