@@ -37,7 +37,6 @@ const FileList = ({
     
     if (currentFolder && currentFolder.children) {
         space = currentFolder.children
-        //if (currentFolder.layout && currentFolder.layout !== activeLayout) setActiveLayout(currentFolder.layout)
     }
 
     const {

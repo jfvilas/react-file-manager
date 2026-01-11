@@ -42,7 +42,7 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
 
     let leftItems = fileDataLeftItems
     if (space!=='filedata' && spaces && spaces.has(space)) {
-        leftItems = spaces.get(space).leftItems || []    //+++ test "[]" (no leftItems specified)
+        leftItems = spaces.get(space).leftItems || []
         if (leftItems) {
             if (currentPathFiles.length>0 && spaces.get(currentPathFiles[0].class)?.leftItems) {
                 if (selectedFiles.length>1) {
@@ -83,20 +83,20 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
         setSelectedFiles([])
     }
 
-    const onToolbarClick = (option) => {
-        if (option.onClick) option.onClick(selectedFiles)
+    const onToolbarClick = (option, target) => {
+        if (option.onClick) option.onClick(selectedFiles.map (f => f.path), target)
     }
 
     const renderLeftItems = () => {
         if (space!=='filedata') {
             // we take the class for the folder or from the first file
-            let items= []
+            let items = []
             if (leftItems) {
-                leftItems.map((item, index) => 
+                leftItems.map((leftItem, index) => 
                     items.push (
-                        <button key={index} className="item-action file-action" onClick={() => onToolbarClick(item)}>
-                            {item.icon}
-                            <span>{item.text}</span>
+                        <button key={index} className="item-action file-action" onClick={(event) => onToolbarClick(leftItem, event.currentTarget)}>
+                            {leftItem.icon}
+                            <span>{leftItem.text}</span>
                         </button>
                     )
                 )
@@ -157,10 +157,10 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
 
     const renderRightItems = () => {
         return <>
-            {toolbarRightItems.map((item, index) => (
+            {toolbarRightItems.map((rightItem, index) => (
                 <div key={index} className="toolbar-left-items">
-                    <button className="item-action icon-only file-action" title={item.title} onClick={item.onClick}>
-                        {item.icon}
+                    <button className="item-action icon-only file-action" title={rightItem.title} onClick={rightItem.onClick}>
+                        {rightItem.icon}
                     </button>
                     {index !== toolbarRightItems.length - 1 && <div className="item-separator"></div>}
                 </div>
@@ -197,10 +197,10 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
         <div className="toolbar file-selected">
             <div className="file-action-container fm-toolbar">
                 <div>
-                    { leftItems && leftItems.filter((item) => item.permission).map((item, index) => (
-                        <button className="item-action file-action" key={index} onClick={item.onClick}>
-                            {item.icon}
-                            <span>{item.text}</span>
+                    { leftItems && leftItems.filter((leftItemPerm) => leftItemPerm.permission).map((leftItem, index) => (
+                        <button className="item-action file-action" key={index} onClick={leftItem.onClick}>
+                            {leftItem.icon}
+                            <span>{leftItem.text}</span>
                         </button>
                     ))}
                 </div>

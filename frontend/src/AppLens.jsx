@@ -399,7 +399,11 @@ let sampleFiles = [
                 {
                     icon: <>{'S'}</>,
                     text: 'Shell',
-                    onClick: () => console.log('shell'),
+                    onClick: (a,b,c) => {
+                        console.log(a)
+                        console.log(b)
+                        console.log(c)
+                    }
                 },
                 {
                     icon: <>{'L'}</>,
@@ -411,7 +415,7 @@ let sampleFiles = [
                     icon: <>{'M'}</>,
                     text: 'Metrics',
                     multi: true,
-                    onClick: () => console.log('metr'),
+                    onClick: () => console.log('metrics'),
                 },
                 {
                     text: '~',

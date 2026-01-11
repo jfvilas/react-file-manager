@@ -227,23 +227,23 @@ const FileItem = ({
 
     return (
         <div
-        className={`file-item-container ${dropZoneClass} ${
-            fileSelected || !!file.isEditing ? "file-selected" : ""
-        } ${isFileMoving ? "file-moving" : ""}`}
-        tabIndex={0}
-        title={file.name}
-        onClick={handleFileSelection}
-        onKeyDown={handleOnKeyDown}
-        onContextMenu={handleItemContextMenu}
-        onMouseOver={handleMouseOver}
-        onMouseLeave={handleMouseLeave}
-        draggable={fileSelected && draggable}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDragEnter={handleDragEnterOver}
-        onDragOver={handleDragEnterOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
+            className={`file-item-container ${dropZoneClass} ${
+                fileSelected || !!file.isEditing ? "file-selected" : ""
+            } ${isFileMoving ? "file-moving" : ""}`}
+            tabIndex={0}
+            title={file.name}
+            onClick={handleFileSelection}
+            onKeyDown={handleOnKeyDown}
+            onContextMenu={handleItemContextMenu}
+            onMouseOver={handleMouseOver}
+            onMouseLeave={handleMouseLeave}
+            draggable={fileSelected && draggable}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            onDragEnter={handleDragEnterOver}
+            onDragOver={handleDragEnterOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
         >
             <div className="file-item" style={{ paddingLeft: options.checkBox? '33px':'12px', width:activeLayout==='list'?`calc(${spaces.get(space).width}% - 45px)`:''}}>
                 { !file.isEditing && options.checkBox && (
