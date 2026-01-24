@@ -16,9 +16,11 @@ const FileList = ({
     space,
     spaces,
     icons,
-    filter,
-    filterRegex,
-    filterCasing,
+    searchText,
+    searchRegex,
+    searchCasing,
+    selectedCategories,
+    onCategoryFilter,
     onCreateFolder,
     onRename,
     onFileOpen,
@@ -26,6 +28,7 @@ const FileList = ({
     enableFilePreview,
     triggerAction,
     permissions,
+    showContextMenu,
     formatDate
     }) => {
 
@@ -54,24 +57,24 @@ const FileList = ({
 
     const contextMenuRef = useDetectOutsideClick(() => setVisible(false))
 
-    const applyFilter = (f) => {
-        if (filter!=='') {
-            if (filterCasing) {
-                if (filterRegex) {
+    const applySearchText = (f) => {
+        if (searchText!=='') {
+            if (searchCasing) {
+                if (searchRegex) {
                     try {
-                        const regex=new RegExp(filter)
+                        const regex=new RegExp(searchText)
                         if (!regex.test(f.name)) return false
                     }
                     catch { return false }
                 }
                 else {
-                    if (!f.name.includes(filter)) return false
+                    if (!f.name.includes(searchText)) return false
                 }
             }
             else {
-                if (filterRegex) {
+                if (searchRegex) {
                     try {
-                        const regex=new RegExp(filter.toLocaleLowerCase())
+                        const regex=new RegExp(searchText.toLocaleLowerCase())
                         if (!regex.test(f.name.toLocaleLowerCase())) return false
                     }
                     catch { 
@@ -79,9 +82,16 @@ const FileList = ({
                     }
                 }
                 else {
-                    if (!f.name.toLocaleLowerCase().includes(filter.toLowerCase())) return false
+                    if (!f.name.toLocaleLowerCase().includes(searchText.toLowerCase())) return false
                 }
             }
+        }
+        return true
+    }
+
+    const applyCategory = (f) => {
+        if (onCategoryFilter) {
+            return onCategoryFilter(f, selectedCategories)
         }
         return true
     }
@@ -130,7 +140,7 @@ const FileList = ({
     const renderStatusBar = () => {
         if (!options.statusBar) return <></>
 
-        let list = currentPathFiles.filter (f => applyFilter(f))        
+        let list = currentPathFiles.filter (sf => applySearchText(sf))
         let text=list.length + ' Items'
         if (selectedFileIndexes.length>0) {
             text+= '\u00A0\u00A0\u00A0\u00A0' + selectedFileIndexes.length +'\u00A0items selected'
@@ -173,26 +183,26 @@ const FileList = ({
                     {currentPathFiles?.length > 0 ? (
                         <>
                             {currentPathFiles.map((file, index) => (
-                            applyFilter(file) && <FileItem
-                                key={index}
-                                space={space}
-                                spaces={spaces}
-                                icons={icons}
-                                index={index}
-                                file={file}
-                                onCreateFolder={onCreateFolder}
-                                onRename={onRename}
-                                onFileOpen={onFileOpen}
-                                enableFilePreview={enableFilePreview}
-                                triggerAction={triggerAction}
-                                filesViewRef={filesViewRef}
-                                selectedFileIndexes={selectedFileIndexes}
-                                handleContextMenu={handleContextMenu}
-                                setVisible={setVisible}
-                                setLastSelectedFile={setLastSelectedFile}
-                                draggable={permissions.move}
-                                formatDate={formatDate}
-                            />
+                                applySearchText(file) && applyCategory(file) && <FileItem
+                                    key={index}
+                                    space={space}
+                                    spaces={spaces}
+                                    icons={icons}
+                                    index={index}
+                                    file={file}
+                                    onCreateFolder={onCreateFolder}
+                                    onRename={onRename}
+                                    onFileOpen={onFileOpen}
+                                    enableFilePreview={enableFilePreview}
+                                    triggerAction={triggerAction}
+                                    filesViewRef={filesViewRef}
+                                    selectedFileIndexes={selectedFileIndexes}
+                                    handleContextMenu={handleContextMenu}
+                                    setVisible={setVisible}
+                                    setLastSelectedFile={setLastSelectedFile}
+                                    draggable={permissions.move}
+                                    formatDate={formatDate}
+                                />
                             ))}
                         </> 
                     )
@@ -201,14 +211,14 @@ const FileList = ({
                         <div className="empty-folder">{t("folderEmpty")}</div>
                     )}
 
-                    <ContextMenu
+                    { showContextMenu && <ContextMenu
                         filesViewRef={filesViewRef}
                         contextMenuRef={contextMenuRef.ref}
                         menuItems={isSelectionCtx ? contextItems : emptySelecCtxItems}
                         visible={visible}
                         setVisible={setVisible}
                         clickPosition={clickPosition}
-                    />
+                    />}
                 </div>
                 {renderStatusBar()}
             </>

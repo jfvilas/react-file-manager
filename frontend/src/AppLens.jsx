@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { BsFolderPlus } from "react-icons/bs"
+import { useRef, useState } from "react";
 import { createFolderAPI } from "./api/createFolderAPI";
 import { deleteAPI } from "./api/deleteAPI";
 import { downloadFile } from "./api/downloadFileAPI";
@@ -29,11 +28,24 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [currentPath, setCurrentPath] = useState("");
     const isMountRef = useRef(false);
+    const [ categories, setCategories ] = useState(
+        {
+            text: 'Namespaces',
+            all: [ {key:'all',text:'All...'}, {key:'-'}, {key:'default'}, {key:'kube-system'}, {key:'kube-public'}, {key:'custom'}, {key:'login', text:'Login'} ],
+            selected: ['all'],
+            onCategoriesChange: (selected) => {
+                if (selected.length===0) selected=['all']
+                categories.selected = selected
+                setCategories ({ ...categories })
+            }
+        }
+    )
 
     const showPodContainers = (f) => {
         if (!f) return <></>
+        console.log(f)
         return <img 
-            src={f.name[0]>'m' ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEgAGX0sCgqAAAAABJRU5ErkJggg==" : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPj/DwAEgAGt+MvY7AAAAABJRU5ErkJggg=="}
+            src={f.endsWith('2')>'m' ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEgAGX0sCgqAAAAABJRU5ErkJggg==" : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPj/DwAEgAGt+MvY7AAAAABJRU5ErkJggg=="}
             width="10" 
             height="10" 
             alt="Cuadrado azul de 10x10 px"
@@ -139,7 +151,9 @@ let sampleFiles = [
             name: "users-svc",
             isDirectory: false,
             path: "/network/service/users-svc",
-            class: 'service'
+            class: 'service',
+            data: {
+            },
         },
         {
             name: "login-svc",
@@ -200,8 +214,13 @@ let sampleFiles = [
     }
 
     let serviceStatus = (file) => {
-        if (file.name.length % 2 === 0 ) return <span style={{color:'green'}}>Active</span>
-        return <span style={{color:'red'}}>Inactive</span>
+        if (file.length % 3 === 0 ) return <span style={{color:'green'}}>Active</span>
+        return <div style={{flexDirection:'column'}}>
+            <span style={{color:'red'}}>Inactive</span><br/>
+            <span style={{color:'red'}}>Inactive</span><br/>
+            <span style={{color:'red'}}>Inactive</span><br/>
+            <span style={{color:'red'}}>Inactive</span><br/>
+        </div>
     }
 
     // format: string, number, age, function
@@ -293,7 +312,7 @@ let sampleFiles = [
         {
             text:'Service name',
             source:'name',
-            width:40,
+            width: 40,
             icons: new Map(),
             actions: new Map(),
             leftItems: [
@@ -321,19 +340,11 @@ let sampleFiles = [
                     visible: true
                 },
                 {
-                    name: 'type',
-                    text: 'Type',
-                    source: 'type',
-                    format: 'string',
-                    width: 15,
-                    visible: true
-                },
-                {
-                    name: 'clusterip',
-                    text: 'ClusterIP',
-                    source: 'clusterip',
-                    format: 'string',
-                    width: 15,
+                    name: 'status',
+                    text: 'Status',
+                    source: serviceStatus,
+                    format: 'function',
+                    width: 10,
                     visible: true
                 },
                 {
@@ -349,7 +360,7 @@ let sampleFiles = [
                     text: 'ExternalIP',
                     source: 'externalip',
                     format: 'string',
-                    width: 15,
+                    width: 10,
                     visible: true
                 },
                 {
@@ -357,25 +368,9 @@ let sampleFiles = [
                     text: 'Selector',
                     source: 'selector',
                     format: 'string',
-                    width: 15,
+                    width: 10,
                     visible: true
                 },
-                {
-                    name: 'age',
-                    text: 'Age',
-                    source: 'age',
-                    format: 'age',
-                    width: 15,
-                    visible: true
-                },
-                {
-                    name: 'status',
-                    text: 'Status',
-                    source: serviceStatus,
-                    format: 'function',
-                    width: 15,
-                    visible: true
-                }
             ],
             emptySelectionContextMenu: undefined,
             selectionContextMenu: undefined
@@ -621,7 +616,13 @@ let sampleFiles = [
 
     let icons = new Map()
     const actions = new Map()
-    
+
+    const onCategoryFilter = (a,b) => {
+        console.log(a)
+        console.log(b)
+        return b.includes('all') || b.some(cat => a.name.includes(cat))
+    }
+
     return (
         <div className="app">
             <div className="file-manager-container">
@@ -660,6 +661,11 @@ let sampleFiles = [
                     initialPath={'/overview'}
                     permissions={permissions}
                     onFolderChange={setCurrentPath}
+                    showRefresh={false}
+                    contextMenu={false}
+                    breadCrumb={false}
+                    categories={categories}
+                    onCategoryFilter={onCategoryFilter}
                 />
             </div>
         </div>

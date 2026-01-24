@@ -12,8 +12,8 @@ import { useTranslation } from "../../contexts/TranslationProvider"
 import { ViewOptions } from "./ViewOptions"
 import "./Toolbar.scss"
 
-const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavigationPaneChange, spaces }) => {
-    const [showViewOptions, setShowViewOptions] = useState(false)
+const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavigationPaneChange, spaces, showRefresh }) => {
+    const [ showViewOptions, setShowViewOptions ] = useState(false)
     const { currentFolder, currentPathFiles } = useFileNavigation()
     const { selectedFiles, setSelectedFiles, handleDownload } = useSelection()
     const { clipBoard, setClipBoard, handleCutCopy, handlePasting } = useClipBoard()
@@ -64,14 +64,18 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
             title: t("changeView"),
             onClick: () => setShowViewOptions((prev) => !prev),
         },
-        {
-            icon: <FiRefreshCw size={16} />,
-            title: t("refresh"),
-            onClick: () => {
-                validateApiCallback(onRefresh, "onRefresh");
-                setClipBoard(null);
-            },
-        }
+        ...(showRefresh ?
+            [{
+                icon: <FiRefreshCw size={16} />,
+                title: t("refresh"),
+                onClick: () => {
+                    validateApiCallback(onRefresh, "onRefresh");
+                    setClipBoard(null);
+                }
+            }]
+            :
+            []
+        )
     ]
 
     function handleFilePasting() {
@@ -155,11 +159,28 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
         }
     }
 
+    const onSelectChange = (change) => {
+        switch (change) {
+            case 'all':
+                setSelectedFiles(currentPathFiles)
+                break
+            case 'none':
+                setSelectedFiles([])
+                break
+            case 'invert':
+                let result=[]
+                for(let f of currentPathFiles)
+                    if (!selectedFiles.includes(f)) result.push(f)
+                setSelectedFiles(result)
+                break
+        }
+    }
+
     const renderRightItems = () => {
         return <>
             {toolbarRightItems.map((rightItem, index) => (
                 <div key={index} className="toolbar-left-items">
-                    <button className="item-action icon-only file-action" title={rightItem.title} onClick={rightItem.onClick}>
+                    <button className="item-action icon-only file-action" style={{height:'32px'}} title={rightItem.title} onClick={rightItem.onClick}>
                         {rightItem.icon}
                     </button>
                     {index !== toolbarRightItems.length - 1 && <div className="item-separator"></div>}
@@ -171,6 +192,7 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
                     setShowViewOptionsMenu={setShowViewOptions}
                     onLayoutChange={onLayoutChange}
                     onNavigationPaneChange={onNavigationPaneChange}
+                    onSelectChange={onSelectChange}
                 />
             )}
         </>

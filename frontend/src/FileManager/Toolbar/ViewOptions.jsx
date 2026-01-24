@@ -1,11 +1,11 @@
 import { BsGridFill } from "react-icons/bs"
-import { FaCheck, FaListUl, FaWindowMinimize, FaRegSquareCheck, FaFolderTree } from "react-icons/fa6"
+import { FaCheck, FaListUl, FaList, FaBars, FaWindowMinimize, FaRegSquareCheck, FaFolderTree, FaListCheck } from "react-icons/fa6"
 import { useDetectOutsideClick } from "../../hooks/useDetectOutsideClick"
 import { useLayout } from "../../contexts/LayoutContext"
 import { useTranslation } from "../../contexts/TranslationProvider"
 import { useOptions } from '../../contexts/OptionsContext'
 
-const ViewOptions = ({ setShowViewOptionsMenu, onLayoutChange, onNavigationPaneChange }) => {
+const ViewOptions = ({ setShowViewOptionsMenu, onLayoutChange, onNavigationPaneChange, onSelectChange }) => {
   const viewOptionsRef = useDetectOutsideClick(() => {
       setShowViewOptionsMenu(false)
   })
@@ -46,7 +46,26 @@ const ViewOptions = ({ setShowViewOptionsMenu, onLayoutChange, onNavigationPaneC
         name: 'Folder tree',
         icon: <FaFolderTree size={18} />,
         checked: options.folderTree
-    }
+    },
+    {
+        key: "divider2",
+    },
+    {
+        key: "selectall",
+        name: 'Select all',
+        icon: <FaList size={18} />,
+    },
+    {
+        key: "selectnone",
+        name: 'Select none',
+        icon: <FaBars size={18} />,
+    },
+    {
+        key: "invertselection",
+        name: 'Invert selection',
+        icon: <FaListCheck size={18} />,
+    },
+
   ]
 
   const handleSelection = (key) => {
@@ -66,6 +85,15 @@ const ViewOptions = ({ setShowViewOptionsMenu, onLayoutChange, onNavigationPaneC
             onNavigationPaneChange(!options.folderTree)
             toggleFolderTree()
             break
+        case 'selectall':
+            onSelectChange('all')
+            break
+        case 'selectnone':
+            onSelectChange('none')
+            break
+        case 'invertselection':
+            onSelectChange('invert')
+            break
     }
     setShowViewOptionsMenu(false)
   }
@@ -74,7 +102,7 @@ const ViewOptions = ({ setShowViewOptionsMenu, onLayoutChange, onNavigationPaneC
     <div ref={viewOptionsRef.ref} className="toggle-view" role="dropdown">
         <ul role="menu" aria-orientation="vertical">
             {viewOptions.map((option) => 
-                option.key==='divider'?
+                option.key.startsWith('divider')?
                 <div key={option.key} className="divider" style={{boderTop:0, borderLeft:0, borderRight:0, borderWidth:1, borderColor: '#c4c4c4', borderBottom:0, borderStyle:'solid'}}></div>
                 :
                 <li role="menuitem" key={option.key} onClick={() => handleSelection(option.key)} onKeyDown={() => handleSelection(option.key)} >

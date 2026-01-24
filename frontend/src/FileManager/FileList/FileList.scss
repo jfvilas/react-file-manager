@@ -14,7 +14,8 @@
   border-right:0;
   border-bottom:1px;
   @include overflow-y-scroll;
-  padding-right: 4px;
+  //padding-right: 4px;
+  padding-right: 0px;
   font-size: $fm-font-size;
 
   .drag-move-tooltip {
@@ -145,7 +146,7 @@
     font-size: 0.83em;
     font-weight: 600;
     display: flex;
-    gap: 5px;
+    //gap: 5px;
     border-top: 1px solid #dddddd;
     //border-bottom: 1px solid #dddddd;
     padding: 4px 0 4px 5px;

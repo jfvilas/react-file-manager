@@ -63,15 +63,20 @@ const FileManager = ({
     defaultNavExpanded = true,
     className = "",
     style = {},
-    search = 'auto',  // 'visible', hidden'
+    searchMode = 'auto',  // 'visible', hidden'
     searchRegex = false,
     searchCasing = false,
+    showRefresh = true,
+    showContextMenu = true,
+    breadCrumb = true,
+    categories = undefined,
+    onCategoryFilter = undefined,
     formatDate = defaultFormatDate
     }) => {
 
-    const [filter, setFilter] = useState('')
-    const [filterRegex, setFilterRegex] = useState(false)
-    const [filterCasing, setFilterCasing] = useState(false)
+    const [srchText, setSrchText] = useState('')
+    const [srchRegex, setSrchRegex] = useState(false)
+    const [srchCasing, setSrchCasing] = useState(false)
     const [isNavigationPaneOpen, onNavigationPaneChange] = useState(defaultNavExpanded)
     const triggerAction = useTriggerAction()
     const { containerRef, colSizes, isDragging, handleMouseMove, handleMouseUp, handleMouseDown } = useColumnResize(20, 80)
@@ -82,10 +87,10 @@ const FileManager = ({
         width
     }
 
-    const updateFilter = (f, regex, casing) => {
-        setFilter(f)
-        setFilterRegex(regex)
-        setFilterCasing(casing)
+    const updateSearchText = (f, regex, casing) => {
+        setSrchText(f)
+        setSrchRegex(regex)
+        setSrchCasing(casing)
     }
     
     const permissions = useMemo(
@@ -154,6 +159,7 @@ const FileManager = ({
                         permissions={permissions}
                         onNavigationPaneChange={onNavigationPaneChange}
                         spaces={spaces}
+                        showRefresh={showRefresh}
                       />
                       <section
                         ref={containerRef}
@@ -183,10 +189,14 @@ const FileManager = ({
                             isNavigationPaneOpen={isNavigationPaneOpen}
                             onNavigationPaneChange={onNavigationPaneChange}
                             tirggerAction={triggerAction}
-                            onSearchUpdated={updateFilter}
-                            search={search}
-                            searchRegex={searchRegex}
-                            searchCasing={searchCasing}
+                            onSearchUpdated={updateSearchText}
+                            showBreadCrumb={breadCrumb}
+                            searchMode={searchMode}
+                            searchText={srchText}
+                            searchRegex={srchRegex}
+                            searchCasing={srchCasing}
+                            categories={categories}
+                            fontFamily={fontFamily}
                           />
                             <FileList
                               actions={actions}
@@ -201,9 +211,12 @@ const FileManager = ({
                               triggerAction={triggerAction}
                               permissions={permissions}
                               formatDate={formatDate}
-                              filter={filter}
-                              filterRegex={filterRegex}
-                              filterCasing={filterCasing}
+                              searchText={srchText}
+                              searchRegex={searchRegex}
+                              searchCasing={searchCasing}
+                              showContextMenu={showContextMenu}
+                              selectedCategories={categories.selected}
+                              onCategoryFilter={onCategoryFilter}
                             />
                         </div>
                       </section>

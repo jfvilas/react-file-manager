@@ -245,7 +245,7 @@ const FileItem = ({
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
         >
-            <div className="file-item" style={{ paddingLeft: options.checkBox? '33px':'12px', width:activeLayout==='list'?`calc(${spaces.get(space).width}% - 45px)`:''}}>
+            <div className="file-item" style={{ paddingRight:0, paddingLeft: options.checkBox? '33px':'12px', width:activeLayout==='list'?`calc(${spaces.get(space).width}% - 34px)`:''}}>
                 { !file.isEditing && options.checkBox && (
                     <Checkbox
                         name={file.name}
@@ -257,20 +257,29 @@ const FileItem = ({
                     />)
                 }
 
-                { file.isDirectory ? (
-                    file.class && icons && icons.get(file.class)?
-                        (activeLayout === "grid"? icons.get(file.class).grid : icons.get(file.class).list) || <FaFolder size={iconSize}/>
-                        :
-                        <FaRegFolderOpen size={iconSize} />
-                    )
-                    : 
-                    (
+                <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    flexShrink: 0,      // force fixed size icon
+                    width: iconSize,    
+                    minWidth: iconSize
+                }}>
+                    { file.isDirectory ? (
                         file.class && icons && icons.get(file.class)?
-                            React.cloneElement(icons.get(file.class).open || icons.get(file.class).default, {height:40})
-                            :          
-                            <> {fileIcons[file.name?.split(".").pop()?.toLowerCase()] ?? <FaRegFile size={iconSize} />} </>
-                    )
-                }
+                            (activeLayout === "grid"? icons.get(file.class).grid : icons.get(file.class).list) || <FaFolder size={iconSize}/>
+                            :
+                            <FaRegFolderOpen size={iconSize} />
+                        )
+                        : 
+                        (
+                            file.class && icons && icons.get(file.class)?
+                                React.cloneElement(icons.get(file.class).open || icons.get(file.class).default, {height:40})
+                                :          
+                                <> {fileIcons[file.name?.split(".").pop()?.toLowerCase()] ?? <FaRegFile size={iconSize} />} </>
+                        )
+                    }
+                </div>
 
                 { file.isEditing ? (
                         <div className={`rename-file-container ${activeLayout}`}>
@@ -312,12 +321,13 @@ const FileItem = ({
                                 break
                             case 'function':
                                 content='n/a'
-                                if (property.source && typeof property.source === 'function') content = property.source(file)
+                                if (property.source && typeof property.source === 'function') content = property.source(file.path)
                                 break
                         }
                     }
                     return (
-                        <div key={property.name} className='text-truncate' style={{display:'flex', width: property.width+'%', fontSize:'0.8em', alignItems:'center', textAlign:'left'}}>{content}</div>
+                        // <div key={property.name} className='text-truncate' style={{display:'flex', width: property.width+'%', fontSize:'0.8em', alignItems:'center', textAlign:'left'}}>{content}</div>
+                        <div key={property.name} className='text-truncate' style={{display:'flex', width: (property.width)+'%', fontSize:'0.8em', alignItems:'center', textAlign:'left'}}>{content}</div>
                     )
                 })}
                 </>
@@ -332,7 +342,7 @@ const FileItem = ({
 
             <div ref={dragIconRef} className="drag-icon">
                 {file.isDirectory ? (
-                <FaRegFolderOpen size={dragIconSize} />
+                    <FaRegFolderOpen size={dragIconSize} />
                 ) : (
                 <>
                     {dragIcons[file.name?.split(".").pop()?.toLowerCase()] ?? (

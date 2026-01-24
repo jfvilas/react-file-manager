@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import './SearchInput.scss'
 
-const SearchInput = ({ onFilterChange, searchRegex, searchCasing }) => {
+const SearchInput = ({ onFilterChange, searchText, searchRegex, searchCasing }) => {
     const inputRef = useRef(null)
     const [filterRegex, setFilterRegex] = useState(false)
     const [filterCasing, setFilterCasing] = useState(false)
@@ -14,6 +14,7 @@ const SearchInput = ({ onFilterChange, searchRegex, searchCasing }) => {
         onFilterChange(inputRef.current.value, !filterRegex, filterCasing)
         setFilterRegex(!filterRegex)
     }
+
     const clickCasing = () => {
         onFilterChange(inputRef.current.value, filterRegex, !filterCasing)
         setFilterCasing(!filterCasing)
@@ -24,6 +25,7 @@ const SearchInput = ({ onFilterChange, searchRegex, searchCasing }) => {
             <input 
                 ref={inputRef}
                 placeholder='Search...'
+                defaultValue={searchText}
                 className='search-input'
                 onFocus={(e) => e.target.placeholder = ""}
                 onBlur={

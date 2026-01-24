@@ -15,6 +15,6 @@ const getSizeUnits = (space,size) => {
 
 export const getObjectSize = (space,size) => {
     let sizeUnits = getSizeUnits(space, size)
-    return sizeUnits.size +' ' + sizeUnits.units
+    return sizeUnits.size + ' ' + sizeUnits.units
 }
              

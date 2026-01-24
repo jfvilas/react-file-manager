@@ -1,22 +1,23 @@
-import { useEffect, useRef, useState } from "react";
-import PropTypes from "prop-types";
-import { MdHome, MdMoreHoriz, MdOutlineNavigateNext } from "react-icons/md";
-import { TbLayoutSidebarLeftExpand, TbLayoutSidebarLeftCollapseFilled } from "react-icons/tb";
-import { useFileNavigation } from "../../contexts/FileNavigationContext";
-import { useDetectOutsideClick } from "../../hooks/useDetectOutsideClick";
-import { useTranslation } from "../../contexts/TranslationProvider";
-import "./BreadCrumb.scss";
-import SearchInput from "../../components/SearchInput/SearchInput"
+import { useEffect, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
+import { MdHome, MdMoreHoriz, MdOutlineNavigateNext } from 'react-icons/md'
+import { TbLayoutSidebarLeftExpand, TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb'
+import { useFileNavigation } from '../../contexts/FileNavigationContext'
+import { useDetectOutsideClick } from '../../hooks/useDetectOutsideClick'
+import { useTranslation } from '../../contexts/TranslationProvider'
+import './BreadCrumb.scss'
+import SearchInput from '../../components/SearchInput/SearchInput'
+import CategoriesFilter from '../../components/CategoriesFilter/CategoriesFilter'
 
-const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChange, onSearchUpdated: onFilterChange, search, searchRegex, searchCasing }) => {
-    const [folders, setFolders] = useState([]);
-    const [hiddenFolders, setHiddenFolders] = useState([]);
-    const [hiddenFoldersWidth, setHiddenFoldersWidth] = useState([]);
-    const [showHiddenFolders, setShowHiddenFolders] = useState(false);
-    const { currentPathFiles, currentPath, setCurrentPath, onFolderChange } = useFileNavigation();
-    const breadCrumbRef = useRef(null);
-    const foldersRef = useRef([]);
-    const moreBtnRef = useRef(null);
+const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChange, onSearchUpdated: onFilterChange, searchMode, searchText, searchRegex, searchCasing, showBreadCrumb, categories, fontFamily }) => {
+    const [folders, setFolders] = useState([])
+    const [hiddenFolders, setHiddenFolders] = useState([])
+    const [hiddenFoldersWidth, setHiddenFoldersWidth] = useState([])
+    const [showHiddenFolders, setShowHiddenFolders] = useState(false)
+    const { currentPathFiles, currentPath, setCurrentPath, onFolderChange } = useFileNavigation()
+    const breadCrumbRef = useRef(null)
+    const foldersRef = useRef([])
+    const moreBtnRef = useRef(null)
     const popoverRef = useDetectOutsideClick(() => {
       setShowHiddenFolders(false)
     })
@@ -25,36 +26,36 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChan
 
     useEffect(() => {
       setFolders(() => {
-        let path = "";
-        return currentPath?.split("/").map((item) => {
+        let path = ''
+        return currentPath?.split('/').map((item) => {
           return {
-            name: item || t("home"),
-            path: item === "" ? item : (path += `/${item}`),
-          };
-        });
-      });
-      setHiddenFolders([]);
-      setHiddenFoldersWidth([]);
-    }, [currentPath, t]);
+            name: item || t('home'),
+            path: item === '' ? item : (path += `/${item}`),
+          }
+        })
+      })
+      setHiddenFolders([])
+      setHiddenFoldersWidth([])
+    }, [currentPath, t])
 
     const switchPath = (path) => {
-      setCurrentPath(path);
-      onFolderChange?.(path);
-    };
+      setCurrentPath(path)
+      onFolderChange?.(path)
+    }
 
     const getBreadCrumbWidth = () => {
-      const containerWidth = breadCrumbRef.current.clientWidth;
-      const containerStyles = getComputedStyle(breadCrumbRef.current);
-      const paddingLeft = parseFloat(containerStyles.paddingLeft);
-      const navTogglerGap = collapsibleNav ? 2 : 0;
-      const navTogglerDividerWidth = 1;
+      const containerWidth = breadCrumbRef.current.clientWidth
+      const containerStyles = getComputedStyle(breadCrumbRef.current)
+      const paddingLeft = parseFloat(containerStyles.paddingLeft)
+      const navTogglerGap = collapsibleNav ? 2 : 0
+      const navTogglerDividerWidth = 1
       const navTogglerWidth = collapsibleNav
         ? navTogglerRef.current?.clientWidth + navTogglerDividerWidth
-        : 0;
-      const moreBtnGap = hiddenFolders.length > 0 ? 1 : 0;
-      const flexGap = parseFloat(containerStyles.gap) * (folders.length + moreBtnGap + navTogglerGap);
-      return containerWidth - (paddingLeft + flexGap + navTogglerWidth);
-    };
+        : 0
+      const moreBtnGap = hiddenFolders.length > 0 ? 1 : 0
+      const flexGap = parseFloat(containerStyles.gap) * (folders.length + moreBtnGap + navTogglerGap)
+      return containerWidth - (paddingLeft + flexGap + navTogglerWidth)
+    }
 
     const checkAvailableSpace = () => {
       const availableSpace = getBreadCrumbWidth() - 200    // witdh of search input
@@ -72,33 +73,33 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChan
 
     useEffect(() => {
       if (isBreadCrumbOverflowing()) {
-        const hiddenFolder = folders[1];
-        const hiddenFolderWidth = foldersRef.current[1]?.clientWidth;
-        setHiddenFoldersWidth((prev) => [...prev, hiddenFolderWidth]);
-        setHiddenFolders((prev) => [...prev, hiddenFolder]);
-        setFolders((prev) => prev.filter((_, index) => index !== 1));
+        const hiddenFolder = folders[1]
+        const hiddenFolderWidth = foldersRef.current[1]?.clientWidth
+        setHiddenFoldersWidth((prev) => [...prev, hiddenFolderWidth])
+        setHiddenFolders((prev) => [...prev, hiddenFolder])
+        setFolders((prev) => prev.filter((_, index) => index !== 1))
       }
       else if (hiddenFolders.length > 0 && checkAvailableSpace() > hiddenFoldersWidth.at(-1)) {
         const newFolders = [folders[0], hiddenFolders.at(-1), ...folders.slice(1)]
         setFolders(newFolders)
-        setHiddenFolders((prev) => prev.slice(0, -1));
-        setHiddenFoldersWidth((prev) => prev.slice(0, -1));
+        setHiddenFolders((prev) => prev.slice(0, -1))
+        setHiddenFoldersWidth((prev) => prev.slice(0, -1))
       }
-    }, [isBreadCrumbOverflowing]);
+    }, [isBreadCrumbOverflowing])
 
     return (
-        <div className="bread-crumb-container">
-            <div className="breadcrumb" ref={breadCrumbRef}>
+        <div className='bread-crumb-container'>
+            <div className='breadcrumb' ref={breadCrumbRef}>
                 {collapsibleNav && (<>
                     <div
                         ref={navTogglerRef}
-                        className="nav-toggler"
+                        className='nav-toggler'
                         title={`${
-                        isNavigationPaneOpen ? t("collapseNavigationPane") : t("expandNavigationPane")
+                        isNavigationPaneOpen ? t('collapseNavigationPane') : t('expandNavigationPane')
                         }`}
                     >
                         <span
-                        className="folder-name folder-name-btn"
+                        className='folder-name folder-name-btn'
                         onClick={() => onNavigationPaneChange((prev) => !prev)}
                         >
                         {isNavigationPaneOpen ? (
@@ -108,13 +109,14 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChan
                         )}
                         </span>
                     </div>
-                    <div className="divider" />
+                    <div className='divider' />
                     </>)
                 }
-                {folders.map((folder, index) => (
-                    <div key={index} style={{ display: "contents" }}>
+
+                {showBreadCrumb && folders.map((folder, index) => (
+                    <div key={index} style={{ display: 'contents' }}>
                         <span
-                            className="folder-name"
+                            className='folder-name'
                             onClick={() => switchPath(folder.path)}
                             ref={(el) => (foldersRef.current[index] = el)}
                         >
@@ -123,30 +125,35 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChan
                         </span>
                         {hiddenFolders?.length > 0 && index === 0 && (
                             <button
-                            className="folder-name folder-name-btn"
+                            className='folder-name folder-name-btn'
                             onClick={() => setShowHiddenFolders(true)}
                             ref={moreBtnRef}
-                            title={t("showMoreFolder")}
+                            title={t('showMoreFolder')}
                             >
-                            <MdMoreHoriz size={22} className="hidden-folders" />
+                            <MdMoreHoriz size={22} className='hidden-folders' />
                             </button>
                         )}
                     </div>
                 ))}
+
+                {categories!==undefined && 
+                  <CategoriesFilter categories={categories} fontFamily={fontFamily}/>
+                }
+
                 <span style={{flexGrow: 1, flexShrink: 1, minWidth: 0}}></span>
                 {
-                    ((search==='auto' && currentPathFiles.length>0)||search==='visible') && <SearchInput onFilterChange={onFilterChange} searchRegex={searchRegex} searchCasing={searchCasing}/>
+                  ((searchMode==='auto' && currentPathFiles.length>0)||searchMode==='visible') && <SearchInput onFilterChange={onFilterChange} searchText={searchText} searchRegex={searchRegex} searchCasing={searchCasing}/>
                 }
             </div>
 
             {showHiddenFolders && (
-            <ul ref={popoverRef.ref} className="hidden-folders-container">
+            <ul ref={popoverRef.ref} className='hidden-folders-container'>
                 {hiddenFolders.map((folder, index) => (
                 <li
                     key={index}
                     onClick={() => {
-                    switchPath(folder.path);
-                    setShowHiddenFolders(false);
+                    switchPath(folder.path)
+                    setShowHiddenFolders(false)
                     }}
                 >
                     {folder.name}
@@ -158,7 +165,7 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChan
     )
 }
 
-BreadCrumb.displayName = "BreadCrumb"
+BreadCrumb.displayName = 'BreadCrumb'
 
 BreadCrumb.propTypes = {
     isNavigationPaneOpen: PropTypes.bool.isRequired,

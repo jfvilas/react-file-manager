@@ -1,9 +1,9 @@
-import { useMemo, useState } from "react"
-import Checkbox from "../../components/Checkbox/Checkbox"
-import { useFileNavigation } from "../../contexts/FileNavigationContext"
-import { useSelection } from "../../contexts/SelectionContext"
-import { useTranslation } from "../../contexts/TranslationProvider"
-import { useOptions } from "../../contexts/OptionsContext"
+import { useMemo, useState } from 'react'
+import Checkbox from '../../components/Checkbox/Checkbox'
+import { useFileNavigation } from '../../contexts/FileNavigationContext'
+import { useSelection } from '../../contexts/SelectionContext'
+import { useTranslation } from '../../contexts/TranslationProvider'
+import { useOptions } from '../../contexts/OptionsContext'
 
 const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig }) => {
     const t = useTranslation()
@@ -31,15 +31,15 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig }) => {
     }
 
     return (
-        <div className="files-header" onMouseOver={() => setShowSelectAll(true)} onMouseLeave={() => setShowSelectAll(false)} >
+        <div className='files-header' onMouseOver={() => setShowSelectAll(true)} onMouseLeave={() => setShowSelectAll(false)} >
             {
-                options.checkBox && <div className="file-select-all">
+                options.checkBox && <div className='file-select-all'>
                     {(showSelectAll || allFilesSelected) && (
                     <Checkbox
-                        id="selectAll"
+                        id='selectAll'
                         checked={allFilesSelected}
                         onChange={handleSelectAll}
-                        title="Select all"
+                        title='Select all'
                         disabled={currentPathFiles.length === 0}
                     />
                     )}
@@ -48,16 +48,16 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig }) => {
             <div className={`${sortConfig?.key === 'name' ? 'active' : ''}`} style={{ width: `calc(${spaces.get(space)?.width||10}% - 60px)`, paddingLeft: options.checkBox? '15px':'35px'}} onClick={() => handleSort('name')}>
                 {spaces.get(space)?.text||''}
                 {sortConfig?.key === 'name' && (
-                    <span className="sort-indicator">{sortConfig.direction === "asc" ? " ▲" : " ▼"}</span>
+                    <span className='sort-indicator'>{sortConfig.direction === 'asc' ? ' ▲' : ' ▼'}</span>
                 )}
             </div>
 
             { spaces.get(space)?.properties.filter(p => p.visible).map((property) => {
                 return (
-                    <div key={property.name} className={`${sortConfig?.key === property.name ? 'active' : ''}`} style={{ width: `calc(${property.width}%)`, paddingLeft:0}} onClick={() => handleSort(property.name)}>
+                    <div key={property.name} className={`${sortConfig?.key === property.name ? 'active' : ''}`} style={{ width: `calc(${property.width}%)`}} onClick={() => handleSort(property.name)}>
                         {property.text}
                         {sortConfig?.key === property.name && (
-                        <span className="sort-indicator">{sortConfig.direction === "asc" ? " ▲" : " ▼"}</span>
+                            <span className='sort-indicator'>{sortConfig.direction === 'asc' ? ' ▲' : ' ▼'}</span>
                         )}
                     </div>
                 )
