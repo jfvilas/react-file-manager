@@ -149,7 +149,7 @@ declare module '@jfvilas/react-file-manager' {
         searchCasing?: boolean,
         showRefresh?: boolean,
         showContextMenu?: boolean,
-        categories?: ICategories,
+        categories?: ICategory[],
         formatDate? : string | number
     }>  
   
