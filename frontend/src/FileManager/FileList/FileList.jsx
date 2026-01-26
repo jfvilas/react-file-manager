@@ -1,15 +1,16 @@
-import { useRef } from "react"
-import FileItem from "./FileItem"
-import { useFileNavigation } from "../../contexts/FileNavigationContext"
-import { useLayout } from "../../contexts/LayoutContext"
-import { useOptions } from "../../contexts/OptionsContext"
-import ContextMenu from "../../components/ContextMenu/ContextMenu"
-import { useDetectOutsideClick } from "../../hooks/useDetectOutsideClick"
-import useFileList from "./useFileList"
-import FilesHeader from "./FilesHeader"
-import { useTranslation } from "../../contexts/TranslationProvider"
+import { useRef } from 'react'
+import FileItem from './FileItem'
+import { useFileNavigation } from '../../contexts/FileNavigationContext'
+import { useLayout } from '../../contexts/LayoutContext'
+import { useOptions } from '../../contexts/OptionsContext'
+import ContextMenu from '../../components/ContextMenu/ContextMenu'
+import { useDetectOutsideClick } from '../../hooks/useDetectOutsideClick'
+import useFileList from './useFileList'
+import FilesHeader from './FilesHeader'
+import { useTranslation } from '../../contexts/TranslationProvider'
 import { getObjectSize } from '../../utils/getObjectSize'
-import "./FileList.scss"
+import './FileList.scss'
+import { applySearchText, applyCategories } from '../../utils/filters'
 
 const FileList = ({
     actions,
@@ -19,8 +20,7 @@ const FileList = ({
     searchText,
     searchRegex,
     searchCasing,
-    selectedCategories,
-    onCategoryFilter,
+    categories,
     onCreateFolder,
     onRename,
     onFileOpen,
@@ -57,48 +57,9 @@ const FileList = ({
 
     const contextMenuRef = useDetectOutsideClick(() => setVisible(false))
 
-    const applySearchText = (f) => {
-        if (searchText!=='') {
-            if (searchCasing) {
-                if (searchRegex) {
-                    try {
-                        const regex=new RegExp(searchText)
-                        if (!regex.test(f.name)) return false
-                    }
-                    catch { return false }
-                }
-                else {
-                    if (!f.name.includes(searchText)) return false
-                }
-            }
-            else {
-                if (searchRegex) {
-                    try {
-                        const regex=new RegExp(searchText.toLocaleLowerCase())
-                        if (!regex.test(f.name.toLocaleLowerCase())) return false
-                    }
-                    catch { 
-                        return false 
-                    }
-                }
-                else {
-                    if (!f.name.toLocaleLowerCase().includes(searchText.toLowerCase())) return false
-                }
-            }
-        }
-        return true
-    }
-
-    const applyCategory = (f) => {
-        if (onCategoryFilter) {
-            return onCategoryFilter(f, selectedCategories)
-        }
-        return true
-    }
-
     const handleSort = (key) => {
-        let direction = "asc"
-        if (sortConfig.key === key && sortConfig.direction === "asc") direction = "desc"
+        let direction = 'asc'
+        if (sortConfig.key === key && sortConfig.direction === 'asc') direction = 'desc'
         setSortConfig({ key, direction })
     }
 
@@ -140,7 +101,7 @@ const FileList = ({
     const renderStatusBar = () => {
         if (!options.statusBar) return <></>
 
-        let list = currentPathFiles.filter (sf => applySearchText(sf))
+        let list = currentPathFiles.filter (sf => applySearchText(sf, searchText, searchRegex, searchCasing))
         let text=list.length + ' Items'
         if (selectedFileIndexes.length>0) {
             text+= '\u00A0\u00A0\u00A0\u00A0' + selectedFileIndexes.length +'\u00A0items selected'
@@ -152,7 +113,7 @@ const FileList = ({
         }
 
         return (
-            <div className="statusbar" style={{...(!options.folderTree? {borderBottomLeftRadius: '8px'} : {})}}>{text}</div>
+            <div className='statusbar' style={{...(!options.folderTree? {borderBottomLeftRadius: '8px'} : {})}}>{text}</div>
         )
     }
 
@@ -167,7 +128,7 @@ const FileList = ({
         {
             <>
                 <div className='files list' style={{paddingRight:0}}>
-                    {activeLayout === "list" && (
+                    {activeLayout === 'list' && (
                         <FilesHeader space={space} spaces={spaces} unselectFiles={unselectFiles} onSort={handleSort} sortConfig={sortConfig} />
                     )}
                 </div>
@@ -183,13 +144,19 @@ const FileList = ({
                     {currentPathFiles?.length > 0 ? (
                         <>
                             {currentPathFiles.map((file, index) => (
-                                applySearchText(file) && applyCategory(file) && <FileItem
+                                applySearchText(file, searchText, searchRegex, searchCasing) && 
+                                applyCategories(file, categories, currentFolder.categories) &&
+                                <FileItem
                                     key={index}
                                     space={space}
                                     spaces={spaces}
                                     icons={icons}
                                     index={index}
                                     file={file}
+                                    searchText={searchText}
+                                    searchRegex={searchRegex}
+                                    searchCasing={searchCasing}
+                                    categories={categories}
                                     onCreateFolder={onCreateFolder}
                                     onRename={onRename}
                                     onFileOpen={onFileOpen}
@@ -208,7 +175,7 @@ const FileList = ({
                     )
                     :
                     (
-                        <div className="empty-folder">{t("folderEmpty")}</div>
+                        <div className='empty-folder'>{t('folderEmpty')}</div>
                     )}
 
                     { showContextMenu && <ContextMenu
@@ -227,6 +194,6 @@ const FileList = ({
     }
 }
 
-FileList.displayName = "FileList";
+FileList.displayName = 'FileList';
 
 export default FileList;

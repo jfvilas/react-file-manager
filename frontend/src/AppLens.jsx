@@ -28,18 +28,49 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [currentPath, setCurrentPath] = useState("");
     const isMountRef = useRef(false);
-    const [ categories, setCategories ] = useState(
+
+    const onCategoryValuesChange = (categoryKey, categoryValue, selected) => {
+        let cat = categories.find(c => c.key===categoryKey)
+
+        if (categoryValue==='all') selected=['all']
+        else if (categoryValue!=='all' && selected.length===2 && selected.includes('all')) selected=selected.filter(f => f!=='all')
+        else if (selected.length===0) selected=['all']
+
+        cat.selected = selected
+        setCategories ([ ...categories ])
+    }
+    
+    const onCategoryFilter = (categoryKey, f) => {
+        let cat = categories.find(c => c.key===categoryKey)
+        let valid = cat.selected.includes('all') || cat.selected.some(cat => f.name.includes(cat))
+        return valid
+    }
+
+    const isFilterActive = (categoryKey) => {
+        let cat = categories.find(c => c.key===categoryKey)
+        return !(cat.selected.length===1 && cat.selected[0]==='all')
+    }
+
+    const [ categories, setCategories ] = useState([
         {
+            key:'namespace',
             text: 'Namespaces',
-            all: [ {key:'all',text:'All...'}, {key:'-'}, {key:'default'}, {key:'kube-system'}, {key:'kube-public'}, {key:'custom'}, {key:'login', text:'Login'} ],
+            all: [ {key:'all',text:'All...'}, {key:'-'}, {key:'default'}, {key:'kube-system'}, {key:'kube-public'}, {key:'u', text:'u'}, {key:'login', text:'Login'} ],
             selected: ['all'],
-            onCategoriesChange: (selected) => {
-                if (selected.length===0) selected=['all']
-                categories.selected = selected
-                setCategories ({ ...categories })
-            }
+            onCategoryValuesChange: onCategoryValuesChange,
+            onCategoryFilter: onCategoryFilter,
+            isFilterActive: isFilterActive
+        },
+        {
+            key:'controller',
+            text: 'Controller',
+            all: [ {key:'all',text:'All...'}, {key:'replicaset'}, {key:'daemonset'}, {key:'replicationcontroller'}, {key:'statefulset'}, {key:'deployment'} ],
+            selected: ['all'],
+            onCategoryValuesChange: onCategoryValuesChange,
+            onCategoryFilter: onCategoryFilter,
+            isFilterActive: isFilterActive
         }
-    )
+    ])
 
     const showPodContainers = (f) => {
         if (!f) return <></>
@@ -99,6 +130,8 @@ let menu = [
         path: "/network/service",
         layout: 'list',  
         class: 'classservice',
+        categories: [ 'namespace' ],
+        features: [ ],
         children: 'service'
     },
     {
@@ -128,6 +161,8 @@ let menu = [
         isDirectory: true,
         path: "/workload/pod",
         layout: 'list',  
+        categories: [ 'namespace', 'controller' ],
+        features: [ 'search'],
         class: 'classmenu',
         children: 'pod'
     },
@@ -617,12 +652,6 @@ let sampleFiles = [
     let icons = new Map()
     const actions = new Map()
 
-    const onCategoryFilter = (a,b) => {
-        console.log(a)
-        console.log(b)
-        return b.includes('all') || b.some(cat => a.name.includes(cat))
-    }
-
     return (
         <div className="app">
             <div className="file-manager-container">
@@ -630,9 +659,6 @@ let sampleFiles = [
                     actions={actions}
                     files={files}
                     spaces={spaces}
-                    search='auto'
-                    searchRegex={true}
-                    searchCasing={true}
                     fileUploadConfig={fileUploadConfig}
                     fileDownloadConfig={fileDownloadConfig}
                     icons={icons}
@@ -661,11 +687,12 @@ let sampleFiles = [
                     initialPath={'/overview'}
                     permissions={permissions}
                     onFolderChange={setCurrentPath}
+                    search='auto'
+                    searchRegex={true}
+                    searchCasing={true}
                     showRefresh={false}
-                    contextMenu={false}
-                    breadCrumb={false}
+                    showContextMenu={false}
                     categories={categories}
-                    onCategoryFilter={onCategoryFilter}
                 />
             </div>
         </div>

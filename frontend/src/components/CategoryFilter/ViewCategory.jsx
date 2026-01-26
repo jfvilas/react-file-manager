@@ -1,0 +1,48 @@
+import { FaCheck } from 'react-icons/fa6'
+import { useDetectOutsideClick } from '../../hooks/useDetectOutsideClick'
+import { useSelection } from '../../contexts/SelectionContext'
+import { applyFilters } from '../../utils/filters'
+import { useFileNavigation } from "../../contexts/FileNavigationContext"
+
+const ViewCategory = ({ setShowViewCategoryMenu, searchText, searchRegex, searchCasing, categories, category }) => {
+    const { selectedFiles, setSelectedFiles } = useSelection()
+    const { currentFolder } = useFileNavigation()
+
+    const viewCategoryRef = useDetectOutsideClick(() => {
+        setShowViewCategoryMenu(false)
+    })
+
+    const viewCategory = category.all.map(c => { return {
+        key: c.key || c.text,
+        text: c.text || c.key,
+        checked: category.selected.includes(c.key)
+    }})
+
+    const handleSelection = (value) => {
+        setShowViewCategoryMenu(false)
+        if (category.selected.includes(value))
+            category.selected = category.selected.filter(x => x!==value)
+        else
+            category.selected.push(value)
+        category.onCategoryValuesChange(category.key, value, category.selected)
+        setSelectedFiles(applyFilters(selectedFiles, searchText, searchRegex, searchCasing, categories, currentFolder.categories))
+    }
+
+    return (
+        <div ref={viewCategoryRef.ref} className='category-view' role='dropdown'>
+            <ul role='menu' aria-orientation='vertical'>
+                {viewCategory.map((category, index) => 
+                    category.key!=='-'?
+                        <li role='menuitem' key={index} onClick={() => handleSelection(category.key)} onKeyDown={() => handleSelection(category.key)} style={{widtrh:'100%'}}>
+                        <span>{category.checked && <FaCheck size={13} />}</span>
+                        <span>{category.text}</span>
+                    </li>
+                    :
+                    <div key={category.key} className='divider' style={{boderTop:0, borderLeft:0, borderRight:0, borderWidth:1, borderColor: '#c4c4c4', borderBottom:0, borderStyle:'solid'}}></div>
+                )}
+            </ul>
+        </div>
+    )
+}
+
+export { ViewCategory }

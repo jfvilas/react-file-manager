@@ -68,11 +68,9 @@ const FileManager = ({
     searchCasing = false,
     showRefresh = true,
     showContextMenu = true,
-    breadCrumb = true,
     categories = undefined,
-    onCategoryFilter = undefined,
     formatDate = defaultFormatDate
-    }) => {
+  }) => {
 
     const [srchText, setSrchText] = useState('')
     const [srchRegex, setSrchRegex] = useState(false)
@@ -190,7 +188,6 @@ const FileManager = ({
                             onNavigationPaneChange={onNavigationPaneChange}
                             tirggerAction={triggerAction}
                             onSearchUpdated={updateSearchText}
-                            showBreadCrumb={breadCrumb}
                             searchMode={searchMode}
                             searchText={srchText}
                             searchRegex={srchRegex}
@@ -215,8 +212,7 @@ const FileManager = ({
                               searchRegex={searchRegex}
                               searchCasing={searchCasing}
                               showContextMenu={showContextMenu}
-                              selectedCategories={categories.selected}
-                              onCategoryFilter={onCategoryFilter}
+                              categories={categories}
                             />
                         </div>
                       </section>
