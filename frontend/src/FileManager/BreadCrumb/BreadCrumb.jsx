@@ -9,7 +9,7 @@ import './BreadCrumb.scss'
 import SearchInput from '../../components/SearchInput/SearchInput'
 import CategoryFilter from '../../components/CategoryFilter/CategoryFilter'
 
-const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChange, onSearchUpdated: onFilterChange, searchMode, searchText, searchRegex, searchCasing, categories, fontFamily }) => {
+const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChange, onSearchFilterChange, searchMode, searchText, searchRegex, searchCasing, categories, fontFamily, showBreadcrumb }) => {
     const [folders, setFolders] = useState([])
     const [hiddenFolders, setHiddenFolders] = useState([])
     const [hiddenFoldersWidth, setHiddenFoldersWidth] = useState([])
@@ -109,7 +109,7 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChan
                     </>)
                 }
 
-                { currentFolder?.features?.includes('breadcrumb') && folders.map((folder, index) => (
+                { (currentFolder?.features?.includes('breadcrumb') || showBreadcrumb) && folders.map((folder, index) => (
                     <div key={index} style={{ display: 'contents' }}>
                         <span
                             className='folder-name'
@@ -137,8 +137,9 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChan
                 {
                     categories!==undefined  &&
                     (currentPathFiles.length>0) &&
-                    categories.filter(c => currentFolder?.categories?.includes(c.key)).map(c => 
+                    categories.filter(c => currentFolder?.categories?.includes(c.key)).map( (c,index) => 
                         <CategoryFilter
+                            key={index}
                             category={c}
                             fontFamily={fontFamily}
                             searchText={searchText}
@@ -150,7 +151,8 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChan
                 }
 
                 {
-                ((searchMode==='auto' && currentPathFiles.length>0)||searchMode==='visible') && <SearchInput onFilterChange={onFilterChange} searchText={searchText} searchRegex={searchRegex} searchCasing={searchCasing}/>
+                    ((searchMode==='auto' && currentPathFiles.length>0)||searchMode==='visible') &&
+                    <SearchInput onSearchFilterChange={onSearchFilterChange} searchText={searchText} searchRegex={searchRegex} searchCasing={searchCasing} categories={categories}/>
                 }
             </div>
 
@@ -178,7 +180,15 @@ BreadCrumb.displayName = 'BreadCrumb'
 BreadCrumb.propTypes = {
     isNavigationPaneOpen: PropTypes.bool.isRequired,
     onNavigationPaneChange: PropTypes.func.isRequired,
-    onSearchUpdated: PropTypes.func.isRequired,
+    onSearchFilterChange: PropTypes.func.isRequired,
+    collapsibleNav: PropTypes.bool,
+    searchMode: PropTypes.string.isRequired,
+    searchText: PropTypes.string,
+    searchRegex: PropTypes.bool,
+    searchCasing: PropTypes.bool,
+    fontFamily: PropTypes.string.isRequired,
+    showBreadcrumb: PropTypes.bool.isRequired
+    //categories
 }
 
 export default BreadCrumb

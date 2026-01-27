@@ -143,7 +143,7 @@ const FileList = ({
 
                     {currentPathFiles?.length > 0 ? (
                         <>
-                            {currentPathFiles.map((file, index) => (
+                            {currentFolder && currentPathFiles.map((file, index) => (
                                 applySearchText(file, searchText, searchRegex, searchCasing) && 
                                 applyCategories(file, categories, currentFolder.categories) &&
                                 <FileItem

@@ -69,6 +69,7 @@ const FileManager = ({
     showRefresh = true,
     showContextMenu = true,
     categories = undefined,
+    showBreadcrumb = false,
     formatDate = defaultFormatDate
   }) => {
 
@@ -85,7 +86,7 @@ const FileManager = ({
         width
     }
 
-    const updateSearchText = (f, regex, casing) => {
+    const onSearchFilterChange = (f, regex, casing) => {
         setSrchText(f)
         setSrchRegex(regex)
         setSrchCasing(casing)
@@ -187,13 +188,14 @@ const FileManager = ({
                             isNavigationPaneOpen={isNavigationPaneOpen}
                             onNavigationPaneChange={onNavigationPaneChange}
                             tirggerAction={triggerAction}
-                            onSearchUpdated={updateSearchText}
+                            onSearchFilterChange={onSearchFilterChange}
                             searchMode={searchMode}
                             searchText={srchText}
                             searchRegex={srchRegex}
                             searchCasing={srchCasing}
                             categories={categories}
                             fontFamily={fontFamily}
+                            showBreadcrumb={showBreadcrumb}
                           />
                             <FileList
                               actions={actions}

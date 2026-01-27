@@ -84,7 +84,6 @@ const FileItem = ({
             let startRange = selectedFileIndexes[0]
             let endRange = index
 
-            console.log('selec')
             // Reverse Selection
             if (startRange >= endRange) {
                 const temp = startRange

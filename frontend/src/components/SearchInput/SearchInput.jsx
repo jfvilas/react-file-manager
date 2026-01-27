@@ -1,23 +1,30 @@
 import { useRef, useState } from 'react';
+import { useFileNavigation } from "../../contexts/FileNavigationContext"
+import { useSelection } from '../../contexts/SelectionContext'
+import { applyFilters } from '../../utils/filters'
 import './SearchInput.scss'
 
-const SearchInput = ({ onFilterChange, searchText, searchRegex, searchCasing }) => {
+const SearchInput = ({ onSearchFilterChange, searchText, searchRegex, searchCasing, categories }) => {
     const inputRef = useRef(null)
     const [filterRegex, setFilterRegex] = useState(false)
     const [filterCasing, setFilterCasing] = useState(false)
+    const { selectedFiles, setSelectedFiles } = useSelection()
+    const { currentFolder } = useFileNavigation()
 
     const handleKeyDown = (e) => {
         if ("Delete Home End".includes(e.key)) e.stopPropagation()
     }
 
     const clickRegex = () => {
-        onFilterChange(inputRef.current.value, !filterRegex, filterCasing)
+        onSearchFilterChange(inputRef.current.value, !filterRegex, filterCasing)
         setFilterRegex(!filterRegex)
+        setSelectedFiles(applyFilters(selectedFiles, inputRef.current.value, filterRegex, filterCasing, categories, currentFolder.categories))
     }
 
     const clickCasing = () => {
-        onFilterChange(inputRef.current.value, filterRegex, !filterCasing)
+        onSearchFilterChange(inputRef.current.value, filterRegex, !filterCasing)
         setFilterCasing(!filterCasing)
+        setSelectedFiles(applyFilters(selectedFiles, inputRef.current.value, filterRegex, filterCasing, categories, currentFolder.categories))
     }
 
     return (
@@ -36,7 +43,8 @@ const SearchInput = ({ onFilterChange, searchText, searchRegex, searchCasing }) 
                 onKeyDown={handleKeyDown}
                 onKeyUp={(e) => {
                     if (e.key === 'Escape') {
-                        onFilterChange('', false, false)
+                        onSearchFilterChange('', false, false)
+                        setSelectedFiles(applyFilters(selectedFiles, inputRef.current.value, filterRegex, filterCasing, categories, currentFolder.categories))
                         if (inputRef.current) {
                             inputRef.current.value = ''; 
                             inputRef.current.placeholder = 'Search...';
@@ -44,7 +52,8 @@ const SearchInput = ({ onFilterChange, searchText, searchRegex, searchCasing }) 
                         }                        
                     }
                     else {
-                        onFilterChange(inputRef.current.value, filterRegex, filterCasing)
+                        onSearchFilterChange(inputRef.current.value, filterRegex, filterCasing)
+                        setSelectedFiles(applyFilters(selectedFiles, inputRef.current.value, filterRegex, filterCasing, categories, currentFolder.categories))
                     }
                 }}
             />
