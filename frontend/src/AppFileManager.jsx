@@ -511,6 +511,8 @@ function App() {
                 width="100%"
                 initialPath={'/default/loki/logger/bin'}
                 onFolderChange={setCurrentPath}
+                showBreadcrumb={true}
+                maxNavigationPaneDepth={3}
                 />
             </div>
         </div>

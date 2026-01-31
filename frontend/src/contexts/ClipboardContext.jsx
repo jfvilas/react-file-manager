@@ -24,6 +24,7 @@ export const ClipBoardProvider = ({ children, onPaste, onCut, onCopy }) => {
 
     // Todo: Show error if destination folder already has file(s) with the same name
     const handlePasting = (destinationFolder) => {
+        console.log('handlepasting', destinationFolder)
         if (destinationFolder && !destinationFolder.isDirectory) return
 
         const copiedFiles = clipBoard.files

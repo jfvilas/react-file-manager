@@ -70,6 +70,7 @@ const FileManager = ({
     showContextMenu = true,
     categories = undefined,
     showBreadcrumb = false,
+    maxNavigationPaneDepth = 2,
     formatDate = defaultFormatDate
   }) => {
 
@@ -172,7 +173,7 @@ const FileManager = ({
                             width: colSizes.col1 + "%",
                           }}
                         >
-                          <NavigationPane onFileOpen={onFileOpen} icons={icons}/>
+                          <NavigationPane onFileOpen={onFileOpen} icons={icons} depth={maxNavigationPaneDepth}/>
                           <div
                             className={`sidebar-resize ${isDragging ? "sidebar-dragging" : ""}`}
                             onMouseDown={handleMouseDown}

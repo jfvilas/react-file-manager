@@ -118,79 +118,204 @@ const FileList = ({
     }
 
     if (currentFolder && currentFolder.layout==='own' && currentFolder.children && typeof currentFolder.children === 'function') {
-        return (<>
-            <div className='files' style={{paddingRight:0}}></div>
-                <>{currentFolder.children()}</>
-            </>)
+        // +++
+        // return (<>
+        //     <div className='files' style={{paddingRight:0}}></div>
+        //         <>{currentFolder.children()}</>
+        //     </>)
+        return currentFolder.children()
     }
     else {
-        return <>
-        {
-            <>
-                <div className='files list' style={{paddingRight:0}}>
-                    {activeLayout === 'list' && (
-                        <FilesHeader space={space} spaces={spaces} unselectFiles={unselectFiles} onSort={handleSort} sortConfig={sortConfig} />
-                    )}
-                </div>
+        // return <>
+        // {
+        //     <>
+        //         <div className='files list' style={{paddingRight:0}}>
+        //             {activeLayout === 'list' && (
+        //                 <FilesHeader space={space} spaces={spaces} unselectFiles={unselectFiles} onSort={handleSort} sortConfig={sortConfig} />
+        //             )}
+        //         </div>
 
-                <div
-                    ref={filesViewRef}
-                    className={`files ${activeLayout}`}
-                    style={{height: (options.statusBar? `calc(100% - (${activeLayout==='list'?82:55}px))`:`calc(100% - (${activeLayout==='list'?60:35}px))`), borderBottom: (options.statusBar?1:0)}}
-                    onContextMenu={handleContextMenu}
-                    onClick={unselectFiles}
-                >
+        //         <div
+        //             ref={filesViewRef}
+        //             className={`files ${activeLayout}`}
+        //             style={{height: (options.statusBar? `calc(100% - (${activeLayout==='list'?82:55}px))`:`calc(100% - (${activeLayout==='list'?60:35}px))`), borderBottom: (options.statusBar?1:0)}}
+        //             onContextMenu={handleContextMenu}
+        //             onClick={unselectFiles}
+        //         >
 
-                    {currentPathFiles?.length > 0 ? (
-                        <>
-                            {currentFolder && currentPathFiles.map((file, index) => (
-                                applySearchText(file, searchText, searchRegex, searchCasing) && 
-                                applyCategories(file, categories, currentFolder.categories) &&
-                                <FileItem
-                                    key={index}
-                                    space={space}
-                                    spaces={spaces}
-                                    icons={icons}
-                                    index={index}
-                                    file={file}
-                                    searchText={searchText}
-                                    searchRegex={searchRegex}
-                                    searchCasing={searchCasing}
-                                    categories={categories}
-                                    onCreateFolder={onCreateFolder}
-                                    onRename={onRename}
-                                    onFileOpen={onFileOpen}
-                                    enableFilePreview={enableFilePreview}
-                                    triggerAction={triggerAction}
-                                    filesViewRef={filesViewRef}
-                                    selectedFileIndexes={selectedFileIndexes}
-                                    handleContextMenu={handleContextMenu}
-                                    setVisible={setVisible}
-                                    setLastSelectedFile={setLastSelectedFile}
-                                    draggable={permissions.move}
-                                    formatDate={formatDate}
-                                />
-                            ))}
-                        </> 
-                    )
-                    :
-                    (
-                        <div className='empty-folder'>{t('folderEmpty')}</div>
-                    )}
+        //             {currentPathFiles?.length > 0 ? (
+        //                 currentFolder && currentPathFiles.map((file, index) => (
+        //                     applySearchText(file, searchText, searchRegex, searchCasing) && 
+        //                     applyCategories(file, categories, currentFolder.categories) &&
+        //                     <FileItem
+        //                         key={index}
+        //                         space={space}
+        //                         spaces={spaces}
+        //                         icons={icons}
+        //                         index={index}
+        //                         file={file}
+        //                         searchText={searchText}
+        //                         searchRegex={searchRegex}
+        //                         searchCasing={searchCasing}
+        //                         categories={categories}
+        //                         onCreateFolder={onCreateFolder}
+        //                         onRename={onRename}
+        //                         onFileOpen={onFileOpen}
+        //                         enableFilePreview={enableFilePreview}
+        //                         triggerAction={triggerAction}
+        //                         filesViewRef={filesViewRef}
+        //                         selectedFileIndexes={selectedFileIndexes}
+        //                         handleContextMenu={handleContextMenu}
+        //                         setVisible={setVisible}
+        //                         setLastSelectedFile={setLastSelectedFile}
+        //                         draggable={permissions.move}
+        //                         formatDate={formatDate}
+        //                     />
+        //                 ))
 
-                    { showContextMenu && <ContextMenu
-                        filesViewRef={filesViewRef}
-                        contextMenuRef={contextMenuRef.ref}
-                        menuItems={isSelectionCtx ? contextItems : emptySelecCtxItems}
-                        visible={visible}
-                        setVisible={setVisible}
-                        clickPosition={clickPosition}
-                    />}
-                </div>
-                {renderStatusBar()}
-            </>
-        }
-        </>
+        //                 // <>
+        //                 //     {currentFolder && currentPathFiles.map((file, index) => (
+        //                 //         applySearchText(file, searchText, searchRegex, searchCasing) && 
+        //                 //         applyCategories(file, categories, currentFolder.categories) &&
+        //                 //         <FileItem
+        //                 //             key={index}
+        //                 //             space={space}
+        //                 //             spaces={spaces}
+        //                 //             icons={icons}
+        //                 //             index={index}
+        //                 //             file={file}
+        //                 //             searchText={searchText}
+        //                 //             searchRegex={searchRegex}
+        //                 //             searchCasing={searchCasing}
+        //                 //             categories={categories}
+        //                 //             onCreateFolder={onCreateFolder}
+        //                 //             onRename={onRename}
+        //                 //             onFileOpen={onFileOpen}
+        //                 //             enableFilePreview={enableFilePreview}
+        //                 //             triggerAction={triggerAction}
+        //                 //             filesViewRef={filesViewRef}
+        //                 //             selectedFileIndexes={selectedFileIndexes}
+        //                 //             handleContextMenu={handleContextMenu}
+        //                 //             setVisible={setVisible}
+        //                 //             setLastSelectedFile={setLastSelectedFile}
+        //                 //             draggable={permissions.move}
+        //                 //             formatDate={formatDate}
+        //                 //         />
+        //                 //     ))}
+        //                 // </> 
+        //             )
+        //             :
+        //             (
+        //                 <div className='empty-folder'>{t('folderEmpty')}</div>
+        //             )}
+
+        //             { showContextMenu && <ContextMenu
+        //                 filesViewRef={filesViewRef}
+        //                 contextMenuRef={contextMenuRef.ref}
+        //                 menuItems={isSelectionCtx ? contextItems : emptySelecCtxItems}
+        //                 visible={visible}
+        //                 setVisible={setVisible}
+        //                 clickPosition={clickPosition}
+        //             />}
+        //         </div>
+        //         {renderStatusBar()}
+        //     </>
+        // }
+        // </>
+
+        return (<>
+            <div className='files list' style={{paddingRight:0}}>
+                {activeLayout === 'list' && (
+                    <FilesHeader space={space} spaces={spaces} unselectFiles={unselectFiles} onSort={handleSort} sortConfig={sortConfig} />
+                )}
+            </div>
+
+            <div
+                ref={filesViewRef}
+                className={`files ${activeLayout}`}
+                style={{height: (options.statusBar? `calc(100% - (${activeLayout==='list'?82:55}px))`:`calc(100% - (${activeLayout==='list'?60:35}px))`), borderBottom: (options.statusBar?1:0)}}
+                onContextMenu={handleContextMenu}
+                onClick={unselectFiles}
+            >
+
+                {currentPathFiles?.length > 0 ? (
+                    currentFolder && currentPathFiles.map((file, index) => (
+                        applySearchText(file, searchText, searchRegex, searchCasing) && 
+                        applyCategories(file, categories, currentFolder.categories) &&
+                        <FileItem
+                            key={index}
+                            space={space}
+                            spaces={spaces}
+                            icons={icons}
+                            index={index}
+                            file={file}
+                            searchText={searchText}
+                            searchRegex={searchRegex}
+                            searchCasing={searchCasing}
+                            categories={categories}
+                            onCreateFolder={onCreateFolder}
+                            onRename={onRename}
+                            onFileOpen={onFileOpen}
+                            enableFilePreview={enableFilePreview}
+                            triggerAction={triggerAction}
+                            filesViewRef={filesViewRef}
+                            selectedFileIndexes={selectedFileIndexes}
+                            handleContextMenu={handleContextMenu}
+                            setVisible={setVisible}
+                            setLastSelectedFile={setLastSelectedFile}
+                            draggable={permissions.move}
+                            formatDate={formatDate}
+                        />
+                    ))
+
+                    // <>
+                    //     {currentFolder && currentPathFiles.map((file, index) => (
+                    //         applySearchText(file, searchText, searchRegex, searchCasing) && 
+                    //         applyCategories(file, categories, currentFolder.categories) &&
+                    //         <FileItem
+                    //             key={index}
+                    //             space={space}
+                    //             spaces={spaces}
+                    //             icons={icons}
+                    //             index={index}
+                    //             file={file}
+                    //             searchText={searchText}
+                    //             searchRegex={searchRegex}
+                    //             searchCasing={searchCasing}
+                    //             categories={categories}
+                    //             onCreateFolder={onCreateFolder}
+                    //             onRename={onRename}
+                    //             onFileOpen={onFileOpen}
+                    //             enableFilePreview={enableFilePreview}
+                    //             triggerAction={triggerAction}
+                    //             filesViewRef={filesViewRef}
+                    //             selectedFileIndexes={selectedFileIndexes}
+                    //             handleContextMenu={handleContextMenu}
+                    //             setVisible={setVisible}
+                    //             setLastSelectedFile={setLastSelectedFile}
+                    //             draggable={permissions.move}
+                    //             formatDate={formatDate}
+                    //         />
+                    //     ))}
+                    // </> 
+                )
+                :
+                (
+                    <div className='empty-folder'>{t('folderEmpty')}</div>
+                )}
+
+                { showContextMenu && <ContextMenu
+                    filesViewRef={filesViewRef}
+                    contextMenuRef={contextMenuRef.ref}
+                    menuItems={isSelectionCtx ? contextItems : emptySelecCtxItems}
+                    visible={visible}
+                    setVisible={setVisible}
+                    clickPosition={clickPosition}
+                />}
+            </div>
+            {renderStatusBar()}
+        </>)
+
     }
 }
 

@@ -148,13 +148,11 @@ let menu = [
         path: "/workload",
         class: 'classmenu'
     },
-    {
-        name: "Overview",
+    {   name: 'Overview',
         isDirectory: true,
-        path: "/workload/overview",
-        class: 'classmenu',
-        layout: 'own',   
-        children: showWorkloadOverview
+        path: '/workload/overview',
+        class: 'classworkloadoverview',
+        layout: 'own',
     },
     {
         name: "Pod",
@@ -356,7 +354,7 @@ let sampleFiles = [
                     text: 'Remove service',
                     multi: true,
                     permission: permissions.delete,
-                    onClick: () => console.log('remove ingress'),
+                    onClick: (a,b) => console.log('remove ingress',a,b),
                 },
                 {
                     icon: <>{'E'}</>,
@@ -542,6 +540,19 @@ let sampleFiles = [
         }
     )
 
+    spaces.set('classworkloadoverview', 
+    {
+        leftItems: [
+            {
+                name:'search',
+                icon: <>ICON</>,
+                text: 'Search',
+                permission: true
+            }
+        ]
+    }    
+)
+
 
     // Get Files
     const getFiles = async () => {
@@ -651,6 +662,21 @@ let sampleFiles = [
 
     let icons = new Map()
     const actions = new Map()
+
+    // let x = files.find(f => f.path==='/workload/overview')
+    // if (x) x.children = () => {console.log('ahhhhhh')}
+
+    const launchClusterSearch = (a,b,c) => {
+        console.log('cs',a,b,c)
+    }
+    
+    const setLeftItem = (space, name, invoke) => {
+        let x = space.leftItems?.find(f => f.name===name)
+        if (x) x.onClick = invoke
+    }
+
+    let spcClassWorkloadOverview = spaces.get('classworkloadoverview')
+    setLeftItem(spcClassWorkloadOverview,'search', launchClusterSearch)
 
     return (
         <div className="app">

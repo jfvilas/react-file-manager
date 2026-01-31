@@ -14,11 +14,11 @@ import "./Toolbar.scss"
 
 const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavigationPaneChange, spaces, showRefresh }) => {
     const [ showViewOptions, setShowViewOptions ] = useState(false)
-    const { currentFolder, currentPathFiles } = useFileNavigation()
+    const { currentFolder, currentPathFiles, currentOwnLayoutPath } = useFileNavigation()
     const { selectedFiles, setSelectedFiles, handleDownload } = useSelection()
     const { clipBoard, setClipBoard, handleCutCopy, handlePasting } = useClipBoard()
     const t = useTranslation()
-    const fileDataLeftItems = [
+    let fileDataLeftItems = [
         {
             icon: <BsFolderPlus size={17} strokeWidth={0.3} />,
             text: t("newFolder"),
@@ -31,13 +31,17 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
             permission: permissions.upload,
             onClick: () => triggerAction.show("uploadFile"),
         },
-        {
-            icon: <FaRegPaste size={18} />,
-            text: t("paste"),
-            permission: !!clipBoard,
-            onClick: handleFilePasting,
-        }
     ]
+    if (clipBoard?.files?.length>0) {
+        fileDataLeftItems.push(
+            {
+                icon: <FaRegPaste size={18} />,
+                text: t("paste"),
+                permission: !!clipBoard,
+                onClick: handleFilePasting,
+            }
+        )
+    }
     let space = currentFolder?.class || 'filedata'
 
     let leftItems = fileDataLeftItems
@@ -87,8 +91,12 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
         setSelectedFiles([])
     }
 
-    const onToolbarClick = (option, target) => {
-        if (option.onClick) option.onClick(selectedFiles.map (f => f.path), target)
+    const onToolbarFileActionClick = (toolBarAction, target) => {
+        toolBarAction.onClick(selectedFiles.map (f => f.path), target)
+    }
+
+    const onToolbarOwnLayoutActionClick = (toolBarAction, target) => {
+        toolBarAction.onClick([currentOwnLayoutPath], target)
     }
 
     const renderLeftItems = () => {
@@ -98,7 +106,7 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
             if (leftItems) {
                 leftItems.map((leftItem, index) => 
                     items.push (
-                        <button key={index} className="item-action file-action" onClick={(event) => onToolbarClick(leftItem, event.currentTarget)}>
+                        <button key={index} className="item-action file-action" onClick={(event) => onToolbarFileActionClick(leftItem, event.currentTarget)}>
                             {leftItem.icon}
                             <span>{leftItem.text}</span>
                         </button>
@@ -220,7 +228,7 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
             <div className="file-action-container fm-toolbar">
                 <div>
                     { leftItems && leftItems.filter((leftItemPerm) => leftItemPerm.permission).map((leftItem, index) => (
-                        <button className="item-action file-action" key={index} onClick={leftItem.onClick}>
+                        <button className="item-action file-action" key={index} onClick={(event) => onToolbarOwnLayoutActionClick(leftItem, event.currentTarget)}>
                             {leftItem.icon}
                             <span>{leftItem.text}</span>
                         </button>

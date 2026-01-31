@@ -285,7 +285,7 @@ const FileItem = ({
                             file.class && icons && icons.get(file.class)?
                                 React.cloneElement(icons.get(file.class).open || icons.get(file.class).default, {height:40})
                                 :          
-                                <> {fileIcons[file.name?.split('.').pop()?.toLowerCase()] ?? <FaRegFile size={iconSize} />} </>
+                                fileIcons[file.name?.split('.').pop()?.toLowerCase()] ?? <FaRegFile size={iconSize} />
                         )
                     }
                 </div>
@@ -332,6 +332,7 @@ const FileItem = ({
                             break
                     }
                 }
+                
                 return (
                     <div key={property.name} className='text-truncate' style={{display:'flex', width: property.width+'%', fontSize:'0.8em', alignItems:'center', textAlign:'left'}}>{content}</div>
                 )
@@ -348,11 +349,9 @@ const FileItem = ({
                 {file.isDirectory ? (
                     <FaRegFolderOpen size={dragIconSize} />
                 ) : (
-                <>
-                    {dragIcons[file.name?.split('.').pop()?.toLowerCase()] ?? (
-                    <FaRegFile size={dragIconSize} />
-                    )}
-                </>
+                    dragIcons[file.name?.split('.').pop()?.toLowerCase()] ?? (
+                        <FaRegFile size={dragIconSize} />
+                    )
                 )}
             </div>
 
