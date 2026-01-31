@@ -97,8 +97,44 @@ function App() {
     
     const showOverview = () => {
         return <>
-            Cluster Overview {new Date().toISOString()}
-            {showPodContainers()}
+            <div style={{display:'flex', flexDirection:'column'}}>
+            <span>Cluster Overview {new Date().toISOString()}</span>
+            <span>{showPodContainers()}</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            <span style={{marginTop:'20px', marginBottom:'20px'}}>sdfsfsdf</span>
+            </div>
         </>
     }
     
@@ -209,6 +245,171 @@ let sampleFiles = [
             name: "superset-ingress",
             path: "/network/ingress/superset-ingress",
             class: 'ingress'
+        },
+        {
+            name: "kwirth-23s4r5t34a-e2r42",
+            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
+            data: {
+                namespace: 'psd-nextbpm',
+                controller: 'kwirth',
+                node: 'b8asv2-vmss0000a',
+                startTime: "2024-09-09T10:30:00Z"
+            },
+            class: 'pod',
+        },
+        {
+            name: "kwirth-23s4r5t34a-e2r42",
+            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
+            data: {
+                namespace: 'psd-nextbpm',
+                controller: 'kwirth',
+                node: 'b8asv2-vmss0000a',
+                startTime: "2024-09-09T10:30:00Z"
+            },
+            class: 'pod',
+        },
+        {
+            name: "kwirth-23s4r5t34a-e2r42",
+            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
+            data: {
+                namespace: 'psd-nextbpm',
+                controller: 'kwirth',
+                node: 'b8asv2-vmss0000a',
+                startTime: "2024-09-09T10:30:00Z"
+            },
+            class: 'pod',
+        },
+        {
+            name: "kwirth-23s4r5t34a-e2r42",
+            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
+            data: {
+                namespace: 'psd-nextbpm',
+                controller: 'kwirth',
+                node: 'b8asv2-vmss0000a',
+                startTime: "2024-09-09T10:30:00Z"
+            },
+            class: 'pod',
+        },
+        {
+            name: "kwirth-23s4r5t34a-e2r42",
+            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
+            data: {
+                namespace: 'psd-nextbpm',
+                controller: 'kwirth',
+                node: 'b8asv2-vmss0000a',
+                startTime: "2024-09-09T10:30:00Z"
+            },
+            class: 'pod',
+        },
+        {
+            name: "kwirth-23s4r5t34a-e2r42",
+            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
+            data: {
+                namespace: 'psd-nextbpm',
+                controller: 'kwirth',
+                node: 'b8asv2-vmss0000a',
+                startTime: "2024-09-09T10:30:00Z"
+            },
+            class: 'pod',
+        },
+        {
+            name: "obk-authorizator-236543334a-eieu2",
+            path: "/workload/pod/obk-authorizator-236543334a-eieu2",
+            data: {
+                namespace: 'psd-flowable',
+                controller: 'authorizator',
+                node: 'b8asv2-vmss0000b',
+                startTime: "2025-12-02T10:30:00Z",
+            },
+            class: 'pod',
+        },
+        {
+            name: "kwirth-23s4r5t34a-e2r42",
+            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
+            data: {
+                namespace: 'psd-nextbpm',
+                controller: 'kwirth',
+                node: 'b8asv2-vmss0000a',
+                startTime: "2024-09-09T10:30:00Z"
+            },
+            class: 'pod',
+        },
+        {
+            name: "obk-authorizator-236543334a-eieu2",
+            path: "/workload/pod/obk-authorizator-236543334a-eieu2",
+            data: {
+                namespace: 'psd-flowable',
+                controller: 'authorizator',
+                node: 'b8asv2-vmss0000b',
+                startTime: "2025-12-02T10:30:00Z",
+            },
+            class: 'pod',
+        },
+        {
+            name: "kwirth-23s4r5t34a-e2r42",
+            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
+            data: {
+                namespace: 'psd-nextbpm',
+                controller: 'kwirth',
+                node: 'b8asv2-vmss0000a',
+                startTime: "2024-09-09T10:30:00Z"
+            },
+            class: 'pod',
+        },
+        {
+            name: "obk-authorizator-236543334a-eieu2",
+            path: "/workload/pod/obk-authorizator-236543334a-eieu2",
+            data: {
+                namespace: 'psd-flowable',
+                controller: 'authorizator',
+                node: 'b8asv2-vmss0000b',
+                startTime: "2025-12-02T10:30:00Z",
+            },
+            class: 'pod',
+        },
+        {
+            name: "kwirth-23s4r5t34a-e2r42",
+            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
+            data: {
+                namespace: 'psd-nextbpm',
+                controller: 'kwirth',
+                node: 'b8asv2-vmss0000a',
+                startTime: "2024-09-09T10:30:00Z"
+            },
+            class: 'pod',
+        },
+        {
+            name: "obk-authorizator-236543334a-eieu2",
+            path: "/workload/pod/obk-authorizator-236543334a-eieu2",
+            data: {
+                namespace: 'psd-flowable',
+                controller: 'authorizator',
+                node: 'b8asv2-vmss0000b',
+                startTime: "2025-12-02T10:30:00Z",
+            },
+            class: 'pod',
+        },
+        {
+            name: "kwirth-23s4r5t34a-e2r42",
+            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
+            data: {
+                namespace: 'psd-nextbpm',
+                controller: 'kwirth',
+                node: 'b8asv2-vmss0000a',
+                startTime: "2024-09-09T10:30:00Z"
+            },
+            class: 'pod',
+        },
+        {
+            name: "obk-authorizator-236543334a-eieu2",
+            path: "/workload/pod/obk-authorizator-236543334a-eieu2",
+            data: {
+                namespace: 'psd-flowable',
+                controller: 'authorizator',
+                node: 'b8asv2-vmss0000b',
+                startTime: "2025-12-02T10:30:00Z",
+            },
+            class: 'pod',
         },
         {
             name: "kwirth-23s4r5t34a-e2r42",
@@ -662,9 +863,6 @@ let sampleFiles = [
 
     let icons = new Map()
     const actions = new Map()
-
-    // let x = files.find(f => f.path==='/workload/overview')
-    // if (x) x.children = () => {console.log('ahhhhhh')}
 
     const launchClusterSearch = (a,b,c) => {
         console.log('cs',a,b,c)

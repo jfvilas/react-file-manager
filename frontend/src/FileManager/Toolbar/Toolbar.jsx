@@ -12,36 +12,40 @@ import { useTranslation } from "../../contexts/TranslationProvider"
 import { ViewOptions } from "./ViewOptions"
 import "./Toolbar.scss"
 
-const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavigationPaneChange, spaces, showRefresh }) => {
+const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavigationPaneChange, spaces, showRefresh, minFileActionsLevel }) => {
     const [ showViewOptions, setShowViewOptions ] = useState(false)
     const { currentFolder, currentPathFiles, currentOwnLayoutPath } = useFileNavigation()
     const { selectedFiles, setSelectedFiles, handleDownload } = useSelection()
     const { clipBoard, setClipBoard, handleCutCopy, handlePasting } = useClipBoard()
     const t = useTranslation()
-    let fileDataLeftItems = [
-        {
-            icon: <BsFolderPlus size={17} strokeWidth={0.3} />,
-            text: t("newFolder"),
-            permission: permissions.create,
-            onClick: () => triggerAction.show("createFolder"),
-        },
-        {
+    let currentLevel = currentFolder? currentFolder.path.split('/').length-1 : 0
+
+    let fileDataLeftItems = []
+    if (currentLevel>=minFileActionsLevel) {
+        let validLeftItems = []
+        validLeftItems.push({
+                icon: <BsFolderPlus size={17} strokeWidth={0.3} />,
+                text: t("newFolder"),
+                permission: permissions.create,
+                onClick: () => triggerAction.show("createFolder"),
+        })
+        validLeftItems.push({
             icon: <MdOutlineFileUpload size={18} />,
             text: t("upload"),
             permission: permissions.upload,
             onClick: () => triggerAction.show("uploadFile"),
-        },
-    ]
-    if (clipBoard?.files?.length>0) {
-        fileDataLeftItems.push(
-            {
+        })
+        if (clipBoard?.files?.length>0) {
+            validLeftItems.push({
                 icon: <FaRegPaste size={18} />,
                 text: t("paste"),
                 permission: !!clipBoard,
                 onClick: handleFilePasting,
-            }
-        )
+            })
+        }
+        fileDataLeftItems = validLeftItems
     }
+
     let space = currentFolder?.class || 'filedata'
 
     let leftItems = fileDataLeftItems

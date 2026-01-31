@@ -70,7 +70,8 @@ const FileManager = ({
     showContextMenu = true,
     categories = undefined,
     showBreadcrumb = false,
-    maxNavigationPaneDepth = 2,
+    maxNavigationPaneLevel = 2,
+    minFileActionsLevel = 1,
     formatDate = defaultFormatDate
   }) => {
 
@@ -160,6 +161,7 @@ const FileManager = ({
                         onNavigationPaneChange={onNavigationPaneChange}
                         spaces={spaces}
                         showRefresh={showRefresh}
+                        minFileActionsLevel={minFileActionsLevel}
                       />
                       <section
                         ref={containerRef}
@@ -173,7 +175,7 @@ const FileManager = ({
                             width: colSizes.col1 + "%",
                           }}
                         >
-                          <NavigationPane onFileOpen={onFileOpen} icons={icons} depth={maxNavigationPaneDepth}/>
+                          <NavigationPane onFileOpen={onFileOpen} icons={icons} maxDepth={maxNavigationPaneLevel}/>
                           <div
                             className={`sidebar-resize ${isDragging ? "sidebar-dragging" : ""}`}
                             onMouseDown={handleMouseDown}

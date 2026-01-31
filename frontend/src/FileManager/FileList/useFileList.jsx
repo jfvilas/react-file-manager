@@ -22,7 +22,7 @@ const useFileList = (onRefresh, enableFilePreview, triggerAction, permissions, o
 
     const { clipBoard, setClipBoard, handleCutCopy, handlePasting } = useClipBoard()
     const { selectedFiles, setSelectedFiles, handleDownload } = useSelection()
-    const { currentPath, setCurrentPath, currentPathFiles, setCurrentPathFiles, onFolderChange } = useFileNavigation()
+    const { currentPath, setCurrentPath, currentPathFiles, setCurrentPathFiles, onFolderChange, currentFolder } = useFileNavigation()
     const { activeLayout, setActiveLayout } = useLayout()
     const t = useTranslation()
 
@@ -49,8 +49,9 @@ const useFileList = (onRefresh, enableFilePreview, triggerAction, permissions, o
     const handleFilePasting = () => {
         if (isSelectionCtx)
             handlePasting(lastSelectedFile)
-        else
-            console.log(currentPath)
+        else {
+            handlePasting(currentFolder)
+        }
         setVisible(false)
     }
 
@@ -247,7 +248,6 @@ const useFileList = (onRefresh, enableFilePreview, triggerAction, permissions, o
     const handleContextMenu = (e, isSelection = false) => {
         e.preventDefault()
         setClickPosition({ clickX: e.clientX, clickY: e.clientY })
-        console.log('isSelection', isSelection)
         setIsSelectionCtx(isSelection)
         !isSelection && unselectFiles()
         setVisible(true)

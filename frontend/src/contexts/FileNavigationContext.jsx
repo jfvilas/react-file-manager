@@ -9,19 +9,19 @@ export const FileNavigationProvider = ({ children, initialPath, onFolderChange }
     const isMountRef = useRef(false)
     const [currentPath, setCurrentPath] = useState('')
     const [currentFolder, setCurrentFolder] = useState(null)
-    const [currentOwnLayoutPath, setCurrentOwnLayoutPath] = useState(null)
+    const [currentOwnLayoutPath, setCurrentOwnLayoutPath] = useState(null)  // we need this for handling toolbar actions on cutom layouts (like 'own')
     const [currentPathFiles, setCurrentPathFiles] = useState([])
     const [sortConfig, setSortConfig] = useState({ key: "name", direction: "asc" })
 
     useEffect(() => {
         if (Array.isArray(files) && files.length > 0) {
             setCurrentPathFiles(() => {
-                const currPathFiles = files.filter((file) => file.path === `${currentPath}/${file.name}`);
-                return sortFiles(currPathFiles, sortConfig.key, sortConfig.direction);
+                const currPathFiles = files.filter((file) => file.path === `${currentPath}/${file.name}`)
+                return sortFiles(currPathFiles, sortConfig.key, sortConfig.direction)
             })
 
             setCurrentFolder(() => {
-                return files.find((file) => file.path === currentPath) ?? null;
+                return files.find((file) => file.path === currentPath) ?? null
             })
 
             let file = files.find(x => x.path===currentPath)
