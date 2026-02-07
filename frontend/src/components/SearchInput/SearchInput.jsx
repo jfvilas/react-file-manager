@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { useFileNavigation } from "../../contexts/FileNavigationContext"
+import { useRef, useState, useEffect } from 'react'
+import { useFileNavigation } from '../../contexts/FileNavigationContext'
 import { useSelection } from '../../contexts/SelectionContext'
 import { applyFilters } from '../../utils/filters'
 import './SearchInput.scss'
@@ -11,9 +11,19 @@ const SearchInput = ({ onSearchFilterChange, searchText, searchRegex, searchCasi
     const { selectedFiles, setSelectedFiles } = useSelection()
     const { currentFolder } = useFileNavigation()
 
-    const handleKeyDown = (e) => {
-        if ("Delete Home End".includes(e.key)) e.stopPropagation()
-    }
+    useEffect(() => {
+        const previousFocus = document.activeElement
+
+        const handleKeyDown = (event) => {
+            event.stopPropagation()
+        }
+
+        window.addEventListener('keydown', handleKeyDown, true)
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown, true)
+            previousFocus?.focus()
+        }
+    }, [])
 
     const clickRegex = () => {
         onSearchFilterChange(inputRef.current.value, !filterRegex, filterCasing)
@@ -40,7 +50,7 @@ const SearchInput = ({ onSearchFilterChange, searchText, searchRegex, searchCasi
                         e.target.placeholder = 'Search...'
                     }
                 }
-                onKeyDown={handleKeyDown}
+                //onKeyDown={handleKeyDown}
                 onKeyUp={(e) => {
                     if (e.key === 'Escape') {
                         onSearchFilterChange('', false, false)

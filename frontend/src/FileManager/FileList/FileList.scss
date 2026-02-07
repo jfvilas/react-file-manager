@@ -116,9 +116,9 @@
       }
     }
 
-    .file-name {
-      max-width: 115px;
-    }
+    // .file-name {
+    //   max-width: 115px;
+    // }
   }
 
   .file-selected {
@@ -145,7 +145,7 @@
   .files-header {
     font-size: 0.83em;
     font-weight: 600;
-    display: flex;
+    display: flex 0 0 auto;   // <----- NECESARIO PARA EL RESIZE
     //gap: 5px;
     border-top: 1px solid #dddddd;
     //border-bottom: 1px solid #dddddd;
@@ -154,6 +154,26 @@
     top: 0;
     background-color: #f5f5f5;
     z-index: 1;
+
+    .column-resize {
+      // position: absolute;
+      // right: 0px;
+      // top: 0px;
+      // bottom: 0px;
+      //width: 5px;
+      //margin-right: 3px;
+      cursor: col-resize;
+      z-index: 10;
+      border-right: 1px solid $border-color;
+
+      &:hover {
+        border-right: 1px solid #1e3a8a;
+      }
+    }
+
+    .column-dragging {
+      border-right: 1px solid #1e3a8a;
+    }
 
     .file-select-all {
       width: 5%;
@@ -248,9 +268,9 @@
       top: 12px;
     }
 
-    .file-name {
-      max-width: 285px;
-    }
+    // .file-name {
+    //   max-width: 285px;
+    // }
   }
 
   .modified-date {

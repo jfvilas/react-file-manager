@@ -1,25 +1,25 @@
 import { useMemo, useState } from 'react'
-import Loader from "../components/Loader/Loader"
-import Toolbar from "./Toolbar/Toolbar"
-import NavigationPane from "./NavigationPane/NavigationPane"
-import BreadCrumb from "./BreadCrumb/BreadCrumb"
-import FileList from "./FileList/FileList"
-import Actions from "./Actions/Actions"
+import Loader from '../components/Loader/Loader'
+import Toolbar from './Toolbar/Toolbar'
+import NavigationPane from './NavigationPane/NavigationPane'
+import BreadCrumb from './BreadCrumb/BreadCrumb'
+import FileList from './FileList/FileList'
+import Actions from './Actions/Actions'
 import { OptionsProvider } from '../contexts/OptionsContext'
 import { FilesProvider } from '../contexts/FilesContext'
 import { FileNavigationProvider } from '../contexts/FileNavigationContext'
-import { SelectionProvider } from "../contexts/SelectionContext"
-import { ClipBoardProvider } from "../contexts/ClipboardContext"
-import { LayoutProvider } from "../contexts/LayoutContext"
-import { useTriggerAction } from "../hooks/useTriggerAction"
-import { useColumnResize } from "../hooks/useColumnResize"
-import PropTypes from "prop-types"
-import { dateStringValidator, urlValidator } from "../validators/propValidators"
-import { TranslationProvider } from "../contexts/TranslationProvider"
+import { SelectionProvider } from '../contexts/SelectionContext'
+import { ClipBoardProvider } from '../contexts/ClipboardContext'
+import { LayoutProvider } from '../contexts/LayoutContext'
+import { useTriggerAction } from '../hooks/useTriggerAction'
+import { useColumnResize } from '../hooks/useColumnResize'
+import PropTypes from 'prop-types'
+import { dateStringValidator, urlValidator } from '../validators/propValidators'
+import { TranslationProvider } from '../contexts/TranslationProvider'
 
-import { defaultPermissions } from "../constants"
-import { formatDate as defaultFormatDate } from "../utils/formatDate"
-import "./FileManager.scss"
+import { defaultPermissions } from '../constants'
+import { formatDate as defaultFormatDate } from '../utils/formatDate'
+import './FileManager.scss'
 
 const FileManager = ({
     actions,
@@ -46,22 +46,22 @@ const FileManager = ({
     onSelect,
     onSelectionChange,
     onError = () => {},
-    layout = "grid",
+    layout = 'grid',
     enableFilePreview = true,
     maxFileSize,
     filePreviewPath,
     acceptedFileTypes,
-    height = "600px",
-    width = "100%",
-    initialPath = "",
+    height = '600px',
+    width = '100%',
+    initialPath = '',
     filePreviewComponent,
-    primaryColor = "#6155b4",
-    fontFamily = "Nunito Sans, sans-serif",
-    language = "en-US",
+    primaryColor = '#6155b4',
+    fontFamily = 'Nunito Sans, sans-serif',
+    language = 'en-US',
     permissions: userPermissions = {},
     collapsibleNav = false,
     defaultNavExpanded = true,
-    className = "",
+    className = '',
     style = {},
     searchMode = 'auto',  // 'visible', hidden'
     searchRegex = false,
@@ -82,11 +82,12 @@ const FileManager = ({
     const triggerAction = useTriggerAction()
     const { containerRef, colSizes, isDragging, handleMouseMove, handleMouseUp, handleMouseDown } = useColumnResize(20, 80)
     const customStyles = {
-        "--file-manager-font-family": fontFamily,
-        "--file-manager-primary-color": primaryColor,
+        '--file-manager-font-family': fontFamily,
+        '--file-manager-primary-color': primaryColor,
         height,
         width
     }
+    const [columnWidths, setColumnWidths] = useState({})
 
     const onSearchFilterChange = (f, regex, casing) => {
         setSrchText(f)
@@ -135,6 +136,12 @@ const FileManager = ({
         )
     }
 
+    const onChangeWidth = (name, size) => {
+      let x = columnWidths
+      x[name] = size
+      setColumnWidths({...x})
+    }
+
     return (
       <main
         className={`file-explorer ${className}`}
@@ -161,30 +168,31 @@ const FileManager = ({
                         onNavigationPaneChange={onNavigationPaneChange}
                         spaces={spaces}
                         showRefresh={showRefresh}
+                        showBreadcrumb={showBreadcrumb}
                         minFileActionsLevel={minFileActionsLevel}
                       />
                       <section
                         ref={containerRef}
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
-                        className="files-container"
+                        className='files-container'
                       >
                         <div
-                          className={`navigation-pane ${isNavigationPaneOpen ? "open" : "closed"}`}
+                          className={`navigation-pane ${isNavigationPaneOpen ? 'open' : 'closed'}`}
                           style={{
-                            width: colSizes.col1 + "%",
+                            width: colSizes.col1 + '%',
                           }}
                         >
                           <NavigationPane onFileOpen={onFileOpen} icons={icons} maxDepth={maxNavigationPaneLevel}/>
                           <div
-                            className={`sidebar-resize ${isDragging ? "sidebar-dragging" : ""}`}
+                            className={`sidebar-resize ${isDragging ? 'sidebar-dragging' : ''}`}
                             onMouseDown={handleMouseDown}
                           />
                         </div>
 
                         <div
-                          className="folders-preview"
-                          style={{ width: (isNavigationPaneOpen ? colSizes.col2 : 100) + "%" }}
+                          className='folders-preview'
+                          style={{ width: (isNavigationPaneOpen ? colSizes.col2 : 100) + '%' }}
                         >
                           <BreadCrumb
                             collapsibleNav={collapsibleNav}
@@ -200,25 +208,27 @@ const FileManager = ({
                             fontFamily={fontFamily}
                             showBreadcrumb={showBreadcrumb}
                           />
-                            <FileList
-                              actions={actions}
-                              space={space}
-                              spaces={spaces}
-                              icons={icons}
-                              onCreateFolder={onCreateFolder}
-                              onRename={onRename}
-                              onFileOpen={onFileOpen}
-                              onRefresh={onRefresh}
-                              enableFilePreview={enableFilePreview}
-                              triggerAction={triggerAction}
-                              permissions={permissions}
-                              formatDate={formatDate}
-                              searchText={srchText}
-                              searchRegex={searchRegex}
-                              searchCasing={searchCasing}
-                              showContextMenu={showContextMenu}
-                              categories={categories}
-                            />
+                          <FileList
+                            columnWidths={columnWidths}
+                            onChangeWidth={onChangeWidth}
+                            actions={actions}
+                            space={space}
+                            spaces={spaces}
+                            icons={icons}
+                            onCreateFolder={onCreateFolder}
+                            onRename={onRename}
+                            onFileOpen={onFileOpen}
+                            onRefresh={onRefresh}
+                            enableFilePreview={enableFilePreview}
+                            triggerAction={triggerAction}
+                            permissions={permissions}
+                            formatDate={formatDate}
+                            searchText={srchText}
+                            searchRegex={searchRegex}
+                            searchCasing={searchCasing}
+                            showContextMenu={showContextMenu}
+                            categories={categories}
+                          />
                         </div>
                       </section>
 
@@ -247,7 +257,7 @@ const FileManager = ({
     )
   }
 
-  FileManager.displayName = "FileManager";
+  FileManager.displayName = 'FileManager'
 
   FileManager.propTypes = {
     files: PropTypes.arrayOf(
@@ -263,7 +273,7 @@ const FileManager = ({
     fileUploadConfig: PropTypes.shape({
       url: urlValidator,
       headers: PropTypes.objectOf(PropTypes.string),
-      method: PropTypes.oneOf(["POST", "PUT"]),
+      method: PropTypes.oneOf(['POST', 'PUT']),
     }),
     isLoading: PropTypes.bool,
     onCreateFolder: PropTypes.func,
@@ -282,7 +292,7 @@ const FileManager = ({
     onSelect: PropTypes.func,
     onSelectionChange: PropTypes.func,
     onError: PropTypes.func,
-    layout: PropTypes.oneOf(["grid", "list"]),
+    layout: PropTypes.oneOf(['grid', 'list']),
     maxFileSize: PropTypes.number,
     enableFilePreview: PropTypes.bool,
     filePreviewPath: urlValidator,
@@ -310,4 +320,4 @@ const FileManager = ({
     formatDate: PropTypes.func,
 }
 
-export default FileManager;
+export default FileManager

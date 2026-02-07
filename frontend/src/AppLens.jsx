@@ -74,7 +74,6 @@ function App() {
 
     const showPodContainers = (f) => {
         if (!f) return <></>
-        console.log(f)
         return <img 
             src={f.endsWith('2')>'m' ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEgAGX0sCgqAAAAABJRU5ErkJggg==" : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPj/DwAEgAGt+MvY7AAAAABJRU5ErkJggg=="}
             width="10" 
@@ -258,61 +257,6 @@ let sampleFiles = [
             class: 'pod',
         },
         {
-            name: "kwirth-23s4r5t34a-e2r42",
-            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
-            data: {
-                namespace: 'psd-nextbpm',
-                controller: 'kwirth',
-                node: 'b8asv2-vmss0000a',
-                startTime: "2024-09-09T10:30:00Z"
-            },
-            class: 'pod',
-        },
-        {
-            name: "kwirth-23s4r5t34a-e2r42",
-            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
-            data: {
-                namespace: 'psd-nextbpm',
-                controller: 'kwirth',
-                node: 'b8asv2-vmss0000a',
-                startTime: "2024-09-09T10:30:00Z"
-            },
-            class: 'pod',
-        },
-        {
-            name: "kwirth-23s4r5t34a-e2r42",
-            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
-            data: {
-                namespace: 'psd-nextbpm',
-                controller: 'kwirth',
-                node: 'b8asv2-vmss0000a',
-                startTime: "2024-09-09T10:30:00Z"
-            },
-            class: 'pod',
-        },
-        {
-            name: "kwirth-23s4r5t34a-e2r42",
-            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
-            data: {
-                namespace: 'psd-nextbpm',
-                controller: 'kwirth',
-                node: 'b8asv2-vmss0000a',
-                startTime: "2024-09-09T10:30:00Z"
-            },
-            class: 'pod',
-        },
-        {
-            name: "kwirth-23s4r5t34a-e2r42",
-            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
-            data: {
-                namespace: 'psd-nextbpm',
-                controller: 'kwirth',
-                node: 'b8asv2-vmss0000a',
-                startTime: "2024-09-09T10:30:00Z"
-            },
-            class: 'pod',
-        },
-        {
             name: "obk-authorizator-236543334a-eieu2",
             path: "/workload/pod/obk-authorizator-236543334a-eieu2",
             data: {
@@ -324,19 +268,8 @@ let sampleFiles = [
             class: 'pod',
         },
         {
-            name: "kwirth-23s4r5t34a-e2r42",
-            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
-            data: {
-                namespace: 'psd-nextbpm',
-                controller: 'kwirth',
-                node: 'b8asv2-vmss0000a',
-                startTime: "2024-09-09T10:30:00Z"
-            },
-            class: 'pod',
-        },
-        {
-            name: "obk-authorizator-236543334a-eieu2",
-            path: "/workload/pod/obk-authorizator-236543334a-eieu2",
+            name: "obk-authorizator-236543334a-eieu1",
+            path: "/workload/pod/obk-authorizator-236543334a-eieu1",
             data: {
                 namespace: 'psd-flowable',
                 controller: 'authorizator',
@@ -346,19 +279,8 @@ let sampleFiles = [
             class: 'pod',
         },
         {
-            name: "kwirth-23s4r5t34a-e2r42",
-            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
-            data: {
-                namespace: 'psd-nextbpm',
-                controller: 'kwirth',
-                node: 'b8asv2-vmss0000a',
-                startTime: "2024-09-09T10:30:00Z"
-            },
-            class: 'pod',
-        },
-        {
-            name: "obk-authorizator-236543334a-eieu2",
-            path: "/workload/pod/obk-authorizator-236543334a-eieu2",
+            name: "obk-authorizator-236543334a-eieu9",
+            path: "/workload/pod/obk-authorizator-236543334a-eieu9",
             data: {
                 namespace: 'psd-flowable',
                 controller: 'authorizator',
@@ -367,72 +289,15 @@ let sampleFiles = [
             },
             class: 'pod',
         },
-        {
-            name: "kwirth-23s4r5t34a-e2r42",
-            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
-            data: {
-                namespace: 'psd-nextbpm',
-                controller: 'kwirth',
-                node: 'b8asv2-vmss0000a',
-                startTime: "2024-09-09T10:30:00Z"
-            },
-            class: 'pod',
-        },
-        {
-            name: "obk-authorizator-236543334a-eieu2",
-            path: "/workload/pod/obk-authorizator-236543334a-eieu2",
-            data: {
-                namespace: 'psd-flowable',
-                controller: 'authorizator',
-                node: 'b8asv2-vmss0000b',
-                startTime: "2025-12-02T10:30:00Z",
-            },
-            class: 'pod',
-        },
-        {
-            name: "kwirth-23s4r5t34a-e2r42",
-            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
-            data: {
-                namespace: 'psd-nextbpm',
-                controller: 'kwirth',
-                node: 'b8asv2-vmss0000a',
-                startTime: "2024-09-09T10:30:00Z"
-            },
-            class: 'pod',
-        },
-        {
-            name: "obk-authorizator-236543334a-eieu2",
-            path: "/workload/pod/obk-authorizator-236543334a-eieu2",
-            data: {
-                namespace: 'psd-flowable',
-                controller: 'authorizator',
-                node: 'b8asv2-vmss0000b',
-                startTime: "2025-12-02T10:30:00Z",
-            },
-            class: 'pod',
-        },
-        {
-            name: "kwirth-23s4r5t34a-e2r42",
-            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
-            data: {
-                namespace: 'psd-nextbpm',
-                controller: 'kwirth',
-                node: 'b8asv2-vmss0000a',
-                startTime: "2024-09-09T10:30:00Z"
-            },
-            class: 'pod',
-        },
-        {
-            name: "obk-authorizator-236543334a-eieu2",
-            path: "/workload/pod/obk-authorizator-236543334a-eieu2",
-            data: {
-                namespace: 'psd-flowable',
-                controller: 'authorizator',
-                node: 'b8asv2-vmss0000b',
-                startTime: "2025-12-02T10:30:00Z",
-            },
-            class: 'pod',
-        },
+        { name: "dep001", path: "/workload/deployment/dep001", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep002", path: "/workload/deployment/dep002", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep003dep003dep003dep003dep003dep003", path: "/workload/deployment/dep003dep003dep003dep003dep003dep003", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep004", path: "/workload/deployment/dep004", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep005", path: "/workload/deployment/dep005", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep006", path: "/workload/deployment/dep006", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep007", path: "/workload/deployment/dep007", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep008", path: "/workload/deployment/dep008", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep009", path: "/workload/deployment/dep009", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
     ]
 
     const [files, setFiles] = useState([...menu,...sampleFiles])
@@ -526,6 +391,45 @@ let sampleFiles = [
                     onClick: () => console.log('create ingress'),
                 }
             ],
+        }
+    )
+
+    spaces.set('deployment',
+        {
+            text:'Dep name',
+            source:'name',
+            width: 40,
+            icons: new Map(),
+            actions: new Map(),
+            leftItems: [
+                {
+                    icon: <>{'R'}</>,
+                    text: 'Remove Dep',
+                    multi: true,
+                    permission: permissions.delete,
+                    onClick: (a,b) => console.log('remove ingress',a,b),
+                },
+            ],
+            properties: [
+                {
+                    name: 'namespace',
+                    text: 'Namespace',
+                    source: 'namespace',
+                    format: 'string',
+                    width: 40,
+                    visible: true
+                },
+                {
+                    name: 'replicas',
+                    text: 'Replicas',
+                    source: 'replicas',
+                    format: 'string',
+                    width: 20,
+                    visible: true
+                }
+            ],
+            emptySelectionContextMenu: undefined,
+            selectionContextMenu: undefined
         }
     )
 
@@ -916,6 +820,7 @@ let sampleFiles = [
                     searchCasing={true}
                     showRefresh={false}
                     showContextMenu={false}
+                    showBreadcrumb={true}
                     categories={categories}
                 />
             </div>

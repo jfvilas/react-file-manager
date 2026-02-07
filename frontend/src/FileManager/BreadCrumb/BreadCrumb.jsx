@@ -5,9 +5,11 @@ import { TbLayoutSidebarLeftExpand, TbLayoutSidebarLeftCollapseFilled } from 're
 import { useFileNavigation } from '../../contexts/FileNavigationContext'
 import { useDetectOutsideClick } from '../../hooks/useDetectOutsideClick'
 import { useTranslation } from '../../contexts/TranslationProvider'
+import { useLayout } from '../../contexts/LayoutContext'
 import './BreadCrumb.scss'
 import SearchInput from '../../components/SearchInput/SearchInput'
 import CategoryFilter from '../../components/CategoryFilter/CategoryFilter'
+import { useOptions } from '../../contexts/OptionsContext'
 
 const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChange, onSearchFilterChange, searchMode, searchText, searchRegex, searchCasing, categories, fontFamily, showBreadcrumb }) => {
     const [folders, setFolders] = useState([])
@@ -23,6 +25,8 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChan
     })
     const t = useTranslation()
     const navTogglerRef = useRef(null)
+    const { activeLayout } = useLayout()
+    const { options } = useOptions()
 
     useEffect(() => {
         setFolders(() => {
@@ -66,6 +70,7 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChan
     }
 
     const isBreadCrumbOverflowing = () => {
+        if (!breadCrumbRef.current) return false
         return breadCrumbRef.current.scrollWidth > breadCrumbRef.current.clientWidth
     }
 
@@ -85,8 +90,12 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChan
         }
     }, [isBreadCrumbOverflowing])
 
+    if (currentFolder && currentFolder.layout==='own' && currentFolder.children && typeof currentFolder.children === 'function') {
+        return <></>
+    }
+
     return (
-        <div className='bread-crumb-container'>
+        <div className='bread-crumb-container' style={{...(activeLayout==='grid'?{borderBottom:1, borderBottomStyle:'solid', borderBottomColor:'#cfcfcf'}:{})}}>
             <div className='breadcrumb' ref={breadCrumbRef}>
                 {collapsibleNav && (<>
                     <div
@@ -109,7 +118,7 @@ const BreadCrumb = ({ collapsibleNav, isNavigationPaneOpen, onNavigationPaneChan
                     </>)
                 }
 
-                { (currentFolder?.features?.includes('breadcrumb') || showBreadcrumb) && folders.map((folder, index) => (
+                { ((options.breadcrumb || currentFolder?.features?.includes('breadcrumb')) && showBreadcrumb) && folders.map((folder, index) => (
                     <div key={index} style={{ display: 'contents' }}>
                         <span
                             className='folder-name'
@@ -188,7 +197,6 @@ BreadCrumb.propTypes = {
     searchCasing: PropTypes.bool,
     fontFamily: PropTypes.string.isRequired,
     showBreadcrumb: PropTypes.bool.isRequired
-    //categories
 }
 
 export default BreadCrumb

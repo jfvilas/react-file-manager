@@ -10,13 +10,13 @@ import { useLayout } from '../../contexts/LayoutContext'
 import { useOptions } from '../../contexts/OptionsContext'
 import Checkbox from '../../components/Checkbox/Checkbox'
 import { getObjectSize } from '../../utils/getObjectSize'
-import { useDetectOutsideClick } from '../../hooks/useDetectOutsideClick'
 import { DateTime } from 'luxon'
 import { applyFilters } from '../../utils/filters'
 
 const dragIconSize = 50
 
 const FileItem = ({
+    columnWidths,
     space,
     spaces,
     icons,
@@ -53,14 +53,6 @@ const FileItem = ({
     const dragIconRef = useRef(null)
     const dragIcons = useFileIcons(dragIconSize)
     const { options } = useOptions()
-    const contextMenuRef = useDetectOutsideClick(() => setVisible(false))
-    const [visible, setVisible] = useState(false)
-    
-    //const [clickPosition, setClickPosition] = useState({ clickX: 0, clickY: 0 })
-
-    // const {
-    //     clickPosition,
-    // } = useFileList(undefined, undefined, undefined, undefined, undefined, space, spaces)
 
     const isFileMoving =
         clipBoard?.isMoving &&
@@ -112,6 +104,7 @@ const FileItem = ({
     }
 
     const handleFileSelection = (e) => {
+        setLastSelectedFile(file) //+++
         e.stopPropagation()
         if (file.isEditing) return
 
@@ -207,32 +200,33 @@ const FileItem = ({
     }, [selectedFileIndexes])
 
 
-    function formatAgeCompact(duracion) {
-        let partes = []
+    function formatAgeCompact(duration) {
+        let parts = []
 
-        // Días
-        const days = Math.floor(duracion.days)
+        const days = Math.floor(duration.days)
         if (days > 0) {
-            partes.push(`${days}d`)
-            duracion = duracion.minus({ days }) // Restar los días enteros para calcular las horas
+            parts.push(`${days}d`)
+            duration = duration.minus({ days })
         }
 
-        // Horas
-        const hours = Math.floor(duracion.hours)
-        if (hours > 0 || partes.length > 0) { // Incluir horas si hay días o si es la unidad principal
-            partes.push(`${hours}h`)
-            duracion = duracion.minus({ hours }) // Restar las horas enteras
+        const hours = Math.floor(duration.hours)
+        if (hours > 0 || parts.length > 0) {
+            parts.push(`${hours}h`)
+            duration = duration.minus({ hours })
         }
 
-        // Minutos
-        const minutes = Math.floor(duracion.minutes)
-        if (minutes > 0 && partes.length < 2) { // Incluir minutos solo si no se han incluido ya 2 unidades (para formato compacto)
-            partes.push(`${minutes}m`)
-        }
+        const minutes = Math.floor(duration.minutes)
+        if (minutes > 0 && parts.length < 2) parts.push(`${minutes}m`)
 
-        // Devolver la cadena (unir las dos primeras partes para mantener la compacidad)
-        return partes.slice(0, 2).join('')
+        return parts.slice(0, 2).join('')
     }    
+
+    const colNameWidth = () => {
+        if (columnWidths['name'])
+            return activeLayout==='list'?columnWidths['name']+34:''
+        else
+            return activeLayout==='list'?`calc(${spaces.get(space).width}% - 34px)`:''    
+    }
 
     return (
         <div
@@ -254,7 +248,7 @@ const FileItem = ({
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
         >
-            <div className='file-item' style={{ paddingRight:0, paddingLeft: options.checkBox? '33px':'12px', width:activeLayout==='list'?`calc(${spaces.get(space).width}% - 34px)`:''}}>
+            <div className='file-item' style={{ paddingRight:0, paddingLeft: options.checkBox? '33px':'12px', width:colNameWidth()}}>
                 { !file.isEditing && options.checkBox && (
                     <Checkbox
                         name={file.name}
@@ -274,18 +268,20 @@ const FileItem = ({
                     width: iconSize,    
                     minWidth: iconSize
                 }}>
-                    { file.isDirectory ? (
-                        file.class && icons && icons.get(file.class)?
-                            (activeLayout === 'grid'? icons.get(file.class).grid : icons.get(file.class).list) || <FaFolder size={iconSize}/>
+                    { file.isDirectory ?
+                        (file.class && icons && icons.get(file.class)?
+                                (activeLayout === 'grid'? icons.get(file.class).grid : icons.get(file.class).list) 
+                                || 
+                                (<FaFolder size={iconSize}/>)
                             :
-                            <FaRegFolderOpen size={iconSize} />
+                                <FaRegFolderOpen size={iconSize} />
                         )
                         : 
                         (
                             file.class && icons && icons.get(file.class)?
-                                React.cloneElement(icons.get(file.class).open || icons.get(file.class).default, {height:40})
+                                (React.cloneElement(icons.get(file.class).open || icons.get(file.class).default, {height:40}))
                                 :          
-                                fileIcons[file.name?.split('.').pop()?.toLowerCase()] ?? <FaRegFile size={iconSize} />
+                                (fileIcons[file.name?.split('.').pop()?.toLowerCase()] || <FaRegFile size={iconSize} />)
                         )
                     }
                 </div>
@@ -304,7 +300,7 @@ const FileItem = ({
                         activeLayout==='grid' ?
                             <span className='text-truncate file-name'>{file.name}</span>
                         :
-                            <span className='text-truncate file-name' style={{widh:(spaces.get(space).width*2)+'%'}}>{file.name}</span>
+                            <span className='text-truncate file-name' style={{width:(spaces.get(space).width*2)+'%'}}>{file.name}</span>
                     )
                 }
             </div>
@@ -332,9 +328,12 @@ const FileItem = ({
                             break
                     }
                 }
-                
+                let w = property.width+'%'
+                if (Object.keys(columnWidths).includes(property.name)) {
+                    w=columnWidths[property.name]
+                }
                 return (
-                    <div key={property.name} className='text-truncate' style={{display:'flex', width: property.width+'%', fontSize:'0.8em', alignItems:'center', textAlign:'left'}}>{content}</div>
+                    <div key={property.name} className='text-truncate file-name' style={{display:'flex', width: w, fontSize:'0.8em', alignItems:'center', textAlign:'left'}}>{content}</div>
                 )
             })}
 
@@ -355,7 +354,6 @@ const FileItem = ({
                 )}
             </div>
 
-        {/* Drag Icon & Tooltip Setup */}
         </div>
     )
 }

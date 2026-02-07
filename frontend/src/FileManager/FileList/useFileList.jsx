@@ -291,6 +291,7 @@ const useFileList = (onRefresh, enableFilePreview, triggerAction, permissions, o
         unselectFiles,
         visible,
         setVisible,
+        lastSelectedFile,
         setLastSelectedFile,
         selectedFileIndexes,
         clickPosition,

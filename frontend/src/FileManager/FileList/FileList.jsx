@@ -29,7 +29,9 @@ const FileList = ({
     triggerAction,
     permissions,
     showContextMenu,
-    formatDate
+    formatDate,
+    columnWidths,
+    onChangeWidth
     }) => {
 
     const { currentPathFiles, sortConfig, setSortConfig, currentFolder } = useFileNavigation()
@@ -37,7 +39,6 @@ const FileList = ({
     const { activeLayout, setActiveLayout } = useLayout()
     const t = useTranslation()
     const { options } = useOptions()
-    
     if (currentFolder && currentFolder.children) {
         space = currentFolder.children
     }
@@ -49,6 +50,7 @@ const FileList = ({
         unselectFiles,
         visible,
         setVisible,
+        lastSelectedFile,
         setLastSelectedFile,
         selectedFileIndexes,
         clickPosition,
@@ -100,9 +102,11 @@ const FileList = ({
 
     const renderStatusBar = () => {
         if (!options.statusBar) return <></>
+        if (currentFolder && currentFolder.layout==='own' && currentFolder.children && typeof currentFolder.children === 'function') return <></>
 
-        let list = currentPathFiles.filter (sf => applySearchText(sf, searchText, searchRegex, searchCasing))
-        let text=list.length + ' Items'
+        let list = currentPathFiles.filter (file => applySearchText(file, searchText, searchRegex, searchCasing))
+        if (categories) list = list.filter(file => applyCategories(file, categories, currentFolder.categories))
+        let text = list.length + ' Items'
         if (selectedFileIndexes.length>0) {
             text+= '\u00A0\u00A0\u00A0\u00A0' + selectedFileIndexes.length +'\u00A0items selected'
             let files = list.filter ((file,i) => selectedFileIndexes.includes(i)) 
@@ -120,7 +124,7 @@ const FileList = ({
     if (currentFolder && currentFolder.layout==='own' && currentFolder.children && typeof currentFolder.children === 'function') {
         // render custom layout
         return (
-            <div className='files' style={{paddingRight:0, height: `calc(100% - (${activeLayout==='list'?60:35}px))`}}>
+            <div className='files' style={{paddingRight:0, height: `100%`}}>
                 {currentFolder.children()}
             </div>                
             )
@@ -128,11 +132,17 @@ const FileList = ({
     else {
         // render standard layout
         return (<>
-            <div className='files list' style={{paddingRight:0}}>
                 {activeLayout === 'list' && (
-                    <FilesHeader space={space} spaces={spaces} unselectFiles={unselectFiles} onSort={handleSort} sortConfig={sortConfig} />
+                    <div className='files list' style={{paddingRight:0}}>
+                        <FilesHeader 
+                            onChangeWidth={onChangeWidth}
+                            space={space}
+                            spaces={spaces}
+                            unselectFiles={unselectFiles}
+                            onSort={handleSort}
+                            sortConfig={sortConfig} />
+                    </div>
                 )}
-            </div>
 
             <div
                 ref={filesViewRef}
@@ -143,11 +153,12 @@ const FileList = ({
             >
 
                 {currentPathFiles?.length > 0 ? (
-                    currentFolder && currentPathFiles.map((file, index) => (
-                        applySearchText(file, searchText, searchRegex, searchCasing) && 
+                    currentFolder && currentPathFiles.map((file, index) => 
+                        applySearchText(file, searchText, searchRegex, searchCasing) &&
                         applyCategories(file, categories, currentFolder.categories) &&
                         <FileItem
-                            key={index}
+                            columnWidths={columnWidths}
+                            key={file.name}
                             space={space}
                             spaces={spaces}
                             icons={icons}
@@ -170,38 +181,7 @@ const FileList = ({
                             draggable={permissions.move}
                             formatDate={formatDate}
                         />
-                    ))
-
-                    // <>
-                    //     {currentFolder && currentPathFiles.map((file, index) => (
-                    //         applySearchText(file, searchText, searchRegex, searchCasing) && 
-                    //         applyCategories(file, categories, currentFolder.categories) &&
-                    //         <FileItem
-                    //             key={index}
-                    //             space={space}
-                    //             spaces={spaces}
-                    //             icons={icons}
-                    //             index={index}
-                    //             file={file}
-                    //             searchText={searchText}
-                    //             searchRegex={searchRegex}
-                    //             searchCasing={searchCasing}
-                    //             categories={categories}
-                    //             onCreateFolder={onCreateFolder}
-                    //             onRename={onRename}
-                    //             onFileOpen={onFileOpen}
-                    //             enableFilePreview={enableFilePreview}
-                    //             triggerAction={triggerAction}
-                    //             filesViewRef={filesViewRef}
-                    //             selectedFileIndexes={selectedFileIndexes}
-                    //             handleContextMenu={handleContextMenu}
-                    //             setVisible={setVisible}
-                    //             setLastSelectedFile={setLastSelectedFile}
-                    //             draggable={permissions.move}
-                    //             formatDate={formatDate}
-                    //         />
-                    //     ))}
-                    // </> 
+                    )
                 )
                 :
                 (
@@ -225,6 +205,6 @@ const FileList = ({
     }
 }
 
-FileList.displayName = 'FileList';
+FileList.displayName = 'FileList'
 
-export default FileList;
+export default FileList

@@ -12,22 +12,23 @@ import { useTranslation } from "../../contexts/TranslationProvider"
 import { ViewOptions } from "./ViewOptions"
 import "./Toolbar.scss"
 
-const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavigationPaneChange, spaces, showRefresh, minFileActionsLevel }) => {
-    const [ showViewOptions, setShowViewOptions ] = useState(false)
+const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavigationPaneChange, spaces, showRefresh, showBreadcrumb, minFileActionsLevel }) => {
+    const [ viewOptionsMenuVivible, setViewOptionsMenuVisible ] = useState(false)
     const { currentFolder, currentPathFiles, currentOwnLayoutPath } = useFileNavigation()
     const { selectedFiles, setSelectedFiles, handleDownload } = useSelection()
     const { clipBoard, setClipBoard, handleCutCopy, handlePasting } = useClipBoard()
     const t = useTranslation()
     let currentLevel = currentFolder? currentFolder.path.split('/').length-1 : 0
+    let isCustomLayout = currentFolder && currentFolder.layout==='own' && currentFolder.children && typeof currentFolder.children === 'function'
 
     let fileDataLeftItems = []
     if (currentLevel>=minFileActionsLevel) {
         let validLeftItems = []
         validLeftItems.push({
-                icon: <BsFolderPlus size={17} strokeWidth={0.3} />,
-                text: t("newFolder"),
-                permission: permissions.create,
-                onClick: () => triggerAction.show("createFolder"),
+            icon: <BsFolderPlus size={17} strokeWidth={0.3} />,
+            text: t("newFolder"),
+            permission: permissions.create,
+            onClick: () => triggerAction.show("createFolder"),
         })
         validLeftItems.push({
             icon: <MdOutlineFileUpload size={18} />,
@@ -70,7 +71,7 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
         {
             icon: <FaListCheck size={16} />,
             title: t("changeView"),
-            onClick: () => setShowViewOptions((prev) => !prev),
+            onClick: () => setViewOptionsMenuVisible((prev) => !prev),
         },
         ...(showRefresh ?
             [{
@@ -192,16 +193,17 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
         return <>
             {toolbarRightItems.map((rightItem, index) => (
                 <div key={index} className="toolbar-left-items">
-                    <button className="item-action icon-only file-action" style={{height:'32px'}} title={rightItem.title} onClick={rightItem.onClick}>
+                    <button className="item-action icon-only file-action" style={{height:'32px'}} title={rightItem.title} onClick={rightItem.onClick} disabled={isCustomLayout}>
                         {rightItem.icon}
                     </button>
                     {index !== toolbarRightItems.length - 1 && <div className="item-separator"></div>}
                 </div>
             ))}
 
-            {showViewOptions && (
+            {viewOptionsMenuVivible && (
                 <ViewOptions
-                    setShowViewOptionsMenu={setShowViewOptions}
+                    showBreadcrumb={showBreadcrumb}
+                    setShowViewOptionsMenu={setViewOptionsMenuVisible}
                     onLayoutChange={onLayoutChange}
                     onNavigationPaneChange={onNavigationPaneChange}
                     onSelectChange={onSelectChange}
