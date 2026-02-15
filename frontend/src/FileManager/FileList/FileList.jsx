@@ -125,7 +125,7 @@ const FileList = ({
         // render custom layout
         return (
             <div className='files' style={{paddingRight:0, height: `100%`}}>
-                {currentFolder.children()}
+                {currentFolder.children(currentFolder)}
             </div>                
             )
     }

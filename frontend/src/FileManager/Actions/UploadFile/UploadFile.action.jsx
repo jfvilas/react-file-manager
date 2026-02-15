@@ -16,6 +16,7 @@ const UploadFileAction = ({
   acceptedFileTypes,
   onFileUploading,
   onFileUploaded,
+  onFileUploadError
 }) => {
   const [files, setFiles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -152,6 +153,7 @@ const UploadFileAction = ({
                 fileUploadConfig={fileUploadConfig}
                 setIsUploading={setIsUploading}
                 onFileUploaded={onFileUploaded}
+                onFileUploadError={onFileUploadError}
                 handleFileRemove={handleFileRemove}
               />
             ))}

@@ -11,8 +11,9 @@ import { validateApiCallback } from "../../utils/validateApiCallback"
 import { useTranslation } from "../../contexts/TranslationProvider"
 import { ViewOptions } from "./ViewOptions"
 import "./Toolbar.scss"
+import { applyFilters } from "../../utils/filters"
 
-const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavigationPaneChange, spaces, showRefresh, showBreadcrumb, minFileActionsLevel }) => {
+const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavigationPaneChange, spaces, searchText, searchRegex, searchCasing, categories,showRefresh, showBreadcrumb, minFileActionsLevel }) => {
     const [ viewOptionsMenuVivible, setViewOptionsMenuVisible ] = useState(false)
     const { currentFolder, currentPathFiles, currentOwnLayoutPath } = useFileNavigation()
     const { selectedFiles, setSelectedFiles, handleDownload } = useSelection()
@@ -175,14 +176,14 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
     const onSelectChange = (change) => {
         switch (change) {
             case 'all':
-                setSelectedFiles(currentPathFiles)
+                setSelectedFiles(applyFilters(currentPathFiles, searchText, searchRegex, searchCasing, categories, currentFolder.categories))
                 break
             case 'none':
                 setSelectedFiles([])
                 break
             case 'invert':
                 let result=[]
-                for(let f of currentPathFiles)
+                for(let f of applyFilters(currentPathFiles, searchText, searchRegex, searchCasing, categories, currentFolder.categories))
                     if (!selectedFiles.includes(f)) result.push(f)
                 setSelectedFiles(result)
                 break

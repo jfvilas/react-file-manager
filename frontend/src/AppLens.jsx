@@ -9,9 +9,9 @@ import "./AppLens.scss";
 import FileManager from "./FileManager/FileManager";
 
 function App() {
-    const fileUploadConfig = {
-        url: import.meta.env.VITE_API_BASE_URL + "/upload",
-    }
+    // const fileUploadConfig = {
+    //     url: import.meta.env.VITE_API_BASE_URL + "/upload",
+    // }
 
     const fileDownloadConfig = {
         //url: "https://getsamplefiles.com",
@@ -25,6 +25,7 @@ function App() {
 
     }
 
+    const arbolRef = useRef();
     const [isLoading, setIsLoading] = useState(false);
     const [currentPath, setCurrentPath] = useState("");
     const isMountRef = useRef(false);
@@ -55,7 +56,7 @@ function App() {
         {
             key:'namespace',
             text: 'Namespaces',
-            all: [ {key:'all',text:'All...'}, {key:'-'}, {key:'default'}, {key:'kube-system'}, {key:'kube-public'}, {key:'u', text:'u'}, {key:'login', text:'Login'} ],
+            all: [ {key:'all',text:'All...'}, {key:'-'}, {key:'default'}, {key:'kube-system'}, {key:'kube-public'}, {key:'u', text:'u'}, {key:'namespace1', text:'Uno'}, {key:'namespace2', text:'Dos'} ],
             selected: ['all'],
             onCategoryValuesChange: onCategoryValuesChange,
             onCategoryFilter: onCategoryFilter,
@@ -87,7 +88,7 @@ function App() {
     }
     
     const showPodMemory = (f) => {
-        return <>128M</>
+        return 1000000000* Math.random()
     }
     
     const showPodRestarts = (f) => {
@@ -237,67 +238,81 @@ let sampleFiles = [
         },
         {
             name: "eulen-ingress",
+            isDirectory: false,
             path: "/network/ingress/eulen-ingress",
             class: 'ingress'
         },
         {
             name: "superset-ingress",
+            isDirectory: false,
             path: "/network/ingress/superset-ingress",
             class: 'ingress'
         },
         {
-            name: "kwirth-23s4r5t34a-e2r42",
-            path: "/workload/pod/kwirth-23s4r5t34a-e2r42",
+            name: "kwirth:namespace1",
+            isDirectory: false,
+            path: "/workload/pod/kwirth:namespace1",
             data: {
-                namespace: 'psd-nextbpm',
+                namespace: 'namespace1',
                 controller: 'kwirth',
+                restarts: 1,
+                memory: 13,
                 node: 'b8asv2-vmss0000a',
                 startTime: "2024-09-09T10:30:00Z"
             },
             class: 'pod',
         },
         {
-            name: "obk-authorizator-236543334a-eieu2",
-            path: "/workload/pod/obk-authorizator-236543334a-eieu2",
+            name: "kwirth:namespace2",
+            isDirectory: false,
+            path: "/workload/pod/kwirth:namespace2",
             data: {
-                namespace: 'psd-flowable',
+                namespace: 'namespace2',
                 controller: 'authorizator',
+                restarts: 21,
+                memory: 26,
                 node: 'b8asv2-vmss0000b',
-                startTime: "2025-12-02T10:30:00Z",
+                startTime: "2026-01-02T10:30:00Z",
             },
             class: 'pod',
         },
         {
             name: "obk-authorizator-236543334a-eieu1",
+            isDirectory: false,
             path: "/workload/pod/obk-authorizator-236543334a-eieu1",
             data: {
                 namespace: 'psd-flowable',
                 controller: 'authorizator',
+                restarts: 32,
+                memory: 39,
                 node: 'b8asv2-vmss0000b',
-                startTime: "2025-12-02T10:30:00Z",
+                startTime: "2026-01-02T14:30:00Z",
             },
             class: 'pod',
         },
         {
             name: "obk-authorizator-236543334a-eieu9",
+            isDirectory: false,
             path: "/workload/pod/obk-authorizator-236543334a-eieu9",
             data: {
                 namespace: 'psd-flowable',
                 controller: 'authorizator',
+                restarts: 43,
+                memory: 55,
                 node: 'b8asv2-vmss0000b',
                 startTime: "2025-12-02T10:30:00Z",
             },
             class: 'pod',
         },
-        { name: "dep001", path: "/workload/deployment/dep001", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
-        { name: "dep002", path: "/workload/deployment/dep002", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
-        { name: "dep003dep003dep003dep003dep003dep003", path: "/workload/deployment/dep003dep003dep003dep003dep003dep003", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
-        { name: "dep004", path: "/workload/deployment/dep004", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
-        { name: "dep005", path: "/workload/deployment/dep005", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
-        { name: "dep006", path: "/workload/deployment/dep006", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
-        { name: "dep007", path: "/workload/deployment/dep007", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
-        { name: "dep008", path: "/workload/deployment/dep008", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
-        { name: "dep009", path: "/workload/deployment/dep009", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep001", isDirectory: false, path: "/workload/deployment/dep001", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep002", isDirectory: false, path: "/workload/deployment/dep002", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep003dep003dep003dep003dep003dep003", isDirectory: false, path: "/workload/deployment/dep003dep003dep003dep003dep003dep003", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep004", isDirectory: false, path: "/workload/deployment/dep004", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep005", isDirectory: false, path: "/workload/deployment/dep005", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep006", isDirectory: false, path: "/workload/deployment/dep006", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep007", isDirectory: false, path: "/workload/deployment/dep007", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep008", isDirectory: false, path: "/workload/deployment/dep008", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
+        { name: "dep009", isDirectory: false, path: "/workload/deployment/dep009", data: { namespace: 'psd-nextbpm', replicas:2}, class: 'deployment' },
     ]
 
     const [files, setFiles] = useState([...menu,...sampleFiles])
@@ -515,10 +530,15 @@ let sampleFiles = [
         }
     )
 
+    const nameProcessor = (name) => {
+        return name.split(':')[0]
+    }
+
     spaces.set('pod',
         {
             text:'Name',
             source:'name',
+            nameProcessor: nameProcessor,
             width:25,
             icons: new Map(),
             actions: new Map(),
@@ -594,21 +614,24 @@ let sampleFiles = [
                 {
                     name: 'memory',
                     text: 'Memory',
-                    source: showPodMemory,
-                    format: 'function',
+                    // source: showPodMemory,
+                    // format: 'function',
+                    source: 'memory',
+                    format: 'storage',
                     width: 10,
                     visible: true
                 },
                 {
                     name: 'restarts',
                     text: 'Restarts',
-                    source: showPodRestarts,
-                    format: 'function',
-                    width: 5,
+                    //source: showPodRestarts,
+                    source: ['restarts'],
+                    format: 'number',
+                    width: 3,
                     visible: true
                 },
                 {
-                    name: 'Contrller',
+                    name: 'controller',
                     text: 'Controller',
                     source: 'controller',
                     format: 'string',
@@ -780,14 +803,20 @@ let sampleFiles = [
     let spcClassWorkloadOverview = spaces.get('classworkloadoverview')
     setLeftItem(spcClassWorkloadOverview,'search', launchClusterSearch)
 
+    const cf = () => { 
+        //console.log(arbolRef.current)
+        arbolRef.current.changeFolder('/network/service')
+    }
     return (
         <div className="app">
+            <button onClick={cf}>cf</button>
             <div className="file-manager-container">
                 <FileManager
+                    ref={arbolRef}
                     actions={actions}
                     files={files}
                     spaces={spaces}
-                    fileUploadConfig={fileUploadConfig}
+                    //fileUploadConfig={fileUploadConfig}
                     fileDownloadConfig={fileDownloadConfig}
                     icons={icons}
                     isLoading={isLoading}

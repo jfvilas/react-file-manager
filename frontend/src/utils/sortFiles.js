@@ -28,8 +28,13 @@ const sortFiles = (items, sortKey = 'name', direction = 'asc') => {
                 break
             
             default:
-                // Fallback to name sorting
-                comparison = a.name.localeCompare(b.name)
+                if (typeof a.data[sortKey] === 'number')
+                    comparison = (a.data[sortKey] || 0) - (b.data[sortKey] || 0)
+                else if (typeof a.data[sortKey] === 'string')
+                    comparison = a.data[sortKey].localeCompare(b.data[sortKey])
+                else {
+                    comparison = 0
+                }
         }
 
         // Apply sort direction

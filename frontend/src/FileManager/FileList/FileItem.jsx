@@ -15,6 +15,18 @@ import { applyFilters } from '../../utils/filters'
 
 const dragIconSize = 50
 
+function convertBytesToSize(bytes, decimals = 2) {
+    if (!Number.isFinite(bytes) || bytes === 0) return '0 Bytes'
+    
+    const k = 1024
+    const dm = decimals < 0 ? 0 : decimals
+    const units = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    const calculatedValue = parseFloat((bytes / Math.pow(k, i)).toFixed(dm))
+    return calculatedValue + ' ' + units[i]
+}        
+
 const FileItem = ({
     columnWidths,
     space,
@@ -223,10 +235,14 @@ const FileItem = ({
 
     const colNameWidth = () => {
         if (columnWidths['name'])
-            return activeLayout==='list'?columnWidths['name']+34:''
+            return activeLayout==='list'?columnWidths['name']+34 : ''
         else
             return activeLayout==='list'?`calc(${spaces.get(space).width}% - 34px)`:''    
     }
+
+    // let showFileName = file.name
+    // if (spaces && spaces.get(space) && spaces.get(space).nameProcessor) showFileName = spaces.get(space).nameProcessor(showFileName)
+    let showFileName = file.displayName || file.name
 
     return (
         <div
@@ -234,7 +250,7 @@ const FileItem = ({
                 fileSelected || !!file.isEditing ? 'file-selected' : ''
             } ${isFileMoving ? 'file-moving' : ''}`}
             tabIndex={0}
-            title={file.name}
+            title={showFileName}
             onClick={handleFileSelection}
             onKeyDown={handleOnKeyDown}
             onContextMenu={handleItemContextMenu}
@@ -298,9 +314,9 @@ const FileItem = ({
                     :
                     (
                         activeLayout==='grid' ?
-                            <span className='text-truncate file-name'>{file.name}</span>
+                            <span className='text-truncate file-name'>{showFileName}</span>
                         :
-                            <span className='text-truncate file-name' style={{width:(spaces.get(space).width*2)+'%'}}>{file.name}</span>
+                            <span className='text-truncate file-name' style={{width:(spaces.get(space).width*2)+'%'}}>{showFileName}</span>
                     )
                 }
             </div>
@@ -316,6 +332,9 @@ const FileItem = ({
                             break
                         case 'date':
                             content = formatDate(file.data[property.source])
+                            break
+                        case 'storage':
+                            content = convertBytesToSize(file.data[property.source])
                             break
                         case 'age':
                             let ts = DateTime.fromISO(file.data[property.source])
@@ -340,7 +359,7 @@ const FileItem = ({
             {/* Drag Icon & Tooltip Setup */}
             {tooltipPosition && (
                 <div style={{ top: `${tooltipPosition.y}px`, left: `${tooltipPosition.x}px`}} className='drag-move-tooltip'>
-                    Move to <span className='drop-zone-file-name'>{file.name}</span>
+                    Move to <span className='drop-zone-file-name'>{showFileName}</span>
                 </div>
             )}
 

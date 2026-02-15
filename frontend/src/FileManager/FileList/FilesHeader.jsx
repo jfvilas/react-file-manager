@@ -121,10 +121,9 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onChang
                 {/* object props */}
                 { spaces.get(space)?.properties.filter(p => p.visible).map((property) => {
                     return (<React.Fragment key={property.name}>
-                            {/* <div key={property.name} id={'col-'+property.name} className={`${sortConfig?.key === property.name ? 'active' : ''}`} style={{ width: `calc(${property.width}%)`}} onClick={() => handleSort(property.name)}> */}
-                            <div  id={'col-'+property.name} className={`${sortConfig?.key === property.name ? 'active' : ''}`} style={{ width: colWidth[property.name]||property.width+'%'}} onClick={() => handleSort(property.name)}>
+                            <div  id={'col-'+property.name} className={`${sortConfig?.key === property.source ? 'active' : ''}`} style={{ width: colWidth[property.name]||property.width+'%'}} onClick={() => { if (property.sortable) handleSort(property.source)}}>
                                 {property.text}
-                                {sortConfig?.key === property.name && (
+                                {property.sortable && sortConfig?.key === property.source && (
                                     <span className='sort-indicator'>{sortConfig.direction === 'asc' ? ' ▲' : ' ▼'}</span>
                                 )}
                             </div>
