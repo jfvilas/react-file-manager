@@ -4,22 +4,27 @@ import { useFileNavigation } from '../../contexts/FileNavigationContext'
 import { useSelection } from '../../contexts/SelectionContext'
 import { useTranslation } from '../../contexts/TranslationProvider'
 import { useOptions } from '../../contexts/OptionsContext'
+import { FaEllipsisV } from 'react-icons/fa'
+import  {HeaderSelector} from '../../components/HeaderSelector/HeaderSelector'
+import { createPortal } from 'react-dom'
 
-const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onChangeWidth }) => {
+const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onChangeWidth, onColumnRemove, fontFamily }) => {
     const t = useTranslation()
-    const [showSelectAll, setShowSelectAll] = useState(false);
+    const [ showSelectAll, setShowSelectAll ] = useState(false);
     const { options } = useOptions()
     const { selectedFiles, setSelectedFiles } = useSelection();
     const { currentPathFiles } = useFileNavigation();
     const [ draggingColumn, setDraggingColumn ] = useState(undefined)
     const [ colNameWidth, setColNameWidth ]  = useState(`calc(${spaces.get(space)?.width||10}% - 60px)`)
     const [ colNameInitialWidth, setColNameInitialWidth ]  = useState(0)
+    const [ headerSelectorVisible, setHeaderSelectorVisible ]  = useState(false)
     
     const [ colWidth, setColWidth ]  = useState({})
     const [ colInitialWidth, setColInitialWidth ]  = useState({})
     
     const [ mousePos, setMousePos ]  = useState(0)
     const containerRef = useRef(null)
+    const anchorRef = useRef(null);
 
     const allFilesSelected = useMemo(() => {
         return (currentPathFiles.length > 0) && (selectedFiles.length === currentPathFiles.length)
@@ -43,8 +48,8 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onChang
         }
     }
 
-    const handleSort = (key) => {
-        if (onSort) onSort(key)
+    const handleSort = (key, format) => {
+        if (onSort) onSort(key, format)
     }
 
     const handleMouseDown = (e, name) => {
@@ -69,16 +74,16 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onChang
 
         let padding = options.checkBox? 15:35
         if (draggingColumn==='name') {
-            let neww=colNameInitialWidth+e.clientX-mousePos-padding
-            setColNameWidth(neww)
-            onChangeWidth(draggingColumn, neww)
+            let newWidth=colNameInitialWidth+e.clientX-mousePos-padding
+            setColNameWidth(newWidth)
+            onChangeWidth(draggingColumn, newWidth)
         }
         else {
-            let neww=colInitialWidth[draggingColumn]+e.clientX-mousePos
-            if (neww>0) {
-                colWidth[draggingColumn] = neww
+            let newWidth=colInitialWidth[draggingColumn]+e.clientX-mousePos
+            if (newWidth>0) {
+                colWidth[draggingColumn] = newWidth
                 setColWidth({...colWidth})
-                onChangeWidth(draggingColumn, neww)
+                onChangeWidth(draggingColumn, newWidth)
             }
         }
     }
@@ -98,7 +103,6 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onChang
                     )}
                 </div>
             }
-            {/* <div id='col-name' className={`${sortConfig?.key === 'name' ? 'active' : ''}`} style={{ width: `calc(${spaces.get(space)?.width||10}% - 60px)`, paddingLeft: options.checkBox? '15px':'35px'}} onClick={() => handleSort('name')}> */}
             <section
                 ref={containerRef}
                 onMouseMove={handleMouseMove}
@@ -107,7 +111,7 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onChang
                 >
 
                 {/* object name */}
-                <div id='col-name' className={`${sortConfig?.key === 'name' ? 'active' : ''}`} style={{ width: colNameWidth, paddingLeft: options.checkBox? '15px':'35px'}} onClick={() => handleSort('name')}>
+                <div id='col-name' className={`${sortConfig?.key === 'name' ? 'active' : ''}`} style={{ width: colNameWidth, paddingLeft: options.checkBox? '15px':'35px'}} onClick={() => handleSort('name', 'string')}>
                     {spaces.get(space)?.text||''}
                     {sortConfig?.key === 'name' && (
                         <span className='sort-indicator'>{sortConfig.direction === 'asc' ? ' ▲' : ' ▼'}</span>
@@ -121,12 +125,25 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onChang
                 {/* object props */}
                 { spaces.get(space)?.properties.filter(p => p.visible).map((property) => {
                     return (<React.Fragment key={property.name}>
-                            <div  id={'col-'+property.name} className={`${sortConfig?.key === property.source ? 'active' : ''}`} style={{ width: colWidth[property.name]||property.width+'%'}} onClick={() => { if (property.sortable) handleSort(property.source)}}>
-                                {property.text}
-                                {property.sortable && sortConfig?.key === property.source && (
-                                    <span className='sort-indicator'>{sortConfig.direction === 'asc' ? ' ▲' : ' ▼'}</span>
-                                )}
-                            </div>
+                            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: colWidth[property.name]||property.width+'%'}}>
+                            
+                                <div  id={'col-'+property.name} className={`${sortConfig?.key === property.source ? 'active' : ''}`} style={{ width: '100%'}} onClick={() => { if (property.sortable) handleSort(property.source, property.format)}}>
+                                        {property.text}
+                                        {property.sortable && sortConfig?.key === property.source && (
+                                            <span className='sort-indicator'>{sortConfig.direction === 'asc' ? ' ▲' : ' ▼'}</span>
+                                        )}
+                                </div>
+                                { property.removable && 
+                                    <span style={{ color: '#dddddd', cursor: 'pointer', transition: '0.3s', paddingRight: '4px' }}
+                                            onMouseEnter={(e) => (e.currentTarget.style.color = 'black')}
+                                            onMouseLeave={(e) => (e.currentTarget.style.color = '#dddddd')}
+                                            onClick={e => onColumnRemove(space, property.name)}
+                                    >
+                                        x
+                                    </span>
+                                }
+
+                            </div>                            
                             <div
                                 className={`column-resize ${draggingColumn ? "column-dragging" : ""}`}
                                 onMouseDown={(e) => handleMouseDown(e, property.name)}
@@ -134,6 +151,32 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onChang
                         </React.Fragment>
                     )
                 })}
+                {/* config */}
+                { spaces.get(space)?.properties.configuraable?
+                    <></>
+                    :
+                    <span ref={anchorRef}>
+                        <FaEllipsisV style={{cursor:'pointer'}} onClick={() => setHeaderSelectorVisible(true)}/>
+                    </span>
+                }
+                {headerSelectorVisible && createPortal(
+                    <div style={{
+                        position: 'fixed',
+                        top: anchorRef.current?.getBoundingClientRect().bottom + 2,
+                        left: anchorRef.current?.getBoundingClientRect().left+15,
+                        zIndex: 9999,
+                        fontFamily,
+                        backgroundColor: 'white',
+                        boxShadow: '0px 4px 10px rgba(0,0,0,0.1)'
+                    }}>
+                        <HeaderSelector
+                            setHeaderSelectorVisible={setHeaderSelectorVisible}
+                            space={space}
+                            spaces={spaces}
+                        />
+                    </div>,
+                    document.body
+                )}
             </section>
         </div>
     )    

@@ -33,7 +33,7 @@ const ViewCategory = ({ setShowViewCategoryMenu, searchText, searchRegex, search
             <ul role='menu' aria-orientation='vertical'>
                 {viewCategory.map((category, index) => 
                     category.key!=='-'?
-                        <li role='menuitem' key={index} onClick={() => handleSelection(category.key)} onKeyDown={() => handleSelection(category.key)} style={{widtrh:'100%'}}>
+                        <li role='menuitem' key={index} onClick={() => handleSelection(category.key)} onKeyDown={() => handleSelection(category.key)}>
                         <span>{category.checked && <FaCheck size={13} />}</span>
                         <span>{category.text}</span>
                     </li>

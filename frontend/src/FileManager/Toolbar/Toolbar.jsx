@@ -98,7 +98,11 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
     }
 
     const onToolbarFileActionClick = (toolBarAction, target) => {
-        toolBarAction.onClick(selectedFiles.map (f => f.path), target)
+        if (toolBarAction.onClick)
+            toolBarAction.onClick(selectedFiles.map (f => f.path), target)
+        else {
+            console.log('Click action not configured for', toolBarAction)
+        }
     }
 
     const onToolbarOwnLayoutActionClick = (toolBarAction, target) => {

@@ -17,6 +17,7 @@ const FileList = ({
     space,
     spaces,
     icons,
+    fontFamily,
     searchText,
     searchRegex,
     searchCasing,
@@ -31,7 +32,8 @@ const FileList = ({
     showContextMenu,
     formatDate,
     columnWidths,
-    onChangeWidth
+    onChangeWidth,
+    onColumnRemove
     }) => {
 
     const { currentPathFiles, sortConfig, setSortConfig, currentFolder } = useFileNavigation()
@@ -59,10 +61,10 @@ const FileList = ({
 
     const contextMenuRef = useDetectOutsideClick(() => setVisible(false))
 
-    const handleSort = (key) => {
+    const handleSort = (key, format) => {
         let direction = 'asc'
         if (sortConfig.key === key && sortConfig.direction === 'asc') direction = 'desc'
-        setSortConfig({ key, direction })
+        setSortConfig({ key, direction, format })
     }
 
     const customActionClick = (src)=> {
@@ -135,7 +137,9 @@ const FileList = ({
                 {activeLayout === 'list' && (
                     <div className='files list' style={{paddingRight:0}}>
                         <FilesHeader 
+                            fontFamily={fontFamily}
                             onChangeWidth={onChangeWidth}
+                            onColumnRemove={onColumnRemove}
                             space={space}
                             spaces={spaces}
                             unselectFiles={unselectFiles}

@@ -1,4 +1,4 @@
-const sortFiles = (items, sortKey = 'name', direction = 'asc') => {
+const sortFiles = (items, sortKey = 'name', direction = 'asc', format = 'string') => {
     // Separate folders and files
     const folders = items.filter((file) => file.isDirectory);
     const files = items.filter((file) => !file.isDirectory);
@@ -10,7 +10,9 @@ const sortFiles = (items, sortKey = 'name', direction = 'asc') => {
         switch (sortKey) {
             case 'name':
                 // Use localeCompare for proper string sorting
-                comparison = a.name.localeCompare(b.name)
+                let aname = a.displayName || a.name
+                let bname = b.displayName || b.name
+                comparison = aname.localeCompare(bname)
                 break
             
             case 'size':
@@ -28,8 +30,10 @@ const sortFiles = (items, sortKey = 'name', direction = 'asc') => {
                 break
             
             default:
-                if (typeof a.data[sortKey] === 'number')
+                if (typeof a.data[sortKey] === 'number') {                    
                     comparison = (a.data[sortKey] || 0) - (b.data[sortKey] || 0)
+                    if (format ==='age') comparison = -comparison
+                }
                 else if (typeof a.data[sortKey] === 'string')
                     comparison = a.data[sortKey].localeCompare(b.data[sortKey])
                 else {

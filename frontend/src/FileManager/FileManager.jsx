@@ -158,6 +158,12 @@ const FileManagerBody = ({ props, innerRef }) => {
 		setColumnWidths(prev => ({ ...prev, [name]: size }))
 	}
 
+	const onColumnRemove = (space, name) => {
+		let col = spaces.get(space).properties.find(p => p.name===name)
+		col.visible = false
+		setColumnWidths( {...columnWidths})  // refresh
+	}
+
 	return (
 		<SelectionProvider
 		onDownload={onDownload}
@@ -215,39 +221,41 @@ const FileManagerBody = ({ props, innerRef }) => {
 					style={{ width: (isNavigationPaneOpen ? colSizes.col2 : 100) + '%' }}
 				>
 					<BreadCrumb
-					collapsibleNav={collapsibleNav}
-					isNavigationPaneOpen={isNavigationPaneOpen}
-					onNavigationPaneChange={onNavigationPaneChange}
-					tirggerAction={triggerAction}
-					onSearchFilterChange={onSearchFilterChange}
-					searchMode={searchMode}
-					searchText={srchText}
-					searchRegex={srchRegex}
-					searchCasing={srchCasing}
-					categories={categories}
-					fontFamily={fontFamily}
-					showBreadcrumb={showBreadcrumb}
+						collapsibleNav={collapsibleNav}
+						isNavigationPaneOpen={isNavigationPaneOpen}
+						onNavigationPaneChange={onNavigationPaneChange}
+						tirggerAction={triggerAction}
+						onSearchFilterChange={onSearchFilterChange}
+						searchMode={searchMode}
+						searchText={srchText}
+						searchRegex={srchRegex}
+						searchCasing={srchCasing}
+						categories={categories}
+						fontFamily={fontFamily}
+						showBreadcrumb={showBreadcrumb}
 					/>
 					<FileList
-					columnWidths={columnWidths}
-					onChangeWidth={onChangeWidth}
-					actions={actions}
-					space={space}
-					spaces={spaces}
-					icons={icons}
-					onCreateFolder={onCreateFolder}
-					onRename={onRename}
-					onFileOpen={onFileOpen}
-					onRefresh={onRefresh}
-					enableFilePreview={enableFilePreview}
-					triggerAction={triggerAction}
-					permissions={permissions}
-					formatDate={formatDate}
-					searchText={srchText}
-					searchRegex={srchRegex}
-					searchCasing={srchCasing}
-					showContextMenu={showContextMenu}
-					categories={categories}
+						columnWidths={columnWidths}
+						onChangeWidth={onChangeWidth}
+						onColumnRemove={onColumnRemove}
+						actions={actions}
+						space={space}
+						spaces={spaces}
+						icons={icons}
+						fontFamily={fontFamily}
+						onCreateFolder={onCreateFolder}
+						onRename={onRename}
+						onFileOpen={onFileOpen}
+						onRefresh={onRefresh}
+						enableFilePreview={enableFilePreview}
+						triggerAction={triggerAction}
+						permissions={permissions}
+						formatDate={formatDate}
+						searchText={srchText}
+						searchRegex={srchRegex}
+						searchCasing={srchCasing}
+						showContextMenu={showContextMenu}
+						categories={categories}
 					/>
 				</div>
 				</section>

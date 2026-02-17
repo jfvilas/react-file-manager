@@ -145,77 +145,121 @@ function App() {
     }
 
     // layout: list, grid, own
-let menu = [
-    {
-        name: "Overview",
-        isDirectory: true,
-        path: "/overview",
-        class: 'classmenu',
-        layout: 'own',   
-        children: showOverview
-    },
-    {
-        name: "Network",
-        isDirectory: true,
-        path: "/network",
-        class: 'classmenu'
-    },
-    {
-        name: "Service",
-        isDirectory: true,
-        path: "/network/service",
-        layout: 'list',  
-        class: 'classservice',
-        categories: [ 'namespace' ],
-        features: [ ],
-        children: 'service'
-    },
-    {
-        name: "Ingress",
-        isDirectory: true,
-        path: "/network/ingress",
-        layout: 'list',  
-        class: 'classingress',
-        children: 'ingress'
-    },
-    {
-        name: "Workload",
-        isDirectory: true,
-        path: "/workload",
-        class: 'classmenu'
-    },
-    {   name: 'Overview',
-        isDirectory: true,
-        path: '/workload/overview',
-        class: 'classworkloadoverview',
-        layout: 'own',
-    },
-    {
-        name: "Pod",
-        isDirectory: true,
-        path: "/workload/pod",
-        layout: 'list',  
-        categories: [ 'namespace', 'controller' ],
-        features: [ 'search'],
-        class: 'classmenu',
-        children: 'pod'
-    },
-    {
-        name: "Deployment",
-        isDirectory: true,
-        path: "/workload/deployment",
-        class: 'classmenu',
-        children: 'deployment'
-    },
-    {
-        name: "Config",
-        isDirectory: true,
-        path: "/config",
-        class: 'classmenu'
-    },
-]
+    let menu = [
+        {
+            name: "Overview",
+            isDirectory: true,
+            path: "/overview",
+            class: 'classmenu',
+            layout: 'own',   
+            children: showOverview
+        },
+        {
+            name: "Network",
+            isDirectory: true,
+            path: "/network",
+            class: 'classmenu'
+        },
+        {
+            name: "Service",
+            isDirectory: true,
+            path: "/network/service",
+            layout: 'list',  
+            class: 'classservice',
+            categories: [ 'namespace' ],
+            features: [ ],
+            children: 'service'
+        },
+        {
+            name: "Ingress",
+            isDirectory: true,
+            path: "/network/ingress",
+            layout: 'list',  
+            class: 'classingress',
+            children: 'ingress'
+        },
+        {
+            name: "Workload",
+            isDirectory: true,
+            path: "/workload",
+            class: 'classmenu'
+        },
+        {
+            name: "Cluster",
+            isDirectory: true,
+            path: "/cluster",
+            class: 'classmenu'
+        },
+        {   name: 'Overview',
+            isDirectory: true,
+            path: '/workload/overview',
+            class: 'classworkloadoverview',
+            layout: 'own',
+        },
+        {   name: 'Images',
+            isDirectory: true,
+            path: '/cluster/Image',
+            class: 'classImage',
+            children: 'Image'
+        },
+        {
+            name: "Pod",
+            isDirectory: true,
+            path: "/workload/pod",
+            layout: 'list',  
+            categories: [ 'namespace', 'controller' ],
+            features: [ 'search'],
+            class: 'classmenu',
+            children: 'pod'
+        },
+        {
+            name: "Deployment",
+            isDirectory: true,
+            path: "/workload/deployment",
+            class: 'classmenu',
+            children: 'deployment'
+        },
+        {
+            name: "Config",
+            isDirectory: true,
+            path: "/config",
+            class: 'classmenu'
+        },
+    ]
 
-let sampleFiles = [
+    let sampleFiles = [
+        {
+            name: "acracreulennopro",
+            displayName: "cracreulennopro-a",
+            isDirectory: false,
+            path: "/cluster/Image/acracreulennopro",
+            size: 73127230,
+            data: {
+                age: 33333333,
+                size: 73127230,
+                tag: '1.2.3',
+                registry: 'docker.io',
+                origin: {
+                }
+            }
+        },
+        {
+            name: "bcracreulennopro",
+            displayName: "aracreulennopro-a",
+            isDirectory: false,
+            path: "/cluster/Image/bcracreulennopro",
+            size: 2345731270,
+            data: {
+                size: 731230,
+                age: 4797593754,
+                tag: '0.4.328',
+                registry: 'quay.io',
+                origin: {
+                }
+            }
+        },
+
+        
         {
             name: "users-svc",
             isDirectory: false,
@@ -318,13 +362,13 @@ let sampleFiles = [
     const [files, setFiles] = useState([...menu,...sampleFiles])
 
     let permissions = {
-      create: true,
-      upload: false,
-      move: true,
-      copy:  true,
-      rename:  false,
-      download:  false,
-      delete: true
+        create: true,
+        upload: false,
+        move: true,
+        copy:  true,
+        rename:  false,
+        download:  false,
+        delete: true
     }
 
     let serviceStatus = (file) => {
@@ -374,15 +418,7 @@ let sampleFiles = [
                     format: 'string',
                     width: 15,
                     visible: true
-                },
-                {
-                    name: 'age',
-                    text: 'Age',
-                    source: 'age',
-                    format: 'age',
-                    width: 15,
-                    visible: true
-                },
+                }
             ],
             emptySelectionContextMenu: undefined,
             selectionContextMenu: undefined
@@ -393,6 +429,65 @@ let sampleFiles = [
         {
             leftItems: [],
             properties: [],
+        }
+    )
+
+    spaces.set('Image',
+        {
+            text: 'Name',
+            source: 'name',
+            width: 40,
+            configurable: true,
+            leftItems: [
+                {
+                    name:'details',
+                    icon: <></>,
+                    text: 'Details',
+                    permission: true,
+                },
+            ],
+            properties: [
+                {
+                    name: 'size',
+                    text: 'Size',
+                    source: 'size',
+                    format: 'storage',
+                    removable: false,
+                    width: 10,
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    name: 'age',
+                    text: 'Edad',
+                    source: 'age',
+                    format: 'age',
+                    removable: true,
+                    width: 15,
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    name: 'tag',
+                    text: 'Tag',
+                    source: 'tag',
+                    format: 'string',
+                    removable: true,
+                    width: 15,
+                    sortable: true,
+                    visible: true
+                },
+                {
+                    name: 'registry',
+                    text: 'Registry',
+                    source: 'registry',
+                    format: 'string',
+                    removable: true,
+                    width: 15,
+                    sortable: true,
+                    visible: true
+                },
+            ]
         }
     )
 
@@ -538,10 +633,7 @@ let sampleFiles = [
         {
             text:'Name',
             source:'name',
-            nameProcessor: nameProcessor,
             width:25,
-            icons: new Map(),
-            actions: new Map(),
             leftItems: [
                 {
                     icon: <>{'D'}</>,
@@ -669,17 +761,17 @@ let sampleFiles = [
     )
 
     spaces.set('classworkloadoverview', 
-    {
-        leftItems: [
-            {
-                name:'search',
-                icon: <>ICON</>,
-                text: 'Search',
-                permission: true
-            }
-        ]
-    }    
-)
+        {
+            leftItems: [
+                {
+                    name:'search',
+                    icon: <>ICON</>,
+                    text: 'Search',
+                    permission: true
+                }
+            ]
+        }    
+    )
 
 
     // Get Files
@@ -794,7 +886,7 @@ let sampleFiles = [
     const launchClusterSearch = (a,b,c) => {
         console.log('cs',a,b,c)
     }
-    
+
     const setLeftItem = (space, name, invoke) => {
         let x = space.leftItems?.find(f => f.name===name)
         if (x) x.onClick = invoke
