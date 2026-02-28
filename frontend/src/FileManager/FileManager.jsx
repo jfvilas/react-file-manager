@@ -107,6 +107,7 @@ const FileManagerBody = ({ props, innerRef }) => {
 		width
 	}
 	
+	const [headersWidth, setHeadersWidth] = useState({})
 	const [columnWidths, setColumnWidths] = useState({})
 
 	const onSearchFilterChange = (f, regex, casing) => {
@@ -154,14 +155,21 @@ const FileManagerBody = ({ props, innerRef }) => {
 		})
 	}
 
-	const onChangeWidth = (name, size) => {
+	const onHeaderChangeWidth = (name, size) => {
+		setHeadersWidth(prev => ({ ...prev, [name]: size }))		
 		setColumnWidths(prev => ({ ...prev, [name]: size }))
 	}
 
-	const onColumnRemove = (space, name) => {
+	const onHeaderRemove = (space, name) => {
 		let col = spaces.get(space).properties.find(p => p.name===name)
 		col.visible = false
-		setColumnWidths( {...columnWidths})  // refresh
+		setColumnWidths({...columnWidths})  // refresh
+	}
+
+	const onHeadersReset = (space) => {
+		spaces.get(space).properties.forEach(header => header.visible = true)
+		setHeadersWidth({})
+		setColumnWidths({})
 	}
 
 	return (
@@ -235,9 +243,11 @@ const FileManagerBody = ({ props, innerRef }) => {
 						showBreadcrumb={showBreadcrumb}
 					/>
 					<FileList
+						headersWidth={headersWidth}
 						columnWidths={columnWidths}
-						onChangeWidth={onChangeWidth}
-						onColumnRemove={onColumnRemove}
+						onHeaderChangeWidth={onHeaderChangeWidth}
+						onHeaderRemove={onHeaderRemove}
+						onHeadersReset={onHeadersReset}
 						actions={actions}
 						space={space}
 						spaces={spaces}

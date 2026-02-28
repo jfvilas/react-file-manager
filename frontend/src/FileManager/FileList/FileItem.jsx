@@ -235,13 +235,11 @@ const FileItem = ({
 
     const colNameWidth = () => {
         if (columnWidths['name'])
-            return activeLayout==='list'?columnWidths['name']+34 : ''
+            return activeLayout==='list'? columnWidths['name']+34 : ''
         else
-            return activeLayout==='list'?`calc(${spaces.get(space).width}% - 34px)`:''    
+            return activeLayout==='list'? `calc(${spaces.get(space).width}% - 34px)` : ''
     }
 
-    // let showFileName = file.name
-    // if (spaces && spaces.get(space) && spaces.get(space).nameProcessor) showFileName = spaces.get(space).nameProcessor(showFileName)
     let showFileName = file.displayName || file.name
 
     return (
@@ -349,7 +347,7 @@ const FileItem = ({
                 }
                 let w = property.width+'%'
                 if (Object.keys(columnWidths).includes(property.name)) {
-                    w=columnWidths[property.name]
+                    w = columnWidths[property.name]
                 }
                 return (
                     <div key={property.name} className='text-truncate file-name' style={{display:'flex', width: w, fontSize:'0.8em', alignItems:'center', textAlign:'left'}}>{content}</div>

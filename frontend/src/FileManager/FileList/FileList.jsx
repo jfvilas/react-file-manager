@@ -31,9 +31,11 @@ const FileList = ({
     permissions,
     showContextMenu,
     formatDate,
+    headersWidth,
     columnWidths,
-    onChangeWidth,
-    onColumnRemove
+    onHeaderChangeWidth,
+    onHeaderRemove,
+    onHeadersReset
     }) => {
 
     const { currentPathFiles, sortConfig, setSortConfig, currentFolder } = useFileNavigation()
@@ -138,8 +140,10 @@ const FileList = ({
                     <div className='files list' style={{paddingRight:0}}>
                         <FilesHeader 
                             fontFamily={fontFamily}
-                            onChangeWidth={onChangeWidth}
-                            onColumnRemove={onColumnRemove}
+                            headersWidth={headersWidth}
+                            onHeaderChangeWidth={onHeaderChangeWidth}
+                            onHeaderRemove={onHeaderRemove}
+                            onHeadersReset={onHeadersReset}
                             space={space}
                             spaces={spaces}
                             unselectFiles={unselectFiles}
