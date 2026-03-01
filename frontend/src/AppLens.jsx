@@ -56,7 +56,7 @@ function App() {
         {
             key:'namespace',
             text: 'Namespaces',
-            all: [ {key:'all',text:'All...'}, {key:'-'}, {key:'default'}, {key:'kube-system'}, {key:'kube-public'}, {key:'u', text:'u'}, {key:'namespace1', text:'Uno'}, {key:'namespace2', text:'Dos'} ],
+            all: [ {key:'all',text:'All...'}, {key:'-'}, {key:'default'}, {key:'kube-system'}, {key:'kube-public'}, {key:'u', text:'u'}, {key:'namespace1', text:'Uno'}, {key:'namespace2', text:'Dos'} , {key:'namespace2', text:'Dos'} , {key:'namespace2', text:'Dos'} , {key:'namespace2', text:'Dos'} , {key:'namespace2', text:'Dos'} ],
             selected: ['all'],
             onCategoryValuesChange: onCategoryValuesChange,
             onCategoryFilter: onCategoryFilter,
@@ -235,7 +235,7 @@ function App() {
             path: "/cluster/Image/acracreulennopro",
             size: 73127230,
             data: {
-                age: 33333333,
+                age: new Date().toISOString(),
                 size: 73127230,
                 tag: '1.2.3',
                 registry: 'docker.io',
@@ -251,7 +251,7 @@ function App() {
             size: 2345731270,
             data: {
                 size: 731230,
-                age: 4797593754,
+                age: new Date().toISOString(),
                 tag: '0.4.328',
                 registry: 'quay.io',
                 origin: {

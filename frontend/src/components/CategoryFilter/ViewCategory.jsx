@@ -4,7 +4,7 @@ import { useSelection } from '../../contexts/SelectionContext'
 import { applyFilters } from '../../utils/filters'
 import { useFileNavigation } from "../../contexts/FileNavigationContext"
 
-const ViewCategory = ({ setShowViewCategoryMenu, searchText, searchRegex, searchCasing, categories, category }) => {
+const ViewCategory = ({ setShowViewCategoryMenu, left, top, searchText, searchRegex, searchCasing, categories, category }) => {
     const { selectedFiles, setSelectedFiles } = useSelection()
     const { currentFolder } = useFileNavigation()
 
@@ -29,16 +29,16 @@ const ViewCategory = ({ setShowViewCategoryMenu, searchText, searchRegex, search
     }
 
     return (
-        <div ref={viewCategoryRef.ref} className='category-view' role='dropdown'>
+        <div ref={viewCategoryRef.ref} className='category-view' role='dropdown' style={{left, top}}>
             <ul role='menu' aria-orientation='vertical'>
                 {viewCategory.map((category, index) => 
-                    category.key!=='-'?
-                        <li role='menuitem' key={index} onClick={() => handleSelection(category.key)} onKeyDown={() => handleSelection(category.key)}>
-                        <span>{category.checked && <FaCheck size={13} />}</span>
-                        <span>{category.text}</span>
-                    </li>
+                    category.key==='-'?
+                        <div key={category.key} className='divider'></div>
                     :
-                    <div key={category.key} className='divider' style={{boderTop:0, borderLeft:0, borderRight:0, borderWidth:1, borderColor: '#c4c4c4', borderBottom:0, borderStyle:'solid'}}></div>
+                        <li role='menuitem' key={index} onClick={() => handleSelection(category.key)} onKeyDown={() => handleSelection(category.key)}>
+                            <span>{category.checked && <FaCheck size={13} />}</span>
+                            <span>{category.text}</span>
+                        </li>
                 )}
             </ul>
         </div>

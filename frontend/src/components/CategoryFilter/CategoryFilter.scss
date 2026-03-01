@@ -1,16 +1,42 @@
 @import "../../styles/variables";
 
+.category-button {
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius:4px;
+    font-size: 10px; 
+    cursor: pointer; 
+    padding: 4px;
+}
+
+.category-button-active {
+    background-color: black;
+    color: white;
+    border: 1px solid #e0e0e0;
+    border-radius:4px;
+    font-size: 10px; 
+    cursor: pointer; 
+    padding: 4px;
+}
+
 .category-view {
     position: absolute;
     z-index: 3;
-    top: 105%;
-    right: 22%;
+    // top: 105%;
+    // right: 50%;
     background-color: white;
     margin: 0;
     border: 1px solid #c4c4c4;
     border-radius: 5px;
     font-size: $fm-font-size;
     width: 200px;
+
+    .divider {
+        border: 0;
+        border-bottom: 1px solid #c6c6c6;
+        width: 100%;
+        min-width: 100%;
+    }
 
     ul {
         list-style: none;
