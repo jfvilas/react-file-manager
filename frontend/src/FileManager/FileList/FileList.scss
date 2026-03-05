@@ -8,13 +8,13 @@
   column-gap: 0.5em;
   row-gap: 5px;
   border-style:solid !important;
-  border-color:#cfcfcf !important;
-  border-top: 0;
+  border-color:#666 !important;
+  border-top:0;
   border-left:0;
   border-right:0;
   border-bottom:1px;
+  //border-bottom-right-radius: 8px;
   @include overflow-y-scroll;
-  //padding-right: 4px;
   padding-right: 0px;
   font-size: $fm-font-size;
 
@@ -146,13 +146,11 @@
     font-size: 0.83em;
     font-weight: 600;
     display: flex 0 0 auto;   // <----- NECESARIO PARA EL RESIZE
-    //gap: 5px;
     border-top: 1px solid #dddddd;
-    //border-bottom: 1px solid #dddddd;
+    border-radius: 0;
     padding: 4px 0 4px 5px;
     position: sticky;
     top: 0;
-    //background-color: #f5f5f5;
     z-index: 1;
 
     & .column-header {

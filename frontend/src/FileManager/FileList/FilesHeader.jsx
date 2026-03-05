@@ -159,9 +159,9 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onHeade
                 {headerSelectorVisible && createPortal(
                     <div style={{
                         position: 'fixed',
-                        top: anchorRef.current?.getBoundingClientRect().bottom + 2,
-                        left: anchorRef.current?.getBoundingClientRect().left+15,
-                        zIndex: 9999,
+                        top: anchorRef.current?.getBoundingClientRect().top,
+                        left: anchorRef.current?.getBoundingClientRect().left-200,
+                        zIndex: 3,
                         fontFamily,
                         backgroundColor: 'white',
                         boxShadow: '0px 4px 10px rgba(0,0,0,0.1)'

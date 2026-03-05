@@ -52,11 +52,13 @@ svg {
   .files-container {
     display: flex;
     height: calc(100% - 46px); // Toolbar total height = baseHeight: 35px, padding top + bottom: 10px, border: 1px.
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 
     .navigation-pane {
       z-index: 1;
       padding-top: 8px;
-
+      border-radius: 8px;
       position: relative;
 
       .sidebar-resize {

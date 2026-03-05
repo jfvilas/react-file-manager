@@ -26,8 +26,10 @@ const CategoryFilter = ({ category, fontFamily, searchText, searchRegex, searchC
                     searchCasing={searchCasing}
                     categories={categories}
                     setShowViewCategoryMenu={setShowViewCategory}
-                    letf={anchorRef.current?.getBoundingClientRect().left + 202}
-                    top={anchorRef.current?.getBoundingClientRect().top - 164}
+                    // letf={anchorRef.current?.getBoundingClientRect().left + 202}
+                    // top={anchorRef.current?.getBoundingClientRect().top - 164}
+                    letf={0}
+                    top={30}
                 />
             }
 

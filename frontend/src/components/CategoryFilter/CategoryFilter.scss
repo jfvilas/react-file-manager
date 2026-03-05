@@ -22,14 +22,14 @@
 .category-view {
     position: absolute;
     z-index: 3;
-    // top: 105%;
-    // right: 50%;
     background-color: white;
     margin: 0;
     border: 1px solid #c4c4c4;
     border-radius: 5px;
     font-size: $fm-font-size;
     width: 200px;
+    max-height: 300px;
+    overflow-y: auto;
 
     .divider {
         border: 0;
