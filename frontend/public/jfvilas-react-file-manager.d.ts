@@ -1,6 +1,10 @@
 declare module '@jfvilas/react-file-manager' {
     import { FC } from 'react'
 
+    export interface IFileManagerHandle {
+       changeFolder: (dest: string) => void;
+    }
+
     export interface IFileUploadConfig {
         url: string
         method?: "POST" | "PUT"
@@ -24,6 +28,7 @@ declare module '@jfvilas/react-file-manager' {
 
     export interface IFileObject {
         name: string;
+        displayName?: string;
         isDirectory: boolean;
         path: string;
         layout?: string;
@@ -49,13 +54,14 @@ declare module '@jfvilas/react-file-manager' {
     }
 
     export interface ISpace {
-        text?:string,
-        source?:string,
-        width?:number,
-        sumSourceProperty?: string,
-        sumReducer?: number,
-        sumUnits?: string[],
+        text?: string
+        source?: string
+        width?: number
+        sumSourceProperty?: string
+        sumReducer?: number
+        sumUnits?: string[]
         leftItems?: ISpaceMenuItem[]
+        configurable?: boolean,
         properties?: ISpaceProperty[]
     }
 
@@ -66,13 +72,17 @@ declare module '@jfvilas/react-file-manager' {
         permission: boolean,
         multi?: boolean,
         onClick?: (paths:string[], currentTraget:Element) => void
+        isVisible?: (name:string, path:string) => boolean
+        isEnabled?: (name:string, path:string) => boolean
     }
 
     export interface ISpaceProperty {
         name: string,
         text: string,
         source: string|function,
-        format: 'string'|'function'|'age'|'number',
+        format: 'string'|'function'|'age'|'number'|'storage',
+        sortable: boolean,
+        removable?: boolean,
         width: number,
         visible: boolean
     }
@@ -102,56 +112,63 @@ declare module '@jfvilas/react-file-manager' {
         upload: boolean
     }
 
-    const FileManager : FC<{
-        actions?: Map<string, IAction[]>,
+    export interface IFileManagerProps {
+        actions?: Map<string, IAction[]>
         space?: string
-        spaces?: Map<string, ISpace>,
-        files?: IFileObject[],
-        fileUploadConfig?: IFileUploadConfig,
-        fileDownloadConfig?: IFileDownloadConfig,
-        icons?: Map<string, IIcon[]>,
-        isLoading?: boolean,
-        onCreateFolder? : (name: string, parentFolder: IFileObject) => void,
-        onFileUploading? : (file:IFileObject, parentFolder: IFileObject) => void,
-        onFileUploaded? : () => void,
-        onCut? : (files: IFileObject[]) => void,
-        onCopy? : (files: IFileObject[]) => void,
-        onPaste? : (files: IFileObject[], destFolder:IFileObject, operation:string) => void,
-        onRename? : (file: IFileObject, newName: string) => void,
-        onDownload? : (files: IFileObject[]) => void,
-        onDelete? : (files:IFileObject[]) => void,
-        onLayoutChange? : () => void,
-        onRefresh? : () => void,
-        onFileOpen? : () => void,
-        onFolderChange : (folder: string) => void,
-        onSelect? : (files:IFileObject[]) => void,
-        onSelectionChange? : (files:IFileObject[]) => void,
-        onError? : (error: IError, file: IFileObject) => void,
-        layout?: string,
-        enableFilePreview : boolean,
-        maxFileSize? : number,
-        filePreviewPath : string,
-        acceptedFileTypes? : string[],
-        height : string,
-        width? : string,
-        initialPath : string,
-        filePreviewComponent? : React.ReactNode,
-        primaryColor : string,
-        fontFamily : string,
-        language? : string,
-        permissions : IPermissions,
-        collapsibleNav? : boolean,
-        defaultNavExpanded? : boolean,
-        className? : string,
-        style? : any,
-        searchMode?: 'auto'|'hidden'|'visible',
-        searchRegex?: boolean,
-        searchCasing?: boolean,
-        showRefresh?: boolean,
-        showContextMenu?: boolean,
-        showBreadcrumb?: boolean,
-        categories?: ICategory[],
+        spaces?: Map<string, ISpace>
+        files?: IFileObject[]
+        fileUploadConfig?: IFileUploadConfig
+        fileDownloadConfig?: IFileDownloadConfig
+        icons?: Map<string, IIcon[]>
+        isLoading?: boolean
+        onCreateFolder? : (name: string, parentFolder: IFileObject) => void
+        onFileUploaded? : (file:IFileObject, parentFolder: IFileObject) => void
+        onFileUploading? : (file:IFileObject, parentFolder: IFileObject) => void
+        onFileUploadError? : (file:IFileObject, parentFolder: IFileObject) => void
+        onCut? : (files: IFileObject[]) => void
+        onCopy? : (files: IFileObject[]) => void
+        onPaste? : (files: IFileObject[], destFolder:IFileObject, operation:string) => void
+        onRename? : (file: IFileObject, newName: string) => void
+        onDownload? : (files: IFileObject[]) => void
+        onDelete? : (files:IFileObject[]) => void
+        onLayoutChange? : () => void
+        onRefresh? : () => void
+        onFileOpen? : () => void
+        onFolderChange : (folder: string) => void
+        onSelect? : (files:IFileObject[]) => void
+        onSelectionChange? : (files:IFileObject[]) => void
+        onError? : (error: IError, file: IFileObject) => void
+        layout?: string
+        enableFilePreview: boolean
+        maxFileSize? : number
+        filePreviewPath: string
+        acceptedFileTypes? : string[]
+        height: string
+        width? : string
+        initialPath: string
+        filePreviewComponent? : React.ReactNode
+        primaryColor: string
+        fontFamily: string
+        language? : string
+        permissions: IPermissions
+        collapsibleNav? : boolean
+        defaultNavExpanded? : boolean
+        className? : string
+        style? : any
+        searchMode?: 'auto'|'hidden'|'visible'
+        searchRegex?: boolean
+        searchCasing?: boolean
+        showRefresh?: boolean
+        showContextMenu?: boolean
+        showBreadcrumb?: boolean
+        categories?: ICategory[]
+        maxNavigationPaneLevel: number
+        minFileActionsLevel: number
         formatDate? : string | number
-    }>  
-  
+    }
+
+    export const FileManager: React.ForwardRefExoticComponent<
+        IFileManagerProps & React.RefAttributes<IFileManagerHandle>
+    >
+
 }

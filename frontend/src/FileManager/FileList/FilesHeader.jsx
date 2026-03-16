@@ -5,7 +5,7 @@ import { useSelection } from '../../contexts/SelectionContext'
 import { useTranslation } from '../../contexts/TranslationProvider'
 import { useOptions } from '../../contexts/OptionsContext'
 import { FaEllipsisV } from 'react-icons/fa'
-import  {HeaderSelector} from '../../components/HeaderSelector/HeaderSelector'
+import { HeaderSelector} from '../../components/HeaderSelector/HeaderSelector'
 import { createPortal } from 'react-dom'
 
 const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onHeaderChangeWidth, onHeaderRemove, onHeadersReset, fontFamily, headersWidth }) => {
@@ -18,13 +18,12 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onHeade
     const [ draggingColumn, setDraggingColumn ] = useState(undefined)    
     const [ colNameWidth, setColNameWidth ]  = useState(`calc(${spaces.get(space)?.width||10}% - 60px)`)
     const [ colNameInitialWidth, setColNameInitialWidth ]  = useState(0)
-    //const [ headersWidth, setHeadersWidth ]  = useState({})
     const [ headersInitialWidth, setHeadersInitialWidth ]  = useState({})
     
     const [ mousePos, setMousePos ]  = useState(0)
     const [ headerSelectorVisible, setHeaderSelectorVisible ]  = useState(false)
     const containerRef = useRef(null)
-    const anchorRef = useRef(null);
+    const anchorRef = useRef(null)
 
     const allFilesSelected = useMemo(() => {
         return (currentPathFiles.length > 0) && (selectedFiles.length === currentPathFiles.length)

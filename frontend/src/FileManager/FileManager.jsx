@@ -16,7 +16,7 @@ import { useColumnResize } from '../hooks/useColumnResize'
 import PropTypes from 'prop-types'
 import { dateStringValidator, urlValidator } from '../validators/propValidators'
 import { TranslationProvider } from '../contexts/TranslationProvider'
-
+import { Backdrop } from './Backdrop'
 import { defaultPermissions } from '../constants'
 import { formatDate as defaultFormatDate } from '../utils/formatDate'
 import './FileManager.scss'
@@ -25,22 +25,29 @@ const RefHandler = forwardRef((props, ref) => {
 	const { setCurrentPath } = useFileNavigation()
 	
 	useImperativeHandle(ref, () => ({
-		changeFolder: (ruta) => {
-			setCurrentPath(ruta)
-			props.onFolderChange?.(ruta)
+		changeFolder: (path) => {
+			setCurrentPath(path)
+			props.onFolderChange?.(path)
+		},
+		lock: () => {
+			props.lock()
+		},
+		unlock: () => {
+			props.unlock()
 		}
 	}))
 	return null
 })
 
 /**
- * FileManagerBody: Containes UI y and hooks which Contexts depends on.
+ * FileManagerBody: Contains UI y and hooks which Contexts depends on.
  */
 const FileManagerBody = ({ props, innerRef }) => {
 	const {
 		actions,
 		space: initialSpace,
 		spaces: initialSpaces,
+		rightItems,
 		files,
 		fileUploadConfig,
 		fileDownloadConfig,
@@ -96,6 +103,8 @@ const FileManagerBody = ({ props, innerRef }) => {
 	const [srchRegex, setSrchRegex] = useState(false)
 	const [srchCasing, setSrchCasing] = useState(false)
 	const [isNavigationPaneOpen, onNavigationPaneChange] = useState(defaultNavExpanded)
+	const [ isLocked, setIsLocked ]  = useState(false)
+
 	
 	const triggerAction = useTriggerAction()
 	const { containerRef, colSizes, isDragging, handleMouseMove, handleMouseUp, handleMouseDown } = useColumnResize(20, 80)
@@ -181,7 +190,7 @@ const FileManagerBody = ({ props, innerRef }) => {
 		<ClipBoardProvider onPaste={onPaste} onCut={onCut} onCopy={onCopy}>
 			<LayoutProvider layout={layout}>
 			
-			<RefHandler ref={innerRef} onFolderChange={onFolderChange} />
+			<RefHandler ref={innerRef} onFolderChange={onFolderChange} lock={() => setIsLocked(true)} unlock={() => setIsLocked(false)} />
 
 			<main
 				className={`file-explorer ${className}`}
@@ -191,27 +200,28 @@ const FileManagerBody = ({ props, innerRef }) => {
 				<Loader loading={isLoading} />
 				
 				<Toolbar
-				onLayoutChange={onLayoutChange}
-				onRefresh={onRefresh}
-				triggerAction={triggerAction}
-				permissions={permissions}
-				onNavigationPaneChange={onNavigationPaneChange}
-				spaces={spaces}
-				searchMode={searchMode}
-				searchText={srchText}
-				searchRegex={srchRegex}
-				searchCasing={srchCasing}
-				categories={categories}
-				showRefresh={showRefresh}
-				showBreadcrumb={showBreadcrumb}
-				minFileActionsLevel={minFileActionsLevel}
+					onLayoutChange={onLayoutChange}
+					onRefresh={onRefresh}
+					triggerAction={triggerAction}
+					permissions={permissions}
+					onNavigationPaneChange={onNavigationPaneChange}
+					spaces={spaces}
+					rightItems={rightItems}
+					searchMode={searchMode}
+					searchText={srchText}
+					searchRegex={srchRegex}
+					searchCasing={srchCasing}
+					categories={categories}
+					showRefresh={showRefresh}
+					showBreadcrumb={showBreadcrumb}
+					minFileActionsLevel={minFileActionsLevel}
 				/>
 
 				<section
-				ref={containerRef}
-				onMouseMove={handleMouseMove}
-				onMouseUp={handleMouseUp}
-				className='files-container'
+					ref={containerRef}
+					onMouseMove={handleMouseMove}
+					onMouseUp={handleMouseUp}
+					className='files-container'
 				>
 				<div
 					className={`navigation-pane ${isNavigationPaneOpen ? 'open' : 'closed'}`}
@@ -219,8 +229,8 @@ const FileManagerBody = ({ props, innerRef }) => {
 				>
 					<NavigationPane onFileOpen={onFileOpen} icons={icons} maxDepth={maxNavigationPaneLevel}/>
 					<div
-					className={`sidebar-resize ${isDragging ? 'sidebar-dragging' : ''}`}
-					onMouseDown={handleMouseDown}
+						className={`sidebar-resize ${isDragging ? 'sidebar-dragging' : ''}`}
+						onMouseDown={handleMouseDown}
 					/>
 				</div>
 
@@ -242,6 +252,7 @@ const FileManagerBody = ({ props, innerRef }) => {
 						fontFamily={fontFamily}
 						showBreadcrumb={showBreadcrumb}
 					/>
+					<Backdrop isLocked={isLocked} message='Waiting...'/>
 					<FileList
 						headersWidth={headersWidth}
 						columnWidths={columnWidths}

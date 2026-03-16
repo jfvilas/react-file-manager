@@ -34,6 +34,12 @@
         text-shadow: none;
       }
     }
+
+    .file-action-disabled {
+      background-color: transparent;
+      cursor: default !important;
+      gap: 5px;
+    }
   }
 
   .fm-toolbar {

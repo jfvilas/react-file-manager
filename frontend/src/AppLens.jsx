@@ -7,6 +7,7 @@ import { getAllFilesAPI } from "./api/getAllFilesAPI";
 import { renameAPI } from "./api/renameAPI";
 import "./AppLens.scss";
 import FileManager from "./FileManager/FileManager";
+import { FaBell } from "react-icons/fa6";
 
 function App() {
     // const fileUploadConfig = {
@@ -27,6 +28,7 @@ function App() {
 
     const arbolRef = useRef();
     const [isLoading, setIsLoading] = useState(false);
+    const [msgColor, setMsgColor] = useState('blue');
     const [currentPath, setCurrentPath] = useState("");
     const isMountRef = useRef(false);
 
@@ -150,7 +152,7 @@ function App() {
             name: "Overview",
             isDirectory: true,
             path: "/overview",
-            class: 'classmenu',
+            class: 'classOverview',
             layout: 'own',   
             children: showOverview
         },
@@ -422,6 +424,43 @@ function App() {
             ],
             emptySelectionContextMenu: undefined,
             selectionContextMenu: undefined
+        }
+    )
+
+    spaces.set('classOverview',
+        {
+            leftItems: [
+                {
+                    name:'exit',
+                    text:'Exit',
+                    permission:true,
+                    onClick: (path,target) => {
+                        console.log('exit click')
+                        console.log(path,target)
+                    },
+                    isVisible: (name,path) => {
+                        console.log('check vis', name, path)
+                        return true
+                    },
+                    isEnabled: (name, path) => {
+                        console.log('check ena', name, path)
+                        return false
+                    }
+                },
+                {
+                    name:'restart',
+                    text:'Restart',
+                    permission:true,
+                    onClick: (path,target) => {
+                        console.log('exit click')
+                        console.log(path,target)
+                    },
+                    isEnabled: (path) => {
+                        return true
+                    }
+                }
+            ],
+            properties: [],
         }
     )
 
@@ -892,6 +931,27 @@ function App() {
         if (x) x.onClick = invoke
     }
 
+    const drawRightItem = (name) => {
+        switch(name) {
+            case 'messages':
+                return <FaBell color={msgColor}/>
+            default:
+                return <>X</>
+        }
+    }
+
+    const clickRightItem = (name, target) => {
+        console.log('click', name, target)
+    }
+
+    const rightItems = [
+        {
+            name: 'messages',
+            icon: <>{'M'}</>,
+            onClick: (name, target) => clickRightItem(name, target),
+            onDraw: (name) => drawRightItem(name)
+        },
+    ]
     let spcClassWorkloadOverview = spaces.get('classworkloadoverview')
     setLeftItem(spcClassWorkloadOverview,'search', launchClusterSearch)
 
@@ -899,15 +959,38 @@ function App() {
         //console.log(arbolRef.current)
         arbolRef.current.changeFolder('/network/service')
     }
+
+    const msgcol = () => { 
+        setTimeout( () =>  {
+            console.log('change')
+            setMsgColor('green')
+        }, 1000)
+    }
+
+    const onFolderChange = (f) => {
+        setCurrentPath(f)
+        console.log('lock')
+        arbolRef.current.lock()
+        setTimeout(() => {
+            // emulate backend call
+            setFiles([...files])
+            arbolRef.current.unlock()
+        }, 100)
+        return true
+    }
+
+    console.log('render')
     return (
         <div className="app">
             <button onClick={cf}>cf</button>
+            <button onClick={msgcol}>msgcol</button>
             <div className="file-manager-container">
                 <FileManager
                     ref={arbolRef}
                     actions={actions}
                     files={files}
                     spaces={spaces}
+                    rightItems={rightItems}
                     //fileUploadConfig={fileUploadConfig}
                     fileDownloadConfig={fileDownloadConfig}
                     icons={icons}
@@ -935,7 +1018,7 @@ function App() {
                     width="100%"
                     initialPath={'/overview'}
                     permissions={permissions}
-                    onFolderChange={setCurrentPath}
+                    onFolderChange={onFolderChange}
                     search='auto'
                     searchRegex={true}
                     searchCasing={true}

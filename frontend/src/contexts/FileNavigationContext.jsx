@@ -9,7 +9,7 @@ export const FileNavigationProvider = ({ children, initialPath, onFolderChange }
     const isMountRef = useRef(false)
     const [currentPath, setCurrentPath] = useState('')
     const [currentFolder, setCurrentFolder] = useState(null)
-    const [currentOwnLayoutPath, setCurrentOwnLayoutPath] = useState(null)  // we need this for handling toolbar actions on cutom layouts (like 'own')
+    const [currentOwnLayoutPath, setCurrentOwnLayoutPath] = useState(null)  // we need this for handling toolbar actions on custom layouts (like 'own')
     const [currentPathFiles, setCurrentPathFiles] = useState([])
     const [sortConfig, setSortConfig] = useState({ key: "name", direction: "asc", format: "string" })
 
