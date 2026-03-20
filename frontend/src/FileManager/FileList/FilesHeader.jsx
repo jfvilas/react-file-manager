@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef, useEffect } from 'react'
+import React, { useMemo, useState, useRef } from 'react'
 import Checkbox from '../../components/Checkbox/Checkbox'
 import { useFileNavigation } from '../../contexts/FileNavigationContext'
 import { useSelection } from '../../contexts/SelectionContext'
@@ -8,20 +8,30 @@ import { FaEllipsisV } from 'react-icons/fa'
 import { HeaderSelector} from '../../components/HeaderSelector/HeaderSelector'
 import { createPortal } from 'react-dom'
 
-const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onHeaderChangeWidth, onHeaderRemove, onHeadersReset, fontFamily, headersWidth }) => {
+const FilesHeader = ({ 
+    space, 
+    spaces, 
+    unselectFiles, 
+    onSort, 
+    sortConfig, 
+    onHeaderChangeWidth, 
+    onHeaderRemove, 
+    onHeadersReset, 
+    fontFamily, 
+    headersWidth 
+}) => {
     const t = useTranslation()
-    const [ showSelectAll, setShowSelectAll ] = useState(false)
+    const [showSelectAll, setShowSelectAll] = useState(false)
     const { options } = useOptions()
     const { selectedFiles, setSelectedFiles } = useSelection()
     const { currentPathFiles } = useFileNavigation()
 
-    const [ draggingColumn, setDraggingColumn ] = useState(undefined)    
-    const [ colNameWidth, setColNameWidth ]  = useState(`calc(${spaces.get(space)?.width||10}% - 60px)`)
-    const [ colNameInitialWidth, setColNameInitialWidth ]  = useState(0)
-    const [ headersInitialWidth, setHeadersInitialWidth ]  = useState({})
+    const [draggingColumn, setDraggingColumn] = useState(undefined)
+    const [headerSelectorVisible, setHeaderSelectorVisible] = useState(false)
     
-    const [ mousePos, setMousePos ]  = useState(0)
-    const [ headerSelectorVisible, setHeaderSelectorVisible ]  = useState(false)
+    const startXRef = useRef(0)
+    const startWidthRef = useRef(0)
+    
     const containerRef = useRef(null)
     const anchorRef = useRef(null)
 
@@ -29,20 +39,16 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onHeade
         return (currentPathFiles.length > 0) && (selectedFiles.length === currentPathFiles.length)
     }, [selectedFiles, currentPathFiles])
 
-    useEffect( () => {
-        let allWidths = {}
-        spaces.get(space)?.properties.filter(p => p.visible).map(p =>{
-            allWidths[p.name] = `calc(${p.width}%)`
-        })
-        setHeadersInitialWidth(allWidths)
-    }, [])
+    const colNameWidth = useMemo(() => {
+        if (headersWidth && headersWidth['name']) return headersWidth['name']
+        return `calc(${spaces.get(space)?.width || 10}% - 60px)`
+    }, [headersWidth, space, spaces])
 
     const handleSelectAll = (e) => {
         if (e.target.checked) {
             setSelectedFiles(currentPathFiles)
             setShowSelectAll(true)
-        }
-        else {
+        } else {
             unselectFiles()
         }
     }
@@ -53,15 +59,13 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onHeade
 
     const handleMouseDown = (e, name) => {
         setDraggingColumn(name)
-        let el = document.getElementById('col-'+name)
-        if (name==='name') {
-            setColNameInitialWidth(el.offsetWidth)
-        }
-        else {
-            headersInitialWidth[name]=el.offsetWidth
-            setHeadersInitialWidth({...headersInitialWidth})
-        }
-        setMousePos(e.clientX)
+        
+        const el = document.getElementById('col-' + name)
+        if (!el) return
+
+        startXRef.current = e.clientX
+        startWidthRef.current = el.offsetWidth
+        e.preventDefault()
     }
 
     const handleMouseUp = () => {
@@ -69,19 +73,12 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onHeade
     }
 
     const handleMouseMove = (e) => {
-        if (draggingColumn===undefined) return
-        e.preventDefault()
+        if (draggingColumn === undefined) return
 
-        let padding = options.checkBox? 15 : 35
-        if (draggingColumn==='name') {
-            let newWidth=colNameInitialWidth+e.clientX-mousePos-padding
-            setColNameWidth(newWidth)
-            onHeaderChangeWidth(draggingColumn, newWidth)
-        }
-        else {
-            let newWidth=headersInitialWidth[draggingColumn]+e.clientX-mousePos
-            if (newWidth>0) onHeaderChangeWidth(draggingColumn, newWidth)
-        }
+        const deltaX = e.clientX - startXRef.current
+        let newWidth = startWidthRef.current + deltaX
+        if (newWidth < 40) newWidth = 40
+        onHeaderChangeWidth(draggingColumn, newWidth)
     }
 
     return (
@@ -103,64 +100,82 @@ const FilesHeader = ({ space, spaces, unselectFiles, onSort, sortConfig, onHeade
                 ref={containerRef}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
                 className="files-container"
                 >
 
-                {/* object name */}
-                <div id='col-name' className={`column-header ${sortConfig?.key === 'name' ? 'active' : ''}`} style={{ width: colNameWidth, paddingLeft: options.checkBox? '15px':'35px'}} onClick={() => handleSort('name', 'string')}>
-                    {spaces.get(space)?.text||''}
+                {/* Column: Name */}
+                <div 
+                    id='col-name' 
+                    className={`column-header ${sortConfig?.key === 'name' ? 'active' : ''}`} 
+                    style={{ width: colNameWidth, paddingLeft: options.checkBox ? '55px' : '33px'}} 
+                    onClick={() => handleSort('name', 'string')}
+                >
+                    {spaces.get(space)?.text || ''}
                     {sortConfig?.key === 'name' && (
                         <span className='sort-indicator'>{sortConfig.direction === 'asc' ? ' ▲' : ' ▼'}</span>
                     )}
                 </div>
                 <div
-                    className={`column-resize ${draggingColumn ? "column-dragging" : ""}`}
-                    onMouseDown={(e) => handleMouseDown(e,'name')}
+                    className={`${spaces.get(space)?.configurable ? 'column-resize':'column-no-resize'} ${draggingColumn === 'name' ? "column-dragging" : ""}`}
+                    onMouseDown={spaces.get(space)?.configurable ? (e) => handleMouseDown(e, property.name) : () => {}}
                 />
 
-                {/* object props */}
+                {/* Dynamic property columns */}
                 { spaces.get(space)?.properties.filter(p => p.visible).map((property) => {
-                    return (<React.Fragment key={property.name}>
-                            {/* <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: headersWidth[property.name]||property.width+'%'}}>                             */}
-                            <div className='column-header' style={{width: headersWidth[property.name]||property.width+'%'}}>                            
-                                <div id={'col-'+property.name} className={`${sortConfig?.key === property.source ? 'active' : ''}`} style={{ width: '100%'}} onClick={() => { if (property.sortable) handleSort(property.source, property.format)}}>
-                                        {property.text}
-                                        {property.sortable && sortConfig?.key === property.source && (
-                                            <span className='sort-indicator'>{sortConfig.direction === 'asc' ? ' ▲' : ' ▼'}</span>
-                                        )}
+                    const currentW = headersWidth[property.name] || `${property.width}%`
+                    
+                    return (
+                        <React.Fragment key={property.name}>
+                            <div className='column-header' style={{ width: currentW }}>
+                                <div 
+                                    id={'col-' + property.name} 
+                                    className={`${sortConfig?.key === property.source ? 'active' : ''}`} 
+                                    style={{ width: '100%'}} 
+                                    onClick={() => { if (property.sortable) handleSort(property.source, property.format)}}
+                                >
+                                    {property.text}
+                                    {property.sortable && sortConfig?.key === property.source && (
+                                        <span className='sort-indicator'>{sortConfig.direction === 'asc' ? ' ▲' : ' ▼'}</span>
+                                    )}
                                 </div>
                                 { property.removable && 
-                                    <span style={{ color: '#dddddd', cursor: 'pointer', transition: '0.3s', paddingRight: '4px' }}
-                                            onMouseEnter={(e) => (e.currentTarget.style.color = 'black')}
-                                            onMouseLeave={(e) => (e.currentTarget.style.color = '#dddddd')}
-                                            onClick={e => onHeaderRemove(space, property.name)}
+                                    <span 
+                                        style={{ color: '#dddddd', cursor: 'pointer', transition: '0.3s', paddingRight: '4px' }}
+                                        onMouseEnter={(e) => (e.currentTarget.style.color = 'black')}
+                                        onMouseLeave={(e) => (e.currentTarget.style.color = '#dddddd')}
+                                        onClick={e => {
+                                            e.stopPropagation() // Evita activar el Sort al borrar
+                                            onHeaderRemove(space, property.name)
+                                        }}
                                     >
                                         x
                                     </span>
                                 }
-
-                            </div>                            
+                            </div>
                             <div
-                                className={`column-resize ${draggingColumn ? "column-dragging" : ""}`}
-                                onMouseDown={(e) => handleMouseDown(e, property.name)}
+                                className={`${spaces.get(space)?.configurable ? 'column-resize':'column-no-resize'} ${draggingColumn === property.name ? "column-dragging" : ""}`}
+                                onMouseDown={spaces.get(space)?.configurable ? (e) => handleMouseDown(e, property.name) : () => {}}
                             />
                         </React.Fragment>
                     )
                 })}
-                {/* config */}
-                { spaces.get(space)?.configurable?
-                    <span className='column-header' ref={anchorRef}>
+
+                {/* Coliumn selector */}
+                { spaces.get(space)?.configurable ?
+                    <span className='column-header' ref={anchorRef} style={{ width: '30px', textAlign: 'center' }}>
                         <FaEllipsisV style={{cursor:'pointer'}} onClick={() => setHeaderSelectorVisible(true)}/>
                     </span>
                     :
                     <></>
                 }
+
                 {headerSelectorVisible && createPortal(
                     <div style={{
                         position: 'fixed',
                         top: anchorRef.current?.getBoundingClientRect().top,
-                        left: anchorRef.current?.getBoundingClientRect().left-200,
-                        zIndex: 3,
+                        left: (anchorRef.current?.getBoundingClientRect().left || 0) - 200,
+                        zIndex: 9999,
                         fontFamily,
                         backgroundColor: 'white',
                         boxShadow: '0px 4px 10px rgba(0,0,0,0.1)'

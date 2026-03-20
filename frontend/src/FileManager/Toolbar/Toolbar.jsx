@@ -219,6 +219,7 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
             console.log('No action defined for clicking righItem', rightItem.name)
         }
     }
+    
     const renderRightItems = () => {
         let customItems = rightItems || []
         return <>
@@ -231,7 +232,7 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
                             rightItem.icon
                         }
                     </button>
-                    {index !== toolbarGenericRightItems.length - 1 && <div className='item-separator'></div>}
+                    {/* {index !== toolbarGenericRightItems.length - 1 && <div className='item-separator'></div>} */}
                 </div>
             ))}
 
@@ -247,29 +248,11 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
         </>
     }
 
-    // Selected File/Folder Actions
-    // this 'if' seems not to be needed
-    if (selectedFiles.length > 0) {
-        return (<>
-            <div className='toolbar file-selected'>
-                <div className='file-action-container fm-toolbar'>
-                    <div>
-                        {renderLeftItems()}
-                    </div>
-                    <div>
-                        {renderRightItems()}
-                    </div>
-                </div>
-            </div>
-        </>
-        )
-    }
-
     return (
         <div className='toolbar file-selected'>
             <div className='file-action-container fm-toolbar'>
                 <div>
-                    {renderLeftItems('own')}
+                    {renderLeftItems(selectedFiles.length > 0? '' : 'own')}
                 </div>
                 <div>
                     {renderRightItems()}
@@ -277,6 +260,37 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
             </div>
         </div>
     )
+
+    // Selected File/Folder Actions
+    // this 'if' seems not to be needed
+    // if (selectedFiles.length > 0) {
+    //     return (<>
+    //         <div className='toolbar file-selected'>
+    //             <div className='file-action-container fm-toolbar'>
+    //                 <div>
+    //                     {renderLeftItems()}
+    //                 </div>
+    //                 <div>
+    //                     {renderRightItems()}
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     </>
+    //     )
+    // }
+
+    // return (
+    //     <div className='toolbar file-selected'>
+    //         <div className='file-action-container fm-toolbar'>
+    //             <div>
+    //                 {renderLeftItems('own')}
+    //             </div>
+    //             <div>
+    //                 {renderRightItems()}
+    //             </div>
+    //         </div>
+    //     </div>
+    // )
 }
 
 Toolbar.displayName = 'Toolbar'

@@ -664,9 +664,9 @@ function App() {
         }
     )
 
-    const nameProcessor = (name) => {
-        return name.split(':')[0]
-    }
+    // const nameProcessor = (name) => {
+    //     return name.split(':')[0]
+    // }
 
     spaces.set('pod',
         {
@@ -723,7 +723,7 @@ function App() {
                     text: 'Namespace',
                     source: 'namespace',
                     format: 'string',
-                    width: 10,
+                    width: 25,
                     visible: true
                 },
                 {
@@ -758,7 +758,7 @@ function App() {
                     //source: showPodRestarts,
                     source: ['restarts'],
                     format: 'number',
-                    width: 3,
+                    width: 5,
                     visible: true
                 },
                 {
@@ -766,7 +766,7 @@ function App() {
                     text: 'Controller',
                     source: 'controller',
                     format: 'string',
-                    width: 10,
+                    width: 5,
                     visible: true
                 },
                 {
@@ -777,22 +777,6 @@ function App() {
                     width: 10,
                     visible: true
                 },
-                {
-                    name: 'age',
-                    text: 'Age',
-                    source: 'startTime',
-                    format: 'age',
-                    width: 5,
-                    visible: true
-                },
-                {
-                    name: 'status',
-                    text: 'Status',
-                    source: 'status',
-                    format: 'string',
-                    width: 5,
-                    visible: true
-                }
             ],
             emptySelectionContextMenu: undefined,
             selectionContextMenu: undefined
@@ -969,17 +953,16 @@ function App() {
 
     const onFolderChange = (f) => {
         setCurrentPath(f)
-        console.log('lock')
-        arbolRef.current.lock()
-        setTimeout(() => {
-            // emulate backend call
-            setFiles([...files])
-            arbolRef.current.unlock()
-        }, 100)
+        // console.log('lock')
+        // arbolRef.current.lock()
+        // setTimeout(() => {
+        //     // emulate backend call
+        //     setFiles([...files])
+        //     arbolRef.current.unlock()
+        // }, 100)
         return true
     }
 
-    console.log('render')
     return (
         <div className="app">
             <button onClick={cf}>cf</button>
