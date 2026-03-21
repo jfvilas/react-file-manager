@@ -4,12 +4,23 @@ An open-source React package for easy integration of a file manager into applica
 
 And our source code project is [here](https://github.com/jfvilas/react-file-manager) ([forked from](https://github.com/Saifullah-dev/react-file-manager)).
 
-Since version 2 this package is no more just a file manager. It has been refactored to convert it into a very flexible **object manager**. This means that:
+Since version 1.2 this package is no more just a file manager. It has been refactored to convert it into a very flexible **object manager**. This means that:
 
   - RFM manages a **hierarchy of objects**, wherever they be files or any other thing with properties.
-  - Each object has its own properties nad its own behaviour.
+  - Each object has its own properties and its own behaviour.
   - In addition, each one of them can have spscific icons and actions.
+  - Full react file managar has been refactored adding new capabilities to extend:
+    - Top menu item actions
+    - Top menu file manager global actions
+    - Selection handlers (selet one, select all, inivert selection...)
+    - Status bar
+    - And lots of configurable items (show/hide brefreshm show/hide breadcrumb, backdrop on navigation actions...)
 
+With RFM we have built a full Kubernetes managers (similar to Lens, HEadLamp or K9s), by using RFM as the base application manager, like we show here:
+
+![fileman-3](https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/fileman-3.png)
+
+(You can take a look on our source project **[here](https://github.com/jfvilas/kwirth)**, 'src' folder contains the React app)
 </p>
 
 ## ✨ Features
@@ -18,10 +29,13 @@ Since version 2 this package is no more just a file manager. It has been refacto
 - **Grid & List View**: Switch between grid and list views to browse files in your preferred layout.
 - **Search**: the navigation pane includes a search feature for filtering files on current
   directory.
+- **Filters**: you can add category filter to your file lists.
 - **Status bar**: RFM has an optional status bar where info about current folder and current selection items is shown.
 - **View options**: The file manager includes view options like classical desktop file managers.
 - **Navigation**: Use the breadcrumb trail and sidebar navigation pane for quick directory
   traversal.
+- **Spaces**: Yo can add your own 'data spaces', so not only file data can be shown. You can convert your
+  RFM into a full object manager with items having its own properties and actions.
 - **Toolbar & Context Menu**: Access all common actions (upload, download, delete, copy, move,
   rename, etc.) via the toolbar or right-click for the same options in the context menu.
 - **Context cutomization**: Add your specific *icons* and *actions* for your unique object types. They
@@ -77,7 +91,7 @@ function App() {
     <>
       <FileManager files={files} />
     </>
-  );
+  )
 }
 
 export default App;
@@ -92,12 +106,15 @@ but you can download a full module declaration file **[here](https://raw.githubu
 declare module '@jfvilas/react-file-manager' {
     export interface IFileObject {
         name: string;
+        displayName?: string;
         isDirectory: boolean;
         path: string;
         layout?: string;
         class?: string;
         children?: string|function;
-        data?: any
+        data?: any;
+        categories?: string[];
+        features?: string[];
     }
 
     export interface IError {
@@ -115,20 +132,26 @@ declare module '@jfvilas/react-file-manager' {
 In order to use this 'types' declaration file, just download and add it to your project inside your source folder (or any other folder and change your `package.json` accordingly).
 
 ## 📂 File Structure
-The `files` prop accepts an array of objects, where each object represents a file or folder. You can
-customize the structure to meet your application needs. Each file or folder object follows the
+The `files` prop accepts an array of objects, where each object represents an object (oa file or other thing) or a folder (a group oof objects). You can
+customize the structure to meet your application needs. Each object or group follows the
 structure detailed below:
 
 ```typescript
-type File = {
+interface IFileObject {
   name: string;
+  displayName?: string;
   isDirectory: boolean;
   path: string;
-  updatedAt?: string; // Optional: Last update timestamp in ISO 8601 format
-  size?: number; // Optional: File size in bytes (only applicable for files)
-  class?:string; // Optional: File class to be used with custom icons and custom actions
-};
+  layout?: string;
+  class?: string;
+  children?: string|function;
+  data?: any;
+  categories?: string[];
+  features?: string[];
+}
 ```
+
+<b>Watchout the 'data' property, where all the magic takes place, since it is where specific properties for objects can be defined. This is what takes a file manager into an object manager</b>
 
 ## 🎬 Icons & Actions
 By adding your own icons and specific actions for your items, you can think of react-file-manager as just a hierarchical object manager,
@@ -246,6 +269,8 @@ Et voilà !
 | -    | -     | -            |
 | `acceptedFileTypes`      | string  | (Optional) A comma-separated list of allowed file extensions for uploading specific file types (e.g., `.txt, .png, .pdf`). If omitted, all file types are accepted.  |
 | `actions`                | Map<string Action[]>    |   (Optional) A map of custom actions that would be added to the proper file classes. |
+| `space`                  | string    |   Initial data space the FileManager will work with. |
+| `spaces`                 | Map<string, Space>    |   (Optional) A map of custom actions that would be added to the proper file classes. |
 | `className`              | string  | CSS class names to apply to the FileManager root element.  |
 | `collapsibleNav`         | boolean  | Enables a collapsible navigation pane on the left side. When `true`, a toggle will be shown to expand or collapse the navigation pane. `default: false`.  |
 | `defaultNavExpanded`     | boolean  | Sets the default expanded (`true`) or collapsed (`false`) state of the navigation pane when `collapsibleNav` is enabled. This only affects the initial render. `default: true`. |
@@ -285,6 +310,62 @@ Et voilà !
 | `style`                  | object | Inline styles applied to the FileManager root element. |
 | `width`                  | string \| number | The width of the component `default: 100%`. Can be a string (e.g., `'100%'`, `'10rem'`) or a number (in pixels). |
 
+## Data strcutures
+This is how a Space feels like:
+```typescript
+export interface ISpace {
+  text?: string     // Text to show on the header of the 'name' column (th name of the object)
+  source?: string   // name of the property of the JSON where the data would be found
+  width?: number    // width fo the column in the 'list' view
+  sumSourceProperty?: string
+  sumReducer?: number
+  sumUnits?: string[]
+  leftItems?: ISpaceMenuItem[]    // array of item actions
+  configurable?: boolean,         // headers can be configurable (resize, add/remove...) or not
+  properties?: ISpaceProperty[]   // properties of the object (like size, update date...)
+}
+```
+
+Item actions, the actions that will be shown on the toolbar when one/some items are selected:
+```typescript
+export interface ISpaceMenuItem {
+  name?: string,    // name of the action
+  icon?: any,       // icon to show on the left
+  text: string,     // text of the action to show
+  permission: boolean,    // required permission (for using 'filedata' space, that is, a file manager not an object manager)
+  multi?: boolean,        // true if this action can be executed on several files at the same time
+  onClick?: (paths:string[], currentTraget:Element) => void     // what to do when th euser clicks the action
+  isVisible?: (name:string, path:string) => boolean             // determine if the action is visible depending on name and path
+  isEnabled?: (name:string, path:string) => boolean             // determine if the action is enabled depending on name and path
+}
+```
+
+The data that is part of an item in a space (the properties of the items):
+```typescript
+export interface ISpaceProperty {
+  name: string,   // name of the property
+  text: string,   // text to show on 'list' view
+  source: string|function,    // source property (can be a string or a funciton for showing dynamic data)
+  format: 'string'|'function'|'age'|'number'|'storage',   // how to format data prior to be shown
+  sortable: boolean,  // true if the column can be sorted
+  removable?: boolean,    // column can be removed from list view if space is 'configurable' and 'removable' is true
+  width: number,  // width of the column in the 'list' view
+  visible: boolean    // true if the column is visible on list view
+}
+```
+
+<b>NOTE: 'source' preoperties are obtianed from the 'data' proerpty of each item (an IFileObject in fact).</b>
+
+Global FileManager actions (show on right side of the toolbar)
+```typescript
+export interface IFileManagerMenuItem {
+  name: string,   // name of the filemanager action (show on file manager right side)
+  onClick?: (name:string, target:HTMLElement) => void,    // what to do on click
+  onDraw?: (name:string) => void  // how to draw (or not to) it
+}
+```
+
+<b>Please check Kwirth project (front folder) for showing a working example.</b>
 
 ## ⌨️ Keyboard Shortcuts
 
