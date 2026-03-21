@@ -127,7 +127,7 @@ const FilesHeader = ({
                     
                     return (
                         <React.Fragment key={property.name}>
-                            <div className='column-header' style={{ width: currentW }}>
+                            <div className='column-header-divider' style={{ width: currentW }}>
                                 <div 
                                     id={'col-' + property.name} 
                                     className={`${sortConfig?.key === property.source ? 'active' : ''}`} 
@@ -153,10 +153,11 @@ const FilesHeader = ({
                                     </span>
                                 }
                             </div>
+                            {/*
                             <div
                                 className={`${spaces.get(space)?.configurable ? 'column-resize':'column-no-resize'} ${draggingColumn === property.name ? "column-dragging" : ""}`}
                                 onMouseDown={spaces.get(space)?.configurable ? (e) => handleMouseDown(e, property.name) : () => {}}
-                            />
+                            />*/}
                         </React.Fragment>
                     )
                 })}

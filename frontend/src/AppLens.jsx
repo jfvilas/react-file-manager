@@ -303,7 +303,7 @@ function App() {
                 controller: 'kwirth',
                 restarts: 1,
                 memory: 13,
-                node: 'b8asv2-vmss0000a',
+                node: 'b8a',
                 startTime: "2024-09-09T10:30:00Z"
             },
             class: 'pod',
@@ -314,10 +314,10 @@ function App() {
             path: "/workload/pod/kwirth:namespace2",
             data: {
                 namespace: 'namespace2',
-                controller: 'authorizator',
+                controller: 'aut',
                 restarts: 21,
                 memory: 26,
-                node: 'b8asv2-vmss0000b',
+                node: '00b',
                 startTime: "2026-01-02T10:30:00Z",
             },
             class: 'pod',
@@ -328,10 +328,10 @@ function App() {
             path: "/workload/pod/obk-authorizator-236543334a-eieu1",
             data: {
                 namespace: 'psd-flowable',
-                controller: 'authorizator',
+                controller: 'author',
                 restarts: 32,
                 memory: 39,
-                node: 'b8asv2-vmss0000b',
+                node: 'b8asv0b',
                 startTime: "2026-01-02T14:30:00Z",
             },
             class: 'pod',
@@ -342,10 +342,10 @@ function App() {
             path: "/workload/pod/obk-authorizator-236543334a-eieu9",
             data: {
                 namespace: 'psd-flowable',
-                controller: 'authorizator',
+                controller: 'auth',
                 restarts: 43,
                 memory: 55,
-                node: 'b8asv2-vmss0000b',
+                node: 'b8asv2-v',
                 startTime: "2025-12-02T10:30:00Z",
             },
             class: 'pod',
@@ -435,15 +435,11 @@ function App() {
                     text:'Exit',
                     permission:true,
                     onClick: (path,target) => {
-                        console.log('exit click')
-                        console.log(path,target)
                     },
                     isVisible: (name,path) => {
-                        console.log('check vis', name, path)
                         return true
                     },
                     isEnabled: (name, path) => {
-                        console.log('check ena', name, path)
                         return false
                     }
                 },
@@ -452,8 +448,6 @@ function App() {
                     text:'Restart',
                     permission:true,
                     onClick: (path,target) => {
-                        console.log('exit click')
-                        console.log(path,target)
                     },
                     isEnabled: (path) => {
                         return true
