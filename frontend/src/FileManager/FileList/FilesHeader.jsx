@@ -153,7 +153,7 @@ const FilesHeader = ({
                                     </span>
                                 }
                             </div>
-                            {/*
+                            {/*  Currently right border is shown on headers
                             <div
                                 className={`${spaces.get(space)?.configurable ? 'column-resize':'column-no-resize'} ${draggingColumn === property.name ? "column-dragging" : ""}`}
                                 onMouseDown={spaces.get(space)?.configurable ? (e) => handleMouseDown(e, property.name) : () => {}}

@@ -77,12 +77,14 @@ function App() {
 
     const showPodContainers = (f) => {
         if (!f) return <></>
-        return <img 
-            src={f.endsWith('2')>'m' ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEgAGX0sCgqAAAAABJRU5ErkJggg==" : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPj/DwAEgAGt+MvY7AAAAABJRU5ErkJggg=="}
+        console.log(f)
+        let x = <img 
+            src={f.endsWith('1') ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEgAGX0sCgqAAAAABJRU5ErkJggg==" : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPj/DwAEgAGt+MvY7AAAAABJRU5ErkJggg=="}
             width="10" 
             height="10" 
             alt="Cuadrado azul de 10x10 px"
         />
+        return <>{x}&nbsp;{f.endsWith('1') ? x: <></>}</>
     }
 
     const showPodCpu = (f) => {
@@ -235,10 +237,10 @@ function App() {
             displayName: "cracreulennopro-a",
             isDirectory: false,
             path: "/cluster/Image/acracreulennopro",
-            size: 73127230,
+            size: 1,
             data: {
-                age: new Date().toISOString(),
-                size: 73127230,
+                edad: "2024-11-11T11:30:55.000Z",
+                size: 1,
                 tag: '1.2.3',
                 registry: 'docker.io',
                 origin: {
@@ -250,10 +252,10 @@ function App() {
             displayName: "aracreulennopro-a",
             isDirectory: false,
             path: "/cluster/Image/bcracreulennopro",
-            size: 2345731270,
+            size: 2,
             data: {
-                size: 731230,
-                age: new Date().toISOString(),
+                size: 2,
+                edad: "2024-11-12T11:30:55.000Z",
                 tag: '0.4.328',
                 registry: 'quay.io',
                 origin: {
@@ -491,9 +493,9 @@ function App() {
                     visible: true
                 },
                 {
-                    name: 'age',
+                    name: 'edad',
                     text: 'Edad',
-                    source: 'age',
+                    source: 'edad',
                     format: 'age',
                     removable: true,
                     width: 15,

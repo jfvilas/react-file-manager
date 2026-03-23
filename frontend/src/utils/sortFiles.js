@@ -32,11 +32,17 @@ const sortFiles = (items, sortKey = 'name', direction = 'asc', format = 'string'
             default:
                 if (typeof a.data[sortKey] === 'number') {                    
                     comparison = (a.data[sortKey] || 0) - (b.data[sortKey] || 0)
-                    if (format ==='age') comparison = -comparison
                 }
-                else if (typeof a.data[sortKey] === 'string')
-                    comparison = a.data[sortKey].localeCompare(b.data[sortKey])
+                else if (typeof a.data[sortKey] === 'string') {
+                    if (format ==='age') {
+                        comparison = Date.parse(b.data[sortKey]) - Date.parse(a.data[sortKey]) 
+                    }
+                    else {
+                        comparison = a.data[sortKey].localeCompare(b.data[sortKey])
+                    }
+                }
                 else {
+                    console.log(a)
                     comparison = 0
                 }
         }

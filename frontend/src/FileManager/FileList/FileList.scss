@@ -145,7 +145,7 @@
   .files-header {
     font-size: 0.83em;
     font-weight: 600;
-    display: flex 0 0 auto;   // <----- NECESARIO PARA EL RESIZE
+    display: flex 0 0 auto;   // <----- NEEDED FOR RESIZE
     border-top: 1px solid #dddddd;
     border-radius: 0;
     padding: 4px 0 4px 5px;
@@ -165,7 +165,7 @@
       align-items: center;
       box-sizing: border-box;
       border-right-width: 1px;
-      border-right-color: gray;
+      border-right-color: $border-color;
       border-right-style: solid;
     }
 

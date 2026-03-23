@@ -16,7 +16,7 @@ Since version 1.2 this package is no more just a file manager. It has been refac
     - Status bar
     - And lots of configurable items (show/hide brefreshm show/hide breadcrumb, backdrop on navigation actions...)
 
-With RFM we have built a full Kubernetes managers (similar to Lens, HEadLamp or K9s), by using RFM as the base application manager, like we show here:
+With RFM we have built a full Kubernetes manager (similar to Lens, HeadLamp or K9s), by using RFM as the base application object manager, like we show here:
 
 ![fileman-3](https://raw.githubusercontent.com/jfvilas/react-file-manager/refs/heads/main/frontend/public/fileman-3.png)
 
@@ -310,7 +310,7 @@ Et voilà !
 | `style`                  | object | Inline styles applied to the FileManager root element. |
 | `width`                  | string \| number | The width of the component `default: 100%`. Can be a string (e.g., `'100%'`, `'10rem'`) or a number (in pixels). |
 
-## Data strcutures
+## 🗂️ Data strcutures
 This is how a Space feels like:
 ```typescript
 export interface ISpace {
@@ -354,9 +354,9 @@ export interface ISpaceProperty {
 }
 ```
 
-<b>NOTE: 'source' preoperties are obtianed from the 'data' proerpty of each item (an IFileObject in fact).</b>
+<b>NOTE: 'source' properties are obtained from the 'data' property of each item (an IFileObject in fact).</b>
 
-Global FileManager actions (show on right side of the toolbar)
+Global FileManager actions (shown on right side of the toolbar) are simple and easy to create:
 ```typescript
 export interface IFileManagerMenuItem {
   name: string,   // name of the filemanager action (show on file manager right side)
@@ -368,7 +368,6 @@ export interface IFileManagerMenuItem {
 <b>Please check Kwirth project (front folder) for showing a working example.</b>
 
 ## ⌨️ Keyboard Shortcuts
-
 | **Action**                     | **Shortcut**       |
 | ------------------------------ | ------------------ |
 | New Folder                     | `Alt + Shift + N`  |
@@ -391,7 +390,6 @@ export interface IFileManagerMenuItem {
 
 
 ## 🛡️ Permissions
-
 Control file management actions using the `permissions` prop (optional). Actions default to `true`
 if not specified.
 
@@ -411,14 +409,12 @@ if not specified.
 ```
 
 ## </> Custom File Preview
-
 The `FileManager` component allows you to provide a custom file preview by passing the
 `filePreviewComponent` prop. This is an optional callback function that receives the selected file
 as an argument and must return a valid React node, JSX element, or HTML.
 
 
 ### Usage Example
-
 ```jsx
 const CustomImagePreviewer = ({ file }) => {
   return <img src={`${file.path}`} alt={file.name} />;
@@ -431,7 +427,6 @@ const CustomImagePreviewer = ({ file }) => {
 ```
 
 ## 🧭 Handling Current Path
-
 By default, the file manager starts in the root directory (`""`). You can override this by passing
 an `initialPath` prop. For example, to start in `/Documents`:
 
@@ -440,7 +435,6 @@ an `initialPath` prop. For example, to start in `/Documents`:
 ```
 
 ### Controlled usage with `currentPath`
-
 If you want to **track and control** the current folder, you can pair `initialPath` with the
 `onFolderChange` callback. A common pattern is to keep the path in React state:
 
