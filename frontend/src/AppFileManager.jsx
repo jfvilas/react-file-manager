@@ -179,7 +179,7 @@ function App() {
             isDirectory: false,
             path: "/default/loki/logger/bin/fich1", // Located inside the "Pictures" folder
             data: {
-                updatedAt: "2024-09-08T16:45:00Z",
+                updatedAt: "2021-09-08T16:45:00Z",
                 size: 9000, // File size in bytes (example: 2 KB)
             }
         },
@@ -188,6 +188,7 @@ function App() {
             isDirectory: false,
             path: "/default/loki/logger/bin/fich2", // Located inside the "Pictures" folder
             data: {
+                updatedAt: "2026-09-08T16:45:00Z",
                 size: 240000, // File size in bytes (example: 2 KB)
             }
         },
@@ -196,7 +197,7 @@ function App() {
             isDirectory: false,
             path: "/default/loki/logger/bin/fich3", // Located inside the "Pictures" folder
             data: {
-                updatedAt: "2024-09-08T16:45:00Z",
+                updatedAt: "2022-09-08T16:45:00Z",
                 status: <BiRadar/>,
                 size: 222248, // File size in bytes (example: 2 KB)
             }

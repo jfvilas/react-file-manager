@@ -28,13 +28,13 @@ const SearchInput = ({ onSearchFilterChange, searchText, searchRegex, searchCasi
     const clickRegex = () => {
         onSearchFilterChange(inputRef.current.value, !filterRegex, filterCasing)
         setFilterRegex(!filterRegex)
-        setSelectedFiles(applyFilters(selectedFiles, inputRef.current.value, filterRegex, filterCasing, categories, currentFolder.categories))
+        setSelectedFiles(applyFilters(selectedFiles, inputRef.current.value, filterRegex, filterCasing, categories, currentFolder?.categories))
     }
 
     const clickCasing = () => {
         onSearchFilterChange(inputRef.current.value, filterRegex, !filterCasing)
         setFilterCasing(!filterCasing)
-        setSelectedFiles(applyFilters(selectedFiles, inputRef.current.value, filterRegex, filterCasing, categories, currentFolder.categories))
+        setSelectedFiles(applyFilters(selectedFiles, inputRef.current.value, filterRegex, filterCasing, categories, currentFolder?.categories))
     }
 
     return (
@@ -50,11 +50,10 @@ const SearchInput = ({ onSearchFilterChange, searchText, searchRegex, searchCasi
                         e.target.placeholder = 'Search...'
                     }
                 }
-                //onKeyDown={handleKeyDown}
                 onKeyUp={(e) => {
                     if (e.key === 'Escape') {
                         onSearchFilterChange('', false, false)
-                        setSelectedFiles(applyFilters(selectedFiles, inputRef.current.value, filterRegex, filterCasing, categories, currentFolder.categories))
+                        setSelectedFiles(applyFilters(selectedFiles, inputRef.current.value, filterRegex, filterCasing, categories, currentFolder?.categories))
                         if (inputRef.current) {
                             inputRef.current.value = ''; 
                             inputRef.current.placeholder = 'Search...';
@@ -63,7 +62,7 @@ const SearchInput = ({ onSearchFilterChange, searchText, searchRegex, searchCasi
                     }
                     else {
                         onSearchFilterChange(inputRef.current.value, filterRegex, filterCasing)
-                        setSelectedFiles(applyFilters(selectedFiles, inputRef.current.value, filterRegex, filterCasing, categories, currentFolder.categories))
+                        setSelectedFiles(applyFilters(selectedFiles, inputRef.current.value, filterRegex, filterCasing, categories, currentFolder?.categories))
                     }
                 }}
             />
@@ -72,12 +71,12 @@ const SearchInput = ({ onSearchFilterChange, searchText, searchRegex, searchCasi
                     width="16"
                     height="16"
                     fill="none"
-                    stroke="#000"
+                    stroke="#888"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     viewBox="0 0 24 24"
-                    style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-60%)", pointerEvents: "none" }}
+                    style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-55%)", pointerEvents: "none" }}
                 >
                     <circle cx="11" cy="11" r="6" />
                     <line x1="21" y1="21" x2="14.65" y2="14.65" />

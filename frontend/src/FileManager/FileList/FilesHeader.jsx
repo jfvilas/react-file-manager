@@ -21,7 +21,7 @@ const FilesHeader = ({
     headersWidth 
 }) => {
     const t = useTranslation()
-    const [showSelectAll, setShowSelectAll] = useState(false)
+    const [ showSelectAll, setShowSelectAll ] = useState(false)
     const { options } = useOptions()
     const { selectedFiles, setSelectedFiles } = useSelection()
     const { currentPathFiles } = useFileNavigation()
@@ -84,17 +84,17 @@ const FilesHeader = ({
     return (
         <div className='files-header' onMouseOver={() => setShowSelectAll(true)} onMouseLeave={() => setShowSelectAll(false)} >
             {
-                options.checkBox && <div className='file-select-all'>
-                    {(showSelectAll || allFilesSelected) && (
-                    <Checkbox
-                        id='selectAll'
-                        checked={allFilesSelected}
-                        onChange={handleSelectAll}
-                        title='Select all'
-                        disabled={currentPathFiles.length === 0}
-                    />
-                    )}
-                </div>
+                // options.checkBox && <div className='file-select-all'>
+                //     {(showSelectAll || allFilesSelected) && (
+                //     <Checkbox
+                //         id='selectAll'
+                //         checked={allFilesSelected}
+                //         onChange={handleSelectAll}
+                //         title='Select all'
+                //         disabled={currentPathFiles.length === 0}
+                //     />
+                //     )}
+                // </div>
             }
             <section
                 ref={containerRef}

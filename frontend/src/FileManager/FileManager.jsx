@@ -150,6 +150,7 @@ const FileManagerBody = ({ props, innerRef }) => {
                     source: 'updatedAt',
                     format: 'date',
                     width: 20,
+                    sortable: true,
                     visible: true
                 },
                 {
@@ -158,6 +159,7 @@ const FileManagerBody = ({ props, innerRef }) => {
                     source: 'size',
                     format: 'size',
                     width: 10,
+                    sortable: true,
                     visible: true
                 }
             ]

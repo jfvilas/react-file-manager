@@ -9,24 +9,21 @@ const sortFiles = (items, sortKey = 'name', direction = 'asc', format = 'string'
 
         switch (sortKey) {
             case 'name':
-                // Use localeCompare for proper string sorting
                 let aname = a.displayName || a.name
                 let bname = b.displayName || b.name
                 comparison = aname.localeCompare(bname)
                 break
             
             case 'size':
-                // Handle missing size values
-                const sizeA = a.size || 0
-                const sizeB = b.size || 0
+                const sizeA = a.data.size || 0
+                const sizeB = b.data.size || 0
                 comparison = sizeA - sizeB
                 break
             
-            case 'modified':
-                // Handle date sorting
-                const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0
-                const dateB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0
-                comparison = dateA - dateB
+            case 'updatedAt':
+                const updatedA = a.data.updatedAt ? new Date(a.data.updatedAt).getTime() : 0
+                const updatedB = b.data.updatedAt ? new Date(b.data.updatedAt).getTime() : 0
+                comparison = updatedA - updatedB
                 break
             
             default:
@@ -42,7 +39,6 @@ const sortFiles = (items, sortKey = 'name', direction = 'asc', format = 'string'
                     }
                 }
                 else {
-                    console.log(a)
                     comparison = 0
                 }
         }
@@ -52,11 +48,11 @@ const sortFiles = (items, sortKey = 'name', direction = 'asc', format = 'string'
     }
 
     // Sort folders and files separately
-    const sortedFolders = [...folders].sort(sortFunction);
-    const sortedFiles = [...files].sort(sortFunction);
+    const sortedFolders = [...folders].sort(sortFunction)
+    const sortedFiles = [...files].sort(sortFunction)
 
     // Always return folders first, then files
-    return [...sortedFolders, ...sortedFiles];
+    return [...sortedFolders, ...sortedFiles]
 }
 
 export default sortFiles
