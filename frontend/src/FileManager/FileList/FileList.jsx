@@ -35,7 +35,8 @@ const FileList = ({
     columnWidths,
     onHeaderChangeWidth,
     onHeaderRemove,
-    onHeadersReset
+    onHeadersReset,
+    openMode
     }) => {
 
     const { currentPathFiles, sortConfig, setSortConfig, currentFolder } = useFileNavigation()
@@ -59,7 +60,7 @@ const FileList = ({
         selectedFileIndexes,
         clickPosition,
         isSelectionCtx,
-    } = useFileList(onRefresh, enableFilePreview, triggerAction, permissions, onFileOpen, space, spaces)
+    } = useFileList(onRefresh, enableFilePreview, triggerAction, permissions, onFileOpen, space, spaces, openMode)
 
     const contextMenuRef = useDetectOutsideClick(() => setVisible(false))
 
@@ -188,6 +189,7 @@ const FileList = ({
                             setLastSelectedFile={setLastSelectedFile}
                             draggable={permissions.move}
                             formatDate={formatDate}
+                            openMode={openMode}
                         />
                     )
                 )

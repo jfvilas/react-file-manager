@@ -515,6 +515,7 @@ function App() {
                 showBreadcrumb={true}
                 maxNavigationPaneLevel={3}
                 minFileActionsLevel={3}
+                openMode='default'
                 />
             </div>
         </div>

@@ -13,7 +13,7 @@ import { duplicateNameHandler } from '../../utils/duplicateNameHandler'
 import { validateApiCallback } from '../../utils/validateApiCallback'
 import { useTranslation } from '../../contexts/TranslationProvider'
 
-const useFileList = (onRefresh, enableFilePreview, triggerAction, permissions, onFileOpen, space, spaces) => {
+const useFileList = (onRefresh, enableFilePreview, triggerAction, permissions, onFileOpen, space, spaces, openMode) => {
     const [selectedFileIndexes, setSelectedFileIndexes] = useState([])
     const [visible, setVisible] = useState(false)
     const [isSelectionCtx, setIsSelectionCtx] = useState(false)
@@ -153,12 +153,16 @@ const useFileList = (onRefresh, enableFilePreview, triggerAction, permissions, o
     ]
 
     const filedataSelecCtxItems = [
-        {
-            title: t('open'),
-            icon: lastSelectedFile?.isDirectory ? <PiFolderOpen size={20} /> : <FaRegFile size={16} />,
-            onClick: handleFileOpen,
-            divider: true,
-        },
+        ...(openMode!=='none' || lastSelectedFile?.isDirectory ? [{
+                title: t('open'),
+                icon: lastSelectedFile?.isDirectory ? <PiFolderOpen size={20} /> : <FaRegFile size={16} />,
+                onClick: handleFileOpen,
+                divider: true
+            }]
+            :
+            []
+        )
+        ,
         {
             title: t('cut'),
             icon: <BsScissors size={19} />,

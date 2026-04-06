@@ -48,7 +48,8 @@ const FileItem = ({
     handleContextMenu,
     setLastSelectedFile,
     draggable,
-    formatDate
+    formatDate,
+    openMode
     }) => {
     const [fileSelected, setFileSelected] = useState(false)
     const [lastClickTime, setLastClickTime] = useState(0)
@@ -147,7 +148,7 @@ const FileItem = ({
         if (!fileSelected) setSelectedFiles([file])
 
         setLastSelectedFile(file)
-        handleContextMenu(e, true)
+        handleContextMenu(e, true, openMode)
     }
 
     // Selection Checkbox Functions

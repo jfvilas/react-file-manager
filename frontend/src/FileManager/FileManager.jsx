@@ -13,12 +13,12 @@ import { ClipBoardProvider } from '../contexts/ClipboardContext'
 import { LayoutProvider } from '../contexts/LayoutContext'
 import { useTriggerAction } from '../hooks/useTriggerAction'
 import { useColumnResize } from '../hooks/useColumnResize'
-import PropTypes from 'prop-types'
 import { dateStringValidator, urlValidator } from '../validators/propValidators'
 import { TranslationProvider } from '../contexts/TranslationProvider'
 import { Backdrop } from './Backdrop'
 import { defaultPermissions } from '../constants'
 import { formatDate as defaultFormatDate } from '../utils/formatDate'
+import PropTypes from 'prop-types'
 import './FileManager.scss'
 
 const RefHandler = forwardRef((props, ref) => {
@@ -84,6 +84,7 @@ const FileManagerBody = ({ props, innerRef }) => {
         searchMode = 'auto',
         searchRegex = false,
         searchCasing = false,
+        openMode = 'default',  // none 
         showRefresh = true,
         showContextMenu = true,
         categories = undefined,
@@ -289,6 +290,7 @@ const FileManagerBody = ({ props, innerRef }) => {
                                     searchCasing={srchCasing}
                                     showContextMenu={showContextMenu}
                                     categories={categories}
+                                    openMode={openMode}
                                 />
                             </div>
                         </section>
