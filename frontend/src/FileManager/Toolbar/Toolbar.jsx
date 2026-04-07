@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BsCopy, BsFolderPlus, BsScissors } from 'react-icons/bs'
 import { FiRefreshCw } from 'react-icons/fi'
 import { MdOutlineDelete, MdOutlineFileDownload, MdOutlineFileUpload } from 'react-icons/md'
@@ -15,13 +15,17 @@ import { applyFilters } from '../../utils/filters'
 
 const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavigationPaneChange, spaces, rightItems, searchText, searchRegex, searchCasing, categories,showRefresh, showBreadcrumb, minFileActionsLevel }) => {
     const [ viewOptionsMenuVivible, setViewOptionsMenuVisible ] = useState(false)
+    const [ , setTick ] = useState(0)
     const { currentFolder, currentPathFiles, currentOwnLayoutPath } = useFileNavigation()
     const { selectedFiles, setSelectedFiles, handleDownload } = useSelection()
     const { clipBoard, setClipBoard, handleCutCopy, handlePasting } = useClipBoard()
     const t = useTranslation()
     let currentLevel = currentFolder? currentFolder.path.split('/').length-1 : 0
-    //let isCustomLayout = currentFolder && currentFolder.layout==='own' && currentFolder.children && typeof currentFolder.children === 'function'
 
+    useEffect( () => {
+        setTick(t=> t+1)  // +++ this can be changed for 'recalculate leftItems when selectedFiles changes'
+    }, [selectedFiles])
+    
     let fileDataLeftItems = []
     if (currentLevel>=minFileActionsLevel) {
         let validLeftItems = []
@@ -113,8 +117,8 @@ const Toolbar = ({ onLayoutChange, onRefresh, triggerAction, permissions, onNavi
             let items = []
             if (leftItems) {
                 leftItems.map((leftItem, index) => {
-                    if (!leftItem.isVisible || leftItem.isVisible(leftItem.name, currentFolder)) {
-                        let enabled = !leftItem.isEnabled || leftItem.isEnabled(leftItem.name, currentFolder)
+                    if (!leftItem.isVisible || leftItem.isVisible(leftItem.name, currentFolder, selectedFiles)) {
+                        let enabled = !leftItem.isEnabled || leftItem.isEnabled(leftItem.name, currentFolder, selectedFiles)
                         if (enabled) {
                             items.push (
                                 <button key={index} className='item-action file-action' onClick={(event) => 

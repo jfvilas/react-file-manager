@@ -438,10 +438,12 @@ function App() {
                     permission:true,
                     onClick: (path,target) => {
                     },
-                    isVisible: (name,path) => {
+                    isVisible: (name,folder, items) => {
+                        console.log(name, folder, items)
                         return true
                     },
-                    isEnabled: (name, path) => {
+                    isEnabled: (name, folder, items) => {
+                        console.log(name, folder, items)
                         return false
                     }
                 },
@@ -451,7 +453,8 @@ function App() {
                     permission:true,
                     onClick: (path,target) => {
                     },
-                    isEnabled: (path) => {
+                    isEnabled: (name, folder, items) => {
+                        console.log(name, folder, items)
                         return true
                     }
                 }
@@ -703,7 +706,6 @@ function App() {
                 {
                     icon: <>{'R'}</>,
                     text: 'Remove pod',
-                    multi: true,
                     permission: permissions.delete,
                     onClick: () => console.log('remove pod'),
                 },
@@ -711,6 +713,11 @@ function App() {
                     icon: <>{'E'}</>,
                     text: 'Evict',
                     onClick: () => console.log('evit'),
+                    isEnabled: (name, folder, items) => {
+                        console.log(name, folder, items)
+                        return !items.some(i => i.name.endsWith('9'))
+                    },
+                    multi: true,
                 }
             ],
             properties: [
