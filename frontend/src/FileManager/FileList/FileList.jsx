@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import FileItem from './FileItem'
 import { useFileNavigation } from '../../contexts/FileNavigationContext'
 import { useLayout } from '../../contexts/LayoutContext'
@@ -7,6 +7,7 @@ import ContextMenu from '../../components/ContextMenu/ContextMenu'
 import { useDetectOutsideClick } from '../../hooks/useDetectOutsideClick'
 import useFileList from './useFileList'
 import FilesHeader from './FilesHeader'
+import { HeaderSelector } from '../../components/HeaderSelector/HeaderSelector'
 import { useTranslation } from '../../contexts/TranslationProvider'
 import { getObjectSize } from '../../utils/getObjectSize'
 import './FileList.scss'
@@ -42,6 +43,7 @@ const FileList = ({
 
     const { currentPathFiles, sortConfig, setSortConfig, currentFolder } = useFileNavigation()
     const filesViewRef = useRef(null)
+    const [columnSelectorPos, setColumnSelectorPos] = useState(null)
     const { activeLayout, setActiveLayout } = useLayout()
     const t = useTranslation()
     const { options } = useOptions()
@@ -147,6 +149,10 @@ const FileList = ({
                             onHeaderRemove={onHeaderRemove}
                             onHeaderToggle={onHeaderToggle}
                             onHeadersReset={onHeadersReset}
+                            onOpenColumnSelector={(el) => {
+                                const r = el.getBoundingClientRect()
+                                setColumnSelectorPos({ top: r.bottom, left: r.right })
+                            }}
                             space={space}
                             spaces={spaces}
                             unselectFiles={unselectFiles}
@@ -154,6 +160,17 @@ const FileList = ({
                             sortConfig={sortConfig} />
                     </div>
                 )}
+
+                {columnSelectorPos &&
+                    <HeaderSelector
+                        setHeaderSelectorVisible={() => setColumnSelectorPos(null)}
+                        onHeaderToggle={onHeaderToggle}
+                        onHeadersReset={onHeadersReset}
+                        space={space}
+                        spaces={spaces}
+                        style={{ position: 'fixed', top: columnSelectorPos.top, left: columnSelectorPos.left, transform: 'translateX(-100%)', zIndex: 9999, fontFamily }}
+                    />
+                }
 
             <div
                 ref={filesViewRef}

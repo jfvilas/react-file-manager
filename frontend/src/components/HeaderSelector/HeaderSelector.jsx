@@ -1,7 +1,7 @@
 import { FaCheck } from 'react-icons/fa6'
 import { useDetectOutsideClick } from '../../hooks/useDetectOutsideClick'
 
-const HeaderSelector = ({ setHeaderSelectorVisible, onHeaderToggle, onHeadersReset, space, spaces }) => {
+const HeaderSelector = ({ setHeaderSelectorVisible, onHeaderToggle, onHeadersReset, space, spaces, style }) => {
 
     const viewHeaderSelectorRef = useDetectOutsideClick(() => {
         setHeaderSelectorVisible(false)
@@ -18,7 +18,7 @@ const HeaderSelector = ({ setHeaderSelectorVisible, onHeaderToggle, onHeadersRes
     }
 
     return (
-        <div ref={viewHeaderSelectorRef.ref} className='category-view' role='dropdown'>
+        <div ref={viewHeaderSelectorRef.ref} className='category-view' role='dropdown' style={style}>
             <ul role='menu' aria-orientation='vertical'>
                 {spaces.get(space).properties.map((property, index) => 
                     <li role='menuitem' key={index} onClick={() => handleHeaderVisibility(property.name)} onKeyDown={() => handleHeaderVisibility(property.name)}>

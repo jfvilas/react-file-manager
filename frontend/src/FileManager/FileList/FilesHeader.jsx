@@ -5,8 +5,6 @@ import { useSelection } from '../../contexts/SelectionContext'
 import { useTranslation } from '../../contexts/TranslationProvider'
 import { useOptions } from '../../contexts/OptionsContext'
 import { FaEllipsisV } from 'react-icons/fa'
-import { HeaderSelector} from '../../components/HeaderSelector/HeaderSelector'
-import { createPortal } from 'react-dom'
 
 const FilesHeader = ({
     space,
@@ -18,6 +16,7 @@ const FilesHeader = ({
     onHeaderRemove,
     onHeaderToggle,
     onHeadersReset,
+    onOpenColumnSelector,
     fontFamily,
     headersWidth
 }) => {
@@ -28,11 +27,10 @@ const FilesHeader = ({
     const { currentPathFiles } = useFileNavigation()
 
     const [draggingColumn, setDraggingColumn] = useState(undefined)
-    const [headerSelectorVisible, setHeaderSelectorVisible] = useState(false)
-    
+
     const startXRef = useRef(0)
     const startWidthRef = useRef(0)
-    
+
     const containerRef = useRef(null)
     const anchorRef = useRef(null)
 
@@ -163,35 +161,14 @@ const FilesHeader = ({
                     )
                 })}
 
-                {/* Coliumn selector */}
+                {/* Column selector */}
                 { spaces.get(space)?.configurable ?
-                    <span className='column-header' ref={anchorRef} style={{ width: '30px', textAlign: 'center' }}>
-                        <FaEllipsisV style={{cursor:'pointer'}} onClick={() => setHeaderSelectorVisible(true)}/>
+                    <span ref={anchorRef} className='column-header' style={{ width: '30px', textAlign: 'center' }}>
+                        <FaEllipsisV style={{cursor:'pointer'}} onClick={() => onOpenColumnSelector(anchorRef.current)}/>
                     </span>
                     :
                     <></>
                 }
-
-                {headerSelectorVisible && createPortal(
-                    <div style={{
-                        position: 'fixed',
-                        top: anchorRef.current?.getBoundingClientRect().top,
-                        left: (anchorRef.current?.getBoundingClientRect().left || 0) - 200,
-                        zIndex: 9999,
-                        fontFamily,
-                        backgroundColor: 'white',
-                        boxShadow: '0px 4px 10px rgba(0,0,0,0.1)'
-                    }}>
-                        <HeaderSelector
-                            setHeaderSelectorVisible={setHeaderSelectorVisible}
-                            onHeaderToggle={onHeaderToggle}
-                            onHeadersReset={onHeadersReset}
-                            space={space}
-                            spaces={spaces}
-                        />
-                    </div>,
-                    document.body
-                )}
             </section>
         </div>
     )    
