@@ -305,6 +305,7 @@ Et voilà !
 | `onRename`               | (file: [File](#-file-structure), newName: string) => void | A callback function triggered when a file or folder is renamed. |
 | `onSelectionChange`      | (files: Array<[File](#-file-structure)>) => void | (Optional) A callback triggered whenever a file or folder is **selected or deselected**. The function receives the updated array of selected files or folders, allowing you to handle selection-related actions such as displaying file details, enabling toolbar actions, or updating the UI. |
 | `onSelect`⚠️(deprecated) | (files: Array<[File](#-file-structure)>) => void | (Optional) Legacy callback triggered only when a file or folder is **selected**. This prop is deprecated and will be removed in the next major release. Please migrate to `onSelectionChange`. |
+| `openMode`               | 'default'|'none' | Hide or show 'Open' action on item context menu. |
 | `permissions`            | { create?: boolean; upload?: boolean; move?: boolean; copy?: boolean; rename?: boolean; download?: boolean; delete?: boolean; } | An object that controls the availability of specific file management actions. Setting an action to `false` hides it from the toolbar, context menu, and any relevant UI. All actions default to `true` if not specified. This is useful for implementing role-based access control or restricting certain operations. Example: `{ create: false, delete: false }` disables folder creation and file deletion.                                                                                                                   |
 | `primaryColor`           | string | The primary color for the component's theme. Accepts any valid CSS color format (e.g., `'blue'`, `'#E97451'`, `'rgb(52, 152, 219)'`). This color will be applied to buttons, highlights, and other key elements. `default: #6155b4`. |
 | `style`                  | object | Inline styles applied to the FileManager root element. |
@@ -335,8 +336,8 @@ export interface ISpaceMenuItem {
   permission: boolean,    // required permission (for using 'filedata' space, that is, a file manager not an object manager)
   multi?: boolean,        // true if this action can be executed on several files at the same time
   onClick?: (paths:string[], currentTraget:Element) => void     // what to do when th euser clicks the action
-  isVisible?: (name:string, path:string) => boolean             // determine if the action is visible depending on name and path
-  isEnabled?: (name:string, path:string) => boolean             // determine if the action is enabled depending on name and path
+  isVisible?: (name:string, currentFolder:IFileObject, selectedItems:IFileObject[]) => boolean    // determine if the action is visible
+  isEnabled?: (name:string, currentFolder:IFileObject, selectedItems:IFileObject[]) => boolean    // determine if the action is enabled
 }
 ```
 
