@@ -175,7 +175,13 @@ const FileManagerBody = ({ props, innerRef }) => {
     const onHeaderRemove = (spaceName, name) => {
         let col = spaces.get(spaceName).properties.find(p => p.name === name)
         if (col) col.visible = false
-        setColumnWidths({ ...columnWidths }) // refresh
+        setColumnWidths({ ...columnWidths })
+    }
+
+    const onHeaderToggle = (spaceName, name) => {
+        let col = spaces.get(spaceName).properties.find(p => p.name === name)
+        if (col) col.visible = !col.visible
+        setColumnWidths({ ...columnWidths })
     }
 
     const onHeadersReset = (spaceName) => {
@@ -271,6 +277,7 @@ const FileManagerBody = ({ props, innerRef }) => {
                                     columnWidths={columnWidths}
                                     onHeaderChangeWidth={onHeaderChangeWidth}
                                     onHeaderRemove={onHeaderRemove}
+                                    onHeaderToggle={onHeaderToggle}
                                     onHeadersReset={onHeadersReset}
                                     actions={actions}
                                     space={space}

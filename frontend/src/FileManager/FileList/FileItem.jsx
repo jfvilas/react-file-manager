@@ -315,7 +315,7 @@ const FileItem = ({
                         activeLayout==='grid' ?
                             <span className='text-truncate file-name'>{showFileName}</span>
                         :
-                            <span className='text-truncate file-name' style={{width:(spaces.get(space).width*2)+'%'}}>{showFileName}</span>
+                            <span className='text-truncate file-name' style={{flex: 1, minWidth: 0, fontSize: '0.8em'}}>{showFileName}</span>
                     )
                 }
             </div>

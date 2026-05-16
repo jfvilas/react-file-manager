@@ -35,6 +35,7 @@ const FileList = ({
     columnWidths,
     onHeaderChangeWidth,
     onHeaderRemove,
+    onHeaderToggle,
     onHeadersReset,
     openMode
     }) => {
@@ -139,11 +140,12 @@ const FileList = ({
         return (<>
                 {activeLayout === 'list' && (
                     <div className='files list' style={{paddingRight:0}}>
-                        <FilesHeader 
+                        <FilesHeader
                             fontFamily={fontFamily}
                             headersWidth={headersWidth}
                             onHeaderChangeWidth={onHeaderChangeWidth}
                             onHeaderRemove={onHeaderRemove}
+                            onHeaderToggle={onHeaderToggle}
                             onHeadersReset={onHeadersReset}
                             space={space}
                             spaces={spaces}

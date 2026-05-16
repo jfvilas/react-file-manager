@@ -8,17 +8,18 @@ import { FaEllipsisV } from 'react-icons/fa'
 import { HeaderSelector} from '../../components/HeaderSelector/HeaderSelector'
 import { createPortal } from 'react-dom'
 
-const FilesHeader = ({ 
-    space, 
-    spaces, 
-    unselectFiles, 
-    onSort, 
-    sortConfig, 
-    onHeaderChangeWidth, 
-    onHeaderRemove, 
-    onHeadersReset, 
-    fontFamily, 
-    headersWidth 
+const FilesHeader = ({
+    space,
+    spaces,
+    unselectFiles,
+    onSort,
+    sortConfig,
+    onHeaderChangeWidth,
+    onHeaderRemove,
+    onHeaderToggle,
+    onHeadersReset,
+    fontFamily,
+    headersWidth
 }) => {
     const t = useTranslation()
     const [ showSelectAll, setShowSelectAll ] = useState(false)
@@ -59,12 +60,13 @@ const FilesHeader = ({
 
     const handleMouseDown = (e, name) => {
         setDraggingColumn(name)
-        
+
         const el = document.getElementById('col-' + name)
         if (!el) return
 
         startXRef.current = e.clientX
-        startWidthRef.current = el.offsetWidth
+        const cs = window.getComputedStyle(el)
+        startWidthRef.current = el.offsetWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0)
         e.preventDefault()
     }
 
@@ -118,7 +120,7 @@ const FilesHeader = ({
                 </div>
                 <div
                     className={`${spaces.get(space)?.configurable ? 'column-resize':'column-no-resize'} ${draggingColumn === 'name' ? "column-dragging" : ""}`}
-                    onMouseDown={spaces.get(space)?.configurable ? (e) => handleMouseDown(e, property.name) : () => {}}
+                    onMouseDown={spaces.get(space)?.configurable ? (e) => handleMouseDown(e, 'name') : () => {}}
                 />
 
                 {/* Dynamic property columns */}
@@ -128,10 +130,10 @@ const FilesHeader = ({
                     return (
                         <React.Fragment key={property.name}>
                             <div className='column-header-divider' style={{ width: currentW }}>
-                                <div 
-                                    id={'col-' + property.name} 
-                                    className={`${sortConfig?.key === property.source ? 'active' : ''}`} 
-                                    style={{ width: '100%'}} 
+                                <div
+                                    id={'col-' + property.name}
+                                    className={`${sortConfig?.key === property.source ? 'active' : ''}`}
+                                    style={{ width: '100%', paddingLeft: '6px' }}
                                     onClick={() => { if (property.sortable) handleSort(property.source, property.format)}}
                                 >
                                     {property.text}
@@ -139,13 +141,13 @@ const FilesHeader = ({
                                         <span className='sort-indicator'>{sortConfig.direction === 'asc' ? ' ▲' : ' ▼'}</span>
                                     )}
                                 </div>
-                                { property.removable && 
-                                    <span 
+                                { property.removable &&
+                                    <span
                                         style={{ color: '#dddddd', cursor: 'pointer', transition: '0.3s', paddingRight: '4px' }}
                                         onMouseEnter={(e) => (e.currentTarget.style.color = 'black')}
                                         onMouseLeave={(e) => (e.currentTarget.style.color = '#dddddd')}
                                         onClick={e => {
-                                            e.stopPropagation() // Evita activar el Sort al borrar
+                                            e.stopPropagation()
                                             onHeaderRemove(space, property.name)
                                         }}
                                     >
@@ -153,11 +155,10 @@ const FilesHeader = ({
                                     </span>
                                 }
                             </div>
-                            {/*  Currently right border is shown on headers
                             <div
                                 className={`${spaces.get(space)?.configurable ? 'column-resize':'column-no-resize'} ${draggingColumn === property.name ? "column-dragging" : ""}`}
                                 onMouseDown={spaces.get(space)?.configurable ? (e) => handleMouseDown(e, property.name) : () => {}}
-                            />*/}
+                            />
                         </React.Fragment>
                     )
                 })}
@@ -183,6 +184,7 @@ const FilesHeader = ({
                     }}>
                         <HeaderSelector
                             setHeaderSelectorVisible={setHeaderSelectorVisible}
+                            onHeaderToggle={onHeaderToggle}
                             onHeadersReset={onHeadersReset}
                             space={space}
                             spaces={spaces}

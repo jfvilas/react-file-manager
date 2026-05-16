@@ -1,7 +1,7 @@
 import { FaCheck } from 'react-icons/fa6'
 import { useDetectOutsideClick } from '../../hooks/useDetectOutsideClick'
 
-const HeaderSelector = ({ setHeaderSelectorVisible, onHeadersReset, space, spaces }) => {
+const HeaderSelector = ({ setHeaderSelectorVisible, onHeaderToggle, onHeadersReset, space, spaces }) => {
 
     const viewHeaderSelectorRef = useDetectOutsideClick(() => {
         setHeaderSelectorVisible(false)
@@ -9,8 +9,7 @@ const HeaderSelector = ({ setHeaderSelectorVisible, onHeadersReset, space, space
 
     const handleHeaderVisibility = (name) => {
         setHeaderSelectorVisible(false)
-		let col = spaces.get(space).properties.find(p => p.name===name)
-		col.visible = !col.visible
+        onHeaderToggle(space, name)
     }
 
     const handleHeadersReset = () => {

@@ -672,6 +672,7 @@ function App() {
             text:'Name',
             source:'name',
             width:25,
+            configurable: true,
             leftItems: [
                 {
                     icon: <>{'D'}</>,
